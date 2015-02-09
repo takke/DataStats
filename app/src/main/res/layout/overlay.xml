@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+    >
+
+    <ImageView
+        android:id="@+id/up_mark"
+        android:layout_width="@dimen/ud_mark_size"
+        android:layout_height="@dimen/ud_mark_size"
+        android:paddingLeft="@dimen/myOverlayPaddingLeft"
+        android:layout_toLeftOf="@+id/upload_text_view"
+        android:layout_alignTop="@+id/download_text_view"
+        android:layout_alignBottom="@id/download_text_view"
+        android:src="@drawable/ic_find_previous_holo_dark"
+        android:background="@color/textBackgroundColor"
+        />
+
+    <TextView
+        android:id="@+id/upload_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/down_mark"
+        android:textSize="@dimen/textSize"
+        android:shadowColor="#ff808080"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1.5"
+        android:background="@color/textBackgroundColor"
+        android:typeface="monospace"
+        android:textStyle="normal"
+        />
+
+    <ImageView
+        android:id="@+id/down_mark"
+        android:layout_width="@dimen/ud_mark_size"
+        android:layout_height="@dimen/ud_mark_size"
+        android:paddingLeft="@dimen/myOverlayPaddingLeft"
+        android:layout_toLeftOf="@+id/download_text_view"
+        android:layout_alignTop="@+id/download_text_view"
+        android:layout_alignBottom="@id/download_text_view"
+        android:src="@drawable/ic_find_next_holo_dark"
+        android:background="@color/textBackgroundColor"
+        />
+
+    <TextView
+        android:id="@+id/download_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/textSize"
+        android:shadowColor="#ff808080"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="1.5"
+        android:background="@color/textBackgroundColor"
+        android:typeface="monospace"
+        android:textStyle="normal"
+        android:paddingRight="@dimen/myOverlayPaddingRight"
+        />
+
+</RelativeLayout>

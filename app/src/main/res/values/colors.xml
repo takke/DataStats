@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="textBackgroundColor" type="color">#77000000</item>
+
+    <item name="textColorLow" type="color">#ffffffff</item>
+    <item name="textColorMiddle" type="color">#ff44ff44</item>
+    <item name="textColorHigh" type="color">#ffff4444</item>
+
+</resources>

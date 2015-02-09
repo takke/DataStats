@@ -1,0 +1,128 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    signingConfigs {
+        myConfig
+
+        debug {
+            storeFile file("../debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+    defaultConfig {
+        applicationId "jp.takke.tktrafficmonitorsample"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+//                        def file = output.outputFile
+//                        output.outputFile = new File(file.parent, "TkTrafficMonitorSample_r" + defaultConfig.versionCode + "-" + defaultConfig.versionName + ".apk")
+
+                        def file = output.outputFile
+                        def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
+                        def shortVersionName = defaultConfig.versionName.replaceAll('\\.', '')
+                        def newName = "TkTrafficMonitorSample_${shortVersionName}_${d}.apk"
+                        output.outputFile = new File(file.parent, newName)
+                    }
+                }
+            }
+        }
+    }
+
+//    applicationVariants.all { variant ->
+//        if (variant.buildType.name.equals("release")) {
+//
+//            variant.outputs.each { output ->
+//                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+//                    System.println("* output filename update : [${variant.buildType.name}]" +
+//                            "[${variant.productFlavors[0].name}]" +
+//                            "[${variant.productFlavors[0].applicationId}]"
+//                    )
+//
+//                    def file = output.outputFile
+//                    def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
+//                    def flavor = variant.productFlavors[0]
+//                    def shortVersionName = defaultConfig.versionName.replaceAll('\\.', '')
+//                    def newName = "TkTrafficMonitorSample_${flavor.name}_${shortVersionName}_${d}.apk"
+//                    output.outputFile = new File(file.parent, newName)
+//                }
+//            }
+//        }
+//    }
+
+    def publish = project.tasks.create("publishAll")
+    android.applicationVariants.all { variant ->
+
+        if (variant.buildType.name.equals("release")) {
+
+            variant.outputs.each { output ->
+                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+
+                    // publishXxxApk
+                    def task = project.tasks.create("publish${variant.name.capitalize()}Apk", Copy)
+
+                    task.from(output.outputFile)
+                    task.into(deployTo)
+                    task.dependsOn variant.assemble
+                    publish.dependsOn task
+
+                    // copyXxxMappingTxt
+                    if (variant.buildType.minifyEnabled) {
+                        def copyTask = project.tasks.create("copy${variant.name.capitalize()}MappingTxt", Copy)
+
+                        // variant.outputFile = "build/outputs/apk/xxx.apk"
+                        // from: "build/outputs/proguard/free/release/mapping.txt"
+                        // into: "proguard-outputs/free-release-mapping.txt"
+
+                        def flavorName = "";//variant.productFlavors[0].name
+                        def buildTypeName = variant.buildType.name
+
+                        copyTask.from(variant.getMappingFile())
+                        copyTask.rename('(.*)', "${flavorName}-proguard-\$1")
+                        copyTask.into(output.outputFile.parent + "/../../../proguard-outputs")
+
+                        System.println("* copy mapping txt : [${flavorName}][${buildTypeName}]")
+
+                        copyTask.dependsOn variant.assemble
+                        task.dependsOn copyTask
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+}
+
+// load signing settings from gradle.properties
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.myConfig.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.myConfig.storePassword = storePassword
+}
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.myConfig.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.myConfig.keyPassword = keyPassword
+}

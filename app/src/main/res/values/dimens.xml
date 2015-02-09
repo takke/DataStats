@@ -1,0 +1,11 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="textSize">8sp</dimen>
+
+    <dimen name="myOverlayPaddingLeft">3dp</dimen>
+    <dimen name="myOverlayPaddingRight">3dp</dimen>
+    <dimen name="ud_mark_size">12sp</dimen>
+</resources>
