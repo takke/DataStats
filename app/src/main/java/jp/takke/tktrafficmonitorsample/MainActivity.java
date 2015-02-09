@@ -22,14 +22,16 @@ public class MainActivity extends Activity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     startService(new Intent(MainActivity.this, LayerService.class));
                 }
             });
 
+            // auto start
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   button.performClick();
+                    findViewById(R.id.sample_rx50_tx50_button).performClick();
                 }
             }, 10);
         }
@@ -43,6 +45,40 @@ public class MainActivity extends Activity {
                 }
             });
         }
+
+        final int[] sampleButtonIds = new int[]{R.id.sample_rx01_tx01_button,
+                R.id.sample_rx20_tx20_button,
+                R.id.sample_rx50_tx50_button,
+                R.id.sample_rx80_tx80_button,
+                R.id.sample_rx100_tx100_button
+        };
+        final int[] samples = new int[]{1, 20, 50, 80, 100};
+
+        for (int i = 0; i < sampleButtonIds.length; i++) {
+
+            final Button button = (Button) findViewById(sampleButtonIds[i]);
+            final int data = samples[i];
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    restartWithPreview(data, data);
+                }
+            });
+        }
+    }
+
+
+    private void restartWithPreview(long rx, long tx) {
+
+        final Intent service = new Intent(MainActivity.this, LayerService.class);
+
+        service.putExtra("PREVIEW_RX_KB", rx);
+        service.putExtra("PREVIEW_TX_KB", tx);
+
+        stopService(service);
+        startService(service);
     }
 
 

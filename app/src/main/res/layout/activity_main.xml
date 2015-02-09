@@ -26,5 +26,51 @@
         android:layout_toRightOf="@+id/start_button"
         />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/start_button"
+        android:layout_alignParentLeft="true"
+        >
+
+        <Button
+            android:id="@+id/sample_rx01_tx01_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preview: Up=1KB, Down=1KB"
+            />
+
+        <Button
+            android:id="@+id/sample_rx20_tx20_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preview: Up=20KB, Down=20KB"
+            />
+
+        <Button
+            android:id="@+id/sample_rx50_tx50_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preview: Up=50KB, Down=50KB"
+            />
+
+        <Button
+            android:id="@+id/sample_rx80_tx80_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preview: Up=80KB, Down=80KB"
+            />
+
+        <Button
+            android:id="@+id/sample_rx100_tx100_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preview: Up=100KB, Down=100KB"
+            />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

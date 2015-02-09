@@ -5,6 +5,10 @@
 
     <item name="textColorLow" type="color">#ffffffff</item>
     <item name="textColorMiddle" type="color">#ff44ff44</item>
-    <item name="textColorHigh" type="color">#ffff4444</item>
+    <item name="textColorHigh" type="color">#ffff2222</item>
+
+    <item name="textShadowColorLow" type="color">#ff404040</item>
+    <item name="textShadowColorMiddle" type="color">#ff202020</item>
+    <item name="textShadowColorHigh" type="color">#ff101010</item>
 
 </resources>

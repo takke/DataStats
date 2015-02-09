@@ -20,11 +20,12 @@ import android.widget.TextView;
 import jp.takke.util.MyLog;
 
 public class LayerService extends Service {
-    View view;
-    WindowManager wm;
+
+    private View view;
+    private WindowManager wm;
 
 
-    private int mIntervalMs = 2000;
+    private int mIntervalMs = 1000;
 
     private boolean mSleeping = false;
 
@@ -39,6 +40,13 @@ public class LayerService extends Service {
     private long mElapsedMs = mIntervalMs;
 
 
+    // SNAPSHOTモードの送受信データ
+    private boolean mSnapshot = false;
+    private boolean mSnapshotFirstTime = false;
+    private long mSnapshotRxKb = 0;
+    private long mSnapshotTxKb = 0;
+
+
     /**
      * スリープ状態(SCREEN_ON/OFF)の検出用レシーバ
      */
@@ -47,7 +55,7 @@ public class LayerService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 
-                MyLog.d("screen on");
+                MyLog.d("LayerService: screen on");
 
                 // 停止していれば再開する
                 mSleeping = false;
@@ -57,7 +65,7 @@ public class LayerService extends Service {
 
             } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
-                MyLog.d("screen off");
+                MyLog.d("LayerService: screen off");
 
                 // 停止する
                 mSleeping = true;
@@ -69,14 +77,66 @@ public class LayerService extends Service {
     };
 
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
+    public void onCreate() {
+        super.onCreate();
 
-//        MyLog.d("LayerService.onStart");
+        MyLog.d("LayerService.onCreate");
+
+        // Viewからインフレータを作成する
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+
+        // 重ね合わせするViewの設定を行う
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+
+        // WindowManagerを取得する
+        wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
+        // レイアウトファイルから重ね合わせするViewを作成する
+        view = layoutInflater.inflate(R.layout.overlay, null);
+
+        // Viewを画面上に重ね合わせする
+        wm.addView(view, params);
+
+        // スリープ状態のレシーバ登録
+        getApplicationContext().registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        getApplicationContext().registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+
+
+        // 定期処理開始
+//        scheduleNextTime(mIntervalMs);
+    }
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        final int result = super.onStartCommand(intent, flags, startId);
+
+        // パラメータ指定されていればサンプル表示ということでそちらを利用する
+        if (intent.hasExtra("PREVIEW_RX_KB")) {
+            mSnapshot = true;
+            mSnapshotFirstTime = true;  // 2回描画しないとバーが出ないのですぐに2回描画させるフラグ。
+            mSnapshotRxKb = intent.getLongExtra("PREVIEW_RX_KB", 0);
+            mSnapshotTxKb = intent.getLongExtra("PREVIEW_TX_KB", 0);
+            MyLog.d("LayerService.onStartCommand: preview rx[" + mSnapshotRxKb + "KB] tx[" + mSnapshotTxKb + "KB]");
+
+        } else {
+
+            // 通常実行
+            MyLog.d("LayerService.onStartCommand: no param");
+        }
 
         execTask();
+
+        return result;
     }
 
 
@@ -84,45 +144,66 @@ public class LayerService extends Service {
 
         MyLog.d("LayerService.execTask");
 
-        gatherTraffic();
+        if (mSnapshot) {
 
-        showTraffic();
+            showTraffic();
 
+            // 次回の実行予約
+            scheduleNextTime(mSnapshotFirstTime ? 10 : 5000);
 
-        // 次回の実行予約
-        scheduleNextTime(mIntervalMs);
+            mSnapshotFirstTime = false;
+        } else {
+            gatherTraffic();
+
+            showTraffic();
+
+            // 次回の実行予約
+            scheduleNextTime(mIntervalMs);
+        }
     }
 
 
     private void showTraffic() {
 
-        final long rxKb = mDiffRxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
-        long rxD1Kb = mDiffRxBytes % 1024;    // [0, 1023]
-        // to [0, 9]
-        if (rxD1Kb >= 900) rxD1Kb = 9;
-        else if (rxD1Kb == 0) rxD1Kb = 0;
-        else if (rxD1Kb <= 100) rxD1Kb = 1;
-        else rxD1Kb = rxD1Kb / 100;
+        long rxKb, txKb, rxD1Kb, txD1Kb;
 
-        final long txKb = mDiffTxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
-        long txD1Kb = mDiffTxBytes % 1024;    // [0, 1023]
-        // to [0, 9]
-        if (txD1Kb >= 900) txD1Kb = 9;
-        else if (txD1Kb == 0) txD1Kb = 0;
-        else if (txD1Kb <= 100) txD1Kb = 1;
-        else txD1Kb = txD1Kb / 100;
+        // prepare
+        if (mSnapshot) {
+            rxKb = mSnapshotRxKb;
+            txKb = mSnapshotTxKb;
+            rxD1Kb = 0;
+            txD1Kb = 0;
+        } else {
+            rxKb = mDiffRxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
+            rxD1Kb = mDiffRxBytes % 1024;    // [0, 1023]
+            // to [0, 9]
+            if (rxD1Kb >= 900) rxD1Kb = 9;
+            else if (rxD1Kb == 0) rxD1Kb = 0;
+            else if (rxD1Kb <= 100) rxD1Kb = 1;
+            else rxD1Kb = rxD1Kb / 100;
+
+            txKb = mDiffTxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
+            txD1Kb = mDiffTxBytes % 1024;    // [0, 1023]
+            // to [0, 9]
+            if (txD1Kb >= 900) txD1Kb = 9;
+            else if (txD1Kb == 0) txD1Kb = 0;
+            else if (txD1Kb <= 100) txD1Kb = 1;
+            else txD1Kb = txD1Kb / 100;
+        }
 
         final TextView uploadTextView = (TextView) view.findViewById(R.id.upload_text_view);
         uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String u = pad(txKb) + txKb + "." + txD1Kb + "KB/s";
         uploadTextView.setText(u);
         uploadTextView.setTextColor(getTextColorByKb(txKb));
+        uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(txKb));
 
         final TextView downloadTextView = (TextView) view.findViewById(R.id.download_text_view);
         downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String d = pad(rxKb) + rxKb + "." + rxD1Kb + "KB/s";
         downloadTextView.setText(d);
         downloadTextView.setTextColor(getTextColorByKb(rxKb));
+        downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(rxKb));
 
 //        MyLog.d("LayerService.showTraffic: U: " + u + ", D:" + d + ", elapsed[" + mElapsedMs + "]");
 
@@ -132,7 +213,7 @@ public class LayerService extends Service {
             final int width = uploadTextView.getWidth() + mark.getWidth();
 
             final View bar = view.findViewById(R.id.upload_bar);
-            bar.setBackgroundColor(0x88ffaaaa);
+            bar.setBackgroundColor(0xAAff2222);
             if (width > 0) {
                 final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
 
@@ -151,7 +232,7 @@ public class LayerService extends Service {
             final int width = downloadTextView.getWidth() + mark.getWidth();
 
             final View bar = view.findViewById(R.id.download_bar);
-            bar.setBackgroundColor(0x88aaaaff);
+            bar.setBackgroundColor(0xAAaaaaff);
             if (width > 0) {
                 final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
 
@@ -164,6 +245,18 @@ public class LayerService extends Service {
                 bar.setVisibility(View.GONE);
             }
         }
+    }
+
+
+    private int getTextShadowColorByKb(long kb) {
+
+        if (kb < 10) {
+            return getResources().getColor(R.color.textShadowColorLow);
+        }
+        if (kb < 100) {
+            return getResources().getColor(R.color.textShadowColorMiddle);
+        }
+        return getResources().getColor(R.color.textShadowColorHigh);
     }
 
 
@@ -242,7 +335,7 @@ public class LayerService extends Service {
                 intent,
                 0
         );
-        // ※onStartが呼ばれるように設定する
+        // ※onStartCommandが呼ばれるように設定する
 
         final AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
@@ -272,43 +365,6 @@ public class LayerService extends Service {
 
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-        MyLog.d("LayerService.onCreate");
-
-        // Viewからインフレータを作成する
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-
-        // 重ね合わせするViewの設定を行う
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_TOAST,
-                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-
-        // WindowManagerを取得する
-        wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-
-        // レイアウトファイルから重ね合わせするViewを作成する
-        view = layoutInflater.inflate(R.layout.overlay, null);
-
-        // Viewを画面上に重ね合わせする
-        wm.addView(view, params);
-
-        // スリープ状態のレシーバ登録
-        getApplicationContext().registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
-        getApplicationContext().registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
-
-        // 定期処理開始
-        scheduleNextTime(mIntervalMs);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -325,6 +381,7 @@ public class LayerService extends Service {
         wm.removeView(view);
     }
 
+
     @Override
     public IBinder onBind(Intent intent) {
 
@@ -332,4 +389,6 @@ public class LayerService extends Service {
 
         return null;
     }
+
+
 }
