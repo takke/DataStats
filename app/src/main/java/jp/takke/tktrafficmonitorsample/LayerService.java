@@ -7,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.net.TrafficStats;
@@ -245,7 +244,7 @@ public class LayerService extends Service {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
                 WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT);
 
@@ -273,6 +272,8 @@ public class LayerService extends Service {
         MyLog.d("LayerService.onDestroy");
 
         mServiceAlive = false;
+
+        stopAlarm();
 
         // スリープ状態のレシーバ解除
         getApplicationContext().unregisterReceiver(mReceiver);
