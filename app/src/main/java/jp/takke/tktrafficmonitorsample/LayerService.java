@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import jp.takke.util.MyLog;
@@ -111,19 +112,58 @@ public class LayerService extends Service {
         else if (txD1Kb <= 100) txD1Kb = 1;
         else txD1Kb = txD1Kb / 100;
 
-        final TextView upload = (TextView) view.findViewById(R.id.upload_text_view);
-        upload.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
+        final TextView uploadTextView = (TextView) view.findViewById(R.id.upload_text_view);
+        uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String u = pad(txKb) + txKb + "." + txD1Kb + "KB/s";
-        upload.setText(u);
-        upload.setTextColor(getTextColorByKb(txKb));
+        uploadTextView.setText(u);
+        uploadTextView.setTextColor(getTextColorByKb(txKb));
 
-        final TextView download = (TextView) view.findViewById(R.id.download_text_view);
-        download.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
+        final TextView downloadTextView = (TextView) view.findViewById(R.id.download_text_view);
+        downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String d = pad(rxKb) + rxKb + "." + rxD1Kb + "KB/s";
-        download.setText(d);
-        download.setTextColor(getTextColorByKb(rxKb));
+        downloadTextView.setText(d);
+        downloadTextView.setTextColor(getTextColorByKb(rxKb));
 
 //        MyLog.d("LayerService.showTraffic: U: " + u + ", D:" + d + ", elapsed[" + mElapsedMs + "]");
+
+        // bars
+        {
+            final View mark = view.findViewById(R.id.upload_mark);
+            final int width = uploadTextView.getWidth() + mark.getWidth();
+
+            final View bar = view.findViewById(R.id.upload_bar);
+            bar.setBackgroundColor(0x88ffaaaa);
+            if (width > 0) {
+                final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
+
+                final long kb = txKb;
+                final int p = kb > 100 ? 1000 : (int) (kb * 1000 / 100);
+                lp.rightMargin = width - width*p/1000;
+                bar.setVisibility(View.VISIBLE);
+                bar.setLayoutParams(lp);
+            } else {
+                bar.setVisibility(View.GONE);
+            }
+        }
+
+        {
+            final View mark = view.findViewById(R.id.download_mark);
+            final int width = downloadTextView.getWidth() + mark.getWidth();
+
+            final View bar = view.findViewById(R.id.download_bar);
+            bar.setBackgroundColor(0x88aaaaff);
+            if (width > 0) {
+                final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
+
+                final long kb = rxKb;
+                final int p = kb > 100 ? 1000 : (int) (kb * 1000 / 100);
+                lp.rightMargin = width - width*p/1000;
+                bar.setVisibility(View.VISIBLE);
+                bar.setLayoutParams(lp);
+            } else {
+                bar.setVisibility(View.GONE);
+            }
+        }
     }
 
 

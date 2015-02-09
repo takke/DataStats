@@ -5,7 +5,7 @@
     >
 
     <ImageView
-        android:id="@+id/up_mark"
+        android:id="@+id/upload_mark"
         android:layout_width="@dimen/ud_mark_size"
         android:layout_height="@dimen/ud_mark_size"
         android:paddingLeft="@dimen/myOverlayPaddingLeft"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/down_mark"
+        android:layout_toLeftOf="@+id/download_mark"
         android:textSize="@dimen/textSize"
         android:shadowColor="#ff808080"
         android:shadowDx="1.5"
@@ -30,10 +30,20 @@
         android:background="@color/textBackgroundColor"
         android:typeface="monospace"
         android:textStyle="normal"
+        android:paddingRight="@dimen/myOverlayPaddingRight"
+        />
+    <View
+        android:id="@+id/upload_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/upload_mark"
+        android:layout_alignRight="@id/upload_text_view"
+        android:layout_alignTop="@id/upload_text_view"
+        android:layout_alignBottom="@id/upload_text_view"
         />
 
     <ImageView
-        android:id="@+id/down_mark"
+        android:id="@+id/download_mark"
         android:layout_width="@dimen/ud_mark_size"
         android:layout_height="@dimen/ud_mark_size"
         android:paddingLeft="@dimen/myOverlayPaddingLeft"
@@ -59,6 +69,15 @@
         android:typeface="monospace"
         android:textStyle="normal"
         android:paddingRight="@dimen/myOverlayPaddingRight"
+        />
+    <View
+        android:id="@+id/download_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/download_mark"
+        android:layout_alignRight="@id/download_text_view"
+        android:layout_alignTop="@id/download_text_view"
+        android:layout_alignBottom="@id/download_text_view"
         />
 
 </RelativeLayout>
