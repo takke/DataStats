@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 
 public class MainActivity extends Activity {
@@ -23,7 +24,9 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
 
-                    startService(new Intent(MainActivity.this, LayerService.class));
+                    final Intent service = new Intent(MainActivity.this, LayerService.class);
+                    stopService(service);
+                    startService(service);
                 }
             });
 
@@ -31,10 +34,29 @@ public class MainActivity extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    findViewById(R.id.sample_rx50_tx50_button).performClick();
+//                    findViewById(R.id.sample_rx50_tx50_button).performClick();
+                    findViewById(R.id.start_button).performClick();
                 }
             }, 10);
         }
+
+        final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                final int progress = seekBar.getProgress();
+                restartWithPreview(progress);
+            }
+        });
 
         {
             final Button button = (Button) findViewById(R.id.stop_button);
@@ -57,28 +79,32 @@ public class MainActivity extends Activity {
         for (int i = 0; i < sampleButtonIds.length; i++) {
 
             final Button button = (Button) findViewById(sampleButtonIds[i]);
-            final int data = samples[i];
+            final int kb = samples[i];
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    restartWithPreview(data, data);
+                    restartWithPreview(kb);
                 }
             });
         }
     }
 
 
-    private void restartWithPreview(long rx, long tx) {
+    private void restartWithPreview(long kb) {
 
         final Intent service = new Intent(MainActivity.this, LayerService.class);
 
-        service.putExtra("PREVIEW_RX_KB", rx);
-        service.putExtra("PREVIEW_TX_KB", tx);
+        service.putExtra("PREVIEW_RX_KB", kb);
+        service.putExtra("PREVIEW_TX_KB", kb);
 
         stopService(service);
         startService(service);
+
+        final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBar.setProgress((int) kb);
+
     }
 
 

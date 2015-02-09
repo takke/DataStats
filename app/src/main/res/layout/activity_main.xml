@@ -69,6 +69,13 @@
             android:text="Preview: Up=100KB, Down=100KB"
             />
 
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:max="120"
+            />
+
     </LinearLayout>
 
 
