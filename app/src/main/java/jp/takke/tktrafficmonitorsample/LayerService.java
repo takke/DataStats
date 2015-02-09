@@ -213,12 +213,14 @@ public class LayerService extends Service {
             final int width = uploadTextView.getWidth() + mark.getWidth();
 
             final View bar = view.findViewById(R.id.upload_bar);
-            bar.setBackgroundColor(0xAAff2222);
+//            bar.setBackgroundColor(0xAAff2222);
+            bar.setBackgroundResource(R.drawable.upload_background);
             if (width > 0) {
                 final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
 
                 final long kb = txKb;
-                final int p = kb > 100 ? 1000 : (int) (kb * 1000 / 100);
+                final long d1Kb = txD1Kb;
+                final int p = kb > 100 ? 1000 : (int) ((kb * 1000 + d1Kb*100) / 100);   // [0, 1000]
                 lp.rightMargin = width - width*p/1000;
                 bar.setVisibility(View.VISIBLE);
                 bar.setLayoutParams(lp);
@@ -232,12 +234,14 @@ public class LayerService extends Service {
             final int width = downloadTextView.getWidth() + mark.getWidth();
 
             final View bar = view.findViewById(R.id.download_bar);
-            bar.setBackgroundColor(0xAAaaaaff);
+//            bar.setBackgroundColor(0xAAaaaaff);
+            bar.setBackgroundResource(R.drawable.download_background);
             if (width > 0) {
                 final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
 
                 final long kb = rxKb;
-                final int p = kb > 100 ? 1000 : (int) (kb * 1000 / 100);
+                final long d1Kb = rxD1Kb;
+                final int p = kb > 100 ? 1000 : (int) ((kb * 1000 + d1Kb*100) / 100);   // [0, 1000]
                 lp.rightMargin = width - width*p/1000;
                 bar.setVisibility(View.VISIBLE);
                 bar.setLayoutParams(lp);
