@@ -15,7 +15,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "jp.takke.tktrafficmonitorsample"
+        applicationId "jp.takke.datastats"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 2
@@ -43,7 +43,7 @@ android {
                     def file = output.outputFile
                     def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
                     def shortVersionName = defaultConfig.versionName.replaceAll('\\.', '')
-                    def newName = "TkTrafficMonitorSample_${shortVersionName}_${d}.apk"
+                    def newName = "DataStats_${shortVersionName}_${d}.apk"
                     output.outputFile = new File(file.parent, newName)
                 }
             }

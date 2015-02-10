@@ -1,4 +1,4 @@
-package jp.takke.tktrafficmonitorsample;
+package jp.takke.datastats;
 
 public class C {
     public static final String PREF_KEY_X_POS = "xPos";

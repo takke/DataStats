@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jp.takke.tktrafficmonitorsample" >
+    package="jp.takke.datastats" >
 
     <!--<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />-->
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="jp.takke.datastats.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="jp.takke.tktrafficmonitorsample.LayerService"/>
+        <service android:name="jp.takke.datastats.LayerService"/>
 
     </application>
 

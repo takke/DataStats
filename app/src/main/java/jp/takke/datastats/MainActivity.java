@@ -1,4 +1,4 @@
-package jp.takke.tktrafficmonitorsample;
+package jp.takke.datastats;
 
 import android.app.Activity;
 import android.content.Intent;
