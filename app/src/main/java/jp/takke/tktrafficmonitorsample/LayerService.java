@@ -44,7 +44,9 @@ public class LayerService extends Service {
     private boolean mSnapshot = false;
     private boolean mSnapshotFirstTime = false;
     private long mSnapshotRxKb = 0;
+    private long mSnapshotRxKbD1 = 0;
     private long mSnapshotTxKb = 0;
+    private long mSnapshotTxKbD1 = 0;
 
 
     /**
@@ -126,12 +128,16 @@ public class LayerService extends Service {
             mSnapshotFirstTime = true;  // 2回描画しないとバーが出ないのですぐに2回描画させるフラグ。
             mSnapshotRxKb = intent.getLongExtra("PREVIEW_RX_KB", 0);
             mSnapshotTxKb = intent.getLongExtra("PREVIEW_TX_KB", 0);
-            MyLog.d("LayerService.onStartCommand: preview rx[" + mSnapshotRxKb + "KB] tx[" + mSnapshotTxKb + "KB]");
+            mSnapshotRxKbD1 = intent.getLongExtra("PREVIEW_RX_KBD1", 0);
+            mSnapshotTxKbD1 = intent.getLongExtra("PREVIEW_TX_KBD1", 0);
+            MyLog.d("LayerService.onStartCommand: preview " +
+                    "rx[" + mSnapshotRxKb + "." + mSnapshotRxKbD1 + "KB] " +
+                    "tx[" + mSnapshotTxKb + "." + mSnapshotTxKbD1 + "KB]");
 
         } else {
 
             // 通常実行
-            MyLog.d("LayerService.onStartCommand: no param");
+//            MyLog.d("LayerService.onStartCommand: no param");
         }
 
         execTask();
@@ -142,7 +148,7 @@ public class LayerService extends Service {
 
     private void execTask() {
 
-        MyLog.d("LayerService.execTask");
+//        MyLog.d("LayerService.execTask");
 
         if (mSnapshot) {
 
@@ -171,8 +177,8 @@ public class LayerService extends Service {
         if (mSnapshot) {
             rxKb = mSnapshotRxKb;
             txKb = mSnapshotTxKb;
-            rxD1Kb = 0;
-            txD1Kb = 0;
+            rxD1Kb = mSnapshotRxKbD1;
+            txD1Kb = mSnapshotTxKbD1;
         } else {
             rxKb = mDiffRxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
             rxD1Kb = mDiffRxBytes % 1024;    // [0, 1023]

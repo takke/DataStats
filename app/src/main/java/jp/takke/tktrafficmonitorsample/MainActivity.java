@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -27,6 +28,9 @@ public class MainActivity extends Activity {
                     final Intent service = new Intent(MainActivity.this, LayerService.class);
                     stopService(service);
                     startService(service);
+
+                    final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+                    kbText.setText("-");
                 }
             });
 
@@ -34,7 +38,6 @@ public class MainActivity extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-//                    findViewById(R.id.sample_rx50_tx50_button).performClick();
                     findViewById(R.id.start_button).performClick();
                 }
             }, 10);
@@ -44,6 +47,8 @@ public class MainActivity extends Activity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+                kbText.setText("" + (progress/10) + "." + (progress%10) + "KB");
             }
 
             @Override
@@ -54,7 +59,7 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
                 final int progress = seekBar.getProgress();
-                restartWithPreview(progress);
+                restartWithPreview(progress/10, progress%10);
             }
         });
 
@@ -68,11 +73,11 @@ public class MainActivity extends Activity {
             });
         }
 
-        final int[] sampleButtonIds = new int[]{R.id.sample_rx01_tx01_button,
-                R.id.sample_rx20_tx20_button,
-                R.id.sample_rx50_tx50_button,
-                R.id.sample_rx80_tx80_button,
-                R.id.sample_rx100_tx100_button
+        final int[] sampleButtonIds = new int[]{R.id.sample_1kb_button,
+                R.id.sample_20kb_button,
+                R.id.sample_50kb_button,
+                R.id.sample_80kb_button,
+                R.id.sample_100kb_button
         };
         final int[] samples = new int[]{1, 20, 50, 80, 100};
 
@@ -85,26 +90,30 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
 
-                    restartWithPreview(kb);
+                    restartWithPreview(kb, 0);
                 }
             });
         }
     }
 
 
-    private void restartWithPreview(long kb) {
+    private void restartWithPreview(long kb, long kbd1) {
 
         final Intent service = new Intent(MainActivity.this, LayerService.class);
 
         service.putExtra("PREVIEW_RX_KB", kb);
         service.putExtra("PREVIEW_TX_KB", kb);
+        service.putExtra("PREVIEW_RX_KBD1", kbd1);
+        service.putExtra("PREVIEW_TX_KBD1", kbd1);
 
         stopService(service);
         startService(service);
 
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
-        seekBar.setProgress((int) kb);
+        seekBar.setProgress((int) (kb*10+kbd1));
 
+        final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+        kbText.setText(kb + "." + kbd1 + "KB");
     }
 
 

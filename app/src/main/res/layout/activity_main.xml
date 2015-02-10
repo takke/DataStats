@@ -26,57 +26,88 @@
         android:layout_toRightOf="@+id/start_button"
         />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/preview_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="Preview"
         android:layout_below="@+id/start_button"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="30dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/preset_button_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/preview_text"
         android:layout_alignParentLeft="true"
         >
 
+
         <Button
-            android:id="@+id/sample_rx01_tx01_button"
+            android:id="@+id/sample_1kb_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preview: Up=1KB, Down=1KB"
+            android:text="1KB"
+            android:textSize="@dimen/sampleButtonTextSize"
             />
 
         <Button
-            android:id="@+id/sample_rx20_tx20_button"
+            android:id="@+id/sample_20kb_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preview: Up=20KB, Down=20KB"
+            android:text="20KB"
+            android:textSize="@dimen/sampleButtonTextSize"
             />
 
         <Button
-            android:id="@+id/sample_rx50_tx50_button"
+            android:id="@+id/sample_50kb_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preview: Up=50KB, Down=50KB"
+            android:text="50KB"
+            android:textSize="@dimen/sampleButtonTextSize"
             />
 
         <Button
-            android:id="@+id/sample_rx80_tx80_button"
+            android:id="@+id/sample_80kb_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preview: Up=80KB, Down=80KB"
+            android:text="80KB"
+            android:textSize="@dimen/sampleButtonTextSize"
             />
 
         <Button
-            android:id="@+id/sample_rx100_tx100_button"
+            android:id="@+id/sample_100kb_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preview: Up=100KB, Down=100KB"
-            />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:max="120"
+            android:text="100KB"
+            android:textSize="@dimen/sampleButtonTextSize"
             />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/preview_kb_text"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:layout_alignTop="@+id/seekBar"
+        android:layout_alignBottom="@+id/seekBar"
+        android:gravity="center_vertical|left"
+        android:layout_alignParentRight="true"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="1200"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/preset_button_area"
+        android:layout_toLeftOf="@+id/preview_kb_text"
+        />
 
 
 

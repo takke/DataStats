@@ -8,4 +8,5 @@
     <dimen name="myOverlayPaddingLeft">3dp</dimen>
     <dimen name="myOverlayPaddingRight">3dp</dimen>
     <dimen name="ud_mark_size">12sp</dimen>
+    <dimen name="sampleButtonTextSize">12sp</dimen>
 </resources>
