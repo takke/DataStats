@@ -19,10 +19,13 @@ import android.widget.TextView;
 
 import jp.takke.util.MyLog;
 
-public class LayerService extends Service {
+public class LayerService extends Service implements View.OnAttachStateChangeListener {
 
     private View view;
     private WindowManager wm;
+    private boolean mAttached = false;
+
+    private int mXPos = 90;  // [0, 100]
 
 
     private int mIntervalMs = 1000;
@@ -113,6 +116,11 @@ public class LayerService extends Service {
         getApplicationContext().registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 
 
+        // attach されるまでサイズ不明
+        view.setVisibility(View.GONE);
+        view.addOnAttachStateChangeListener(this);
+
+
         // 定期処理開始
 //        scheduleNextTime(mIntervalMs);
     }
@@ -171,6 +179,10 @@ public class LayerService extends Service {
 
     private void showTraffic() {
 
+        if (!mAttached) {
+            return;
+        }
+
         long rxKb, txKb, rxD1Kb, txD1Kb;
 
         // prepare
@@ -197,16 +209,25 @@ public class LayerService extends Service {
             else txD1Kb = txD1Kb / 100;
         }
 
+        // set padding
+        {
+            final int w0 = view.getWidth();
+            final int w = view.findViewById(R.id.download_text_view).getRight() -
+                    view.findViewById(R.id.upload_bar).getLeft();
+            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
+            view.setPadding(0, 0, (w0 - w) * (100 - mXPos) / 100, 0);
+        }
+
         final TextView uploadTextView = (TextView) view.findViewById(R.id.upload_text_view);
         uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-        final String u = pad(txKb) + txKb + "." + txD1Kb + "KB/s";
+        final String u = txKb + "." + txD1Kb + "KB/s";
         uploadTextView.setText(u);
         uploadTextView.setTextColor(getTextColorByKb(txKb));
         uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(txKb));
 
         final TextView downloadTextView = (TextView) view.findViewById(R.id.download_text_view);
         downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-        final String d = pad(rxKb) + rxKb + "." + rxD1Kb + "KB/s";
+        final String d = rxKb + "." + rxD1Kb + "KB/s";
         downloadTextView.setText(d);
         downloadTextView.setTextColor(getTextColorByKb(rxKb));
         downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(rxKb));
@@ -281,24 +302,6 @@ public class LayerService extends Service {
         return getResources().getColor(R.color.textColorHigh);
     }
 
-
-
-    private String pad(long kb) {
-
-        if (kb < 10) {
-            return "    ";
-        }
-        if (kb < 100) {
-            return "   ";
-        }
-        if (kb < 1000) {
-            return "  ";
-        }
-        if (kb < 10000) {
-            return " ";
-        }
-        return "";
-    }
 
 
     private void gatherTraffic() {
@@ -387,6 +390,8 @@ public class LayerService extends Service {
         // スリープ状態のレシーバ解除
         getApplicationContext().unregisterReceiver(mReceiver);
 
+        view.removeOnAttachStateChangeListener(this);
+
         // サービスが破棄されるときには重ね合わせしていたViewを削除する
         wm.removeView(view);
     }
@@ -401,4 +406,19 @@ public class LayerService extends Service {
     }
 
 
+    @Override
+    public void onViewAttachedToWindow(View v) {
+
+        mAttached = true;
+
+        MyLog.d("LayerService.onViewAttachedToWindow");
+        view.setVisibility(View.VISIBLE);
+    }
+
+
+    @Override
+    public void onViewDetachedFromWindow(View v) {
+
+        mAttached = false;
+    }
 }

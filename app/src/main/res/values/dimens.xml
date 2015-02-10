@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="textSize">8sp</dimen>
+    <dimen name="textWidth">60sp</dimen>
 
     <dimen name="myOverlayPaddingLeft">3dp</dimen>
     <dimen name="myOverlayPaddingRight">3dp</dimen>
