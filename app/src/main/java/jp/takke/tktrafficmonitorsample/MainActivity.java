@@ -2,8 +2,10 @@ package jp.takke.tktrafficmonitorsample;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +43,37 @@ public class MainActivity extends Activity {
                     findViewById(R.id.start_button).performClick();
                 }
             }, 10);
+        }
+
+        {
+            final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    final TextView textView = (TextView) findViewById(R.id.pos_text);
+                    textView.setText("" + progress + "%");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    final int progress = seekBar.getProgress();
+                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    final SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt(C.PREF_KEY_X_POS, progress);
+                    editor.commit();
+
+                    // restart
+                    findViewById(R.id.start_button).performClick();
+                }
+            });
+            final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+            final int xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
+            seekBar.setProgress(xPos);
         }
 
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);

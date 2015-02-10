@@ -7,10 +7,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.net.TrafficStats;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -121,8 +123,18 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         view.addOnAttachStateChangeListener(this);
 
 
+        loadPreferences();
+
+
         // 定期処理開始
 //        scheduleNextTime(mIntervalMs);
+    }
+
+
+    private void loadPreferences() {
+
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        mXPos = pref.getInt(C.PREF_KEY_X_POS, 100);
     }
 
 

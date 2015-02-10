@@ -26,89 +26,135 @@
         android:layout_toRightOf="@+id/start_button"
         />
 
-    <TextView
-        android:id="@+id/preview_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Preview"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/start_button"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="30dp"
-        />
-
-    <LinearLayout
-        android:id="@+id/preset_button_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/preview_text"
-        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
         >
 
-
-        <Button
-            android:id="@+id/sample_1kb_button"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1KB"
-            android:textSize="@dimen/sampleButtonTextSize"
+            android:text="Config"
+            android:layout_marginTop="30dp"
             />
 
-        <Button
-            android:id="@+id/sample_20kb_button"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:text="Pos:"
+                android:gravity="center_vertical|left"
+                />
+
+            <SeekBar
+                android:id="@+id/posSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/pos_text"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:gravity="center_vertical|left"
+                />
+
+        </LinearLayout>
+
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20KB"
-            android:textSize="@dimen/sampleButtonTextSize"
+            android:text="Preview"
+            android:layout_marginTop="30dp"
             />
 
-        <Button
-            android:id="@+id/sample_50kb_button"
+        <LinearLayout
+            android:id="@+id/preset_button_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50KB"
-            android:textSize="@dimen/sampleButtonTextSize"
-            />
+            android:orientation="horizontal"
+            >
 
-        <Button
-            android:id="@+id/sample_80kb_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="80KB"
-            android:textSize="@dimen/sampleButtonTextSize"
-            />
 
-        <Button
-            android:id="@+id/sample_100kb_button"
-            android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/sample_1kb_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1KB"
+                android:textSize="@dimen/sampleButtonTextSize"
+                />
+
+            <Button
+                android:id="@+id/sample_20kb_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20KB"
+                android:textSize="@dimen/sampleButtonTextSize"
+                />
+
+            <Button
+                android:id="@+id/sample_50kb_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50KB"
+                android:textSize="@dimen/sampleButtonTextSize"
+                />
+
+            <Button
+                android:id="@+id/sample_80kb_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="80KB"
+                android:textSize="@dimen/sampleButtonTextSize"
+                />
+
+            <Button
+                android:id="@+id/sample_100kb_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100KB"
+                android:textSize="@dimen/sampleButtonTextSize"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="100KB"
-            android:textSize="@dimen/sampleButtonTextSize"
-            />
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="1200"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/preview_kb_text"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:text=""
+                android:gravity="center_vertical|left"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/preview_kb_text"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:text="-"
-        android:layout_alignTop="@+id/seekBar"
-        android:layout_alignBottom="@+id/seekBar"
-        android:gravity="center_vertical|left"
-        android:layout_alignParentRight="true"
-        />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="1200"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/preset_button_area"
-        android:layout_toLeftOf="@+id/preview_kb_text"
-        />
-
 
 
 </RelativeLayout>
