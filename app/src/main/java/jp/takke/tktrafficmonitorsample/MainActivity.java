@@ -9,72 +9,143 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import jp.takke.util.MyLog;
 
 
 public class MainActivity extends Activity {
+
+    private boolean mPreparingConfigArea = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        {
-            final Button button = (Button) findViewById(R.id.start_button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        prepareStartStopButton();
 
-                    final Intent service = new Intent(MainActivity.this, LayerService.class);
-                    stopService(service);
-                    startService(service);
+        prepareConfigArea();
 
-                    final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
-                    kbText.setText("-");
+        preparePreviewArea();
+    }
+
+
+    private void prepareStartStopButton() {
+
+        final Button button = (Button) findViewById(R.id.start_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Intent service = new Intent(MainActivity.this, LayerService.class);
+                stopService(service);
+                startService(service);
+
+                final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+                kbText.setText("-");
+            }
+        });
+
+        // auto start
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                findViewById(R.id.start_button).performClick();
+            }
+        }, 10);
+    }
+
+
+    private void prepareConfigArea() {
+
+        mPreparingConfigArea = true;
+
+        final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                final TextView textView = (TextView) findViewById(R.id.pos_text);
+                textView.setText("" + progress + "%");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                final int progress = seekBar.getProgress();
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putInt(C.PREF_KEY_X_POS, progress);
+                editor.apply();
+
+                // restart
+                findViewById(R.id.start_button).performClick();
+            }
+        });
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final int xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
+        seekBar.setProgress(xPos);
+
+        // Spinner
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item);
+        final int[] intervals = new int[]{500, 1000, 1500, 2000};
+        for (int interval : intervals) {
+            adapter.add("" + (interval / 1000) + "." + (interval%1000/100) + "sec");
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        final Spinner spinner = (Spinner) findViewById(R.id.intervalSpinner);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (mPreparingConfigArea) {
+                    return;
                 }
-            });
+                MyLog.d("onItemSelected: [" + position + "]");
 
-            // auto start
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    findViewById(R.id.start_button).performClick();
-                }
-            }, 10);
+                final int interval = intervals[position];
+
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putInt(C.PREF_KEY_INTERVAL_MSEC, interval);
+                editor.apply();
+
+                // restart
+                findViewById(R.id.start_button).performClick();
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        final int currentIntervalMsec = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
+        for (int i = 0; i < intervals.length; i++) {
+            if (currentIntervalMsec == intervals[i]) {
+                spinner.setSelection(i);
+                break;
+            }
         }
 
-        {
-            final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    final TextView textView = (TextView) findViewById(R.id.pos_text);
-                    textView.setText("" + progress + "%");
-                }
+        mPreparingConfigArea = false;
+    }
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
 
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    final int progress = seekBar.getProgress();
-                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    final SharedPreferences.Editor editor = pref.edit();
-                    editor.putInt(C.PREF_KEY_X_POS, progress);
-                    editor.commit();
-
-                    // restart
-                    findViewById(R.id.start_button).performClick();
-                }
-            });
-            final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            final int xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
-            seekBar.setProgress(xPos);
-        }
+    private void preparePreviewArea() {
 
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

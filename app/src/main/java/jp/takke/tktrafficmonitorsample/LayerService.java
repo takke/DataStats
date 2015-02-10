@@ -135,6 +135,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         mXPos = pref.getInt(C.PREF_KEY_X_POS, 100);
+        mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
     }
 
 

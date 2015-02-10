@@ -34,6 +34,8 @@
         android:orientation="vertical"
         >
 
+        <!-- Config -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +49,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:text="Pos:"
@@ -72,6 +74,29 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:text="Interval:"
+                android:gravity="center_vertical|left"
+                />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/intervalSpinner">
+
+            </Spinner>
+
+        </LinearLayout>
+
+
+        <!-- Preview -->
 
         <TextView
             android:layout_width="wrap_content"
