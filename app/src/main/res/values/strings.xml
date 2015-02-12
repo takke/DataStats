@@ -4,9 +4,10 @@
     <string name="app_name">DataStats</string>
 
     <string name="config_auto_start_on_boot">Auto start on boot</string>
-    <string name="config_interval">Interval:</string>
-    <string name="config_pos">Pos:</string>
+    <string name="config_interval">Interval</string>
+    <string name="config_pos">X Position</string>
     <string name="config_bar_max_kb">Max Speed[KB](Bar)</string>
+    <string name="config_logarithm_bar">Logarithm bar</string>
 
     <string name="preview">Preview</string>
 

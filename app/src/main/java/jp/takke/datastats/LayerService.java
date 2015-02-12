@@ -64,10 +64,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private boolean mAttached = false;
 
     private int mXPos = 90;  // [0, 100]
-
     private int mBarMaxKB = 100;
+    private boolean mLogBar = true;
 
     private int mIntervalMs = 1000;
+
 
     private boolean mSleeping = false;
 
@@ -202,7 +203,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         mXPos = pref.getInt(C.PREF_KEY_X_POS, 100);
         mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
-        mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 100);
+        mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
+        mLogBar = pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true);
     }
 
 
@@ -251,27 +253,32 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             return;
         }
 
+        final long rx, tx;
         long rxKb, txKb, rxD1Kb, txD1Kb;
 
         //--------------------------------------------------
         // prepare
         //--------------------------------------------------
         if (mSnapshot) {
+            rx = mSnapshotBytes;
+            tx = mSnapshotBytes;
             rxKb = mSnapshotBytes/1024;
             txKb = mSnapshotBytes/1024;
             rxD1Kb = (mSnapshotBytes%1024)/100;
             txD1Kb = (mSnapshotBytes%1024)/100;
         } else {
-            rxKb = mDiffRxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
-            rxD1Kb = mDiffRxBytes % 1024;    // [0, 1023]
+            rx = mDiffRxBytes * 1000 / mElapsedMs;  // B/s
+            rxKb = rx / 1024;                       // KB/s
+            rxD1Kb = rx % 1024;                     // [0, 1023]
             // to [0, 9]
             if (rxD1Kb >= 900) rxD1Kb = 9;
             else if (rxD1Kb == 0) rxD1Kb = 0;
             else if (rxD1Kb <= 100) rxD1Kb = 1;
             else rxD1Kb = rxD1Kb / 100;
 
-            txKb = mDiffTxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
-            txD1Kb = mDiffTxBytes % 1024;    // [0, 1023]
+            tx = mDiffTxBytes * 1000 / mElapsedMs;  // B/s
+            txKb = tx / 1024;                       // KB/s
+            txD1Kb = tx % 1024;                     // [0, 1023]
             // to [0, 9]
             if (txD1Kb >= 900) txD1Kb = 9;
             else if (txD1Kb == 0) txD1Kb = 0;
@@ -312,7 +319,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             final View bar = mView.findViewById(R.id.upload_bar);
 //            bar.setBackgroundColor(0xAAff2222);
             bar.setBackgroundResource(R.drawable.upload_background);
-            setColorBar(txKb, txD1Kb, width, bar);
+            setColorBar(tx, width, bar);
         }
 
         {
@@ -322,18 +329,39 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             final View bar = mView.findViewById(R.id.download_bar);
 //            bar.setBackgroundColor(0xAAaaaaff);
             bar.setBackgroundResource(R.drawable.download_background);
-            setColorBar(rxKb, rxD1Kb, width, bar);
+            setColorBar(rx, width, bar);
         }
     }
 
 
-    private void setColorBar(long kb, long d1Kb, int width, View bar) {
+    private void setColorBar(long bytes, int width, View bar) {
 
         if (width > 0) {
             final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
 
-            final int p = kb > mBarMaxKB ? 1000 : (int) ((kb * 1000 + d1Kb *100) / mBarMaxKB);   // [0, 1000]
-            lp.rightMargin = width - width*p/1000;
+
+            final int p;
+            if (!mLogBar) {
+                p = bytes/1024 > mBarMaxKB ? 1000 : (int) (bytes / mBarMaxKB);   // [0, 1000]
+            } else {
+                // 100KB基準値
+                final long normalBytes = bytes * 100 / mBarMaxKB;
+                if (normalBytes < 1) {
+                    p = 0;
+                } else {
+                    // max=100KB
+                    //   1KB -> 300
+                    //  10KB -> 400
+                    // 100KB -> 500
+                    final int log = (int) (Math.log10(normalBytes) * 100);
+
+                    // max=100KB -> 500*2 = 1000
+                    p = log * 2;
+
+//                    MyLog.d("setColorBar[" + bytes + "byes] -> [" + p + "]");
+                }
+            }
+            lp.rightMargin = width - width * p / 1000;
             bar.setVisibility(View.VISIBLE);
             bar.setLayoutParams(lp);
         } else {

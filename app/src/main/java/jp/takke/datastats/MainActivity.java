@@ -153,6 +153,22 @@ public class MainActivity extends Activity {
         final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
         autoStartOnBoot.setChecked(startOnBoot);
 
+        // Logarithm bar
+        final CheckBox logCheckbox = (CheckBox) findViewById(R.id.logarithmCheckbox);
+        logCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean(C.PREF_KEY_LOGARITHM_BAR, isChecked);
+                editor.apply();
+
+                // restart
+                doRestartService();
+            }
+        });
+        logCheckbox.setChecked(pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true));
+
         // pos
         final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -271,7 +287,7 @@ public class MainActivity extends Activity {
 
                 }
             });
-            final int currentSpeed = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 100);
+            final int currentSpeed = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
             for (int i = 0; i < speeds.length; i++) {
                 if (currentSpeed == speeds[i]) {
                     spinner.setSelection(i);

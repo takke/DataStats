@@ -43,6 +43,7 @@
             android:layout_marginTop="30dp"
             />
 
+        <!-- auto start on boot -->
         <CheckBox
             android:id="@+id/autoStartOnBoot"
             android:layout_width="wrap_content"
@@ -121,6 +122,14 @@
                 android:id="@+id/maxSpeedSpinner" />
 
         </LinearLayout>
+
+        <!-- Logarithm Bar -->
+        <CheckBox
+            android:id="@+id/logarithmCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_logarithm_bar"
+            />
 
 
         <!-- Preview -->
