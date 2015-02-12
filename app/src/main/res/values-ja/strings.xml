@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">通信速度メーター</string>
+
+    <string name="config_config">設定</string>
+    <string name="config_start">開始</string>
+    <string name="config_stop">停止</string>
+    <string name="config_auto_start_on_boot">端末起動時に自動起動する</string>
+    <string name="config_interval">更新間隔</string>
+    <string name="config_pos">X 位置</string>
+    <string name="config_bar_max_kb">バーの最大速度[KB]</string>
+    <string name="config_logarithm_bar">バーの対数表示</string>
+
+    <string name="preview">プレビュー</string>
+
+</resources>

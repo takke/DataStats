@@ -3,6 +3,9 @@
 
     <string name="app_name">DataStats</string>
 
+    <string name="config_config">Config</string>
+    <string name="config_start">Start</string>
+    <string name="config_stop">Stop</string>
     <string name="config_auto_start_on_boot">Auto start on boot</string>
     <string name="config_interval">Interval</string>
     <string name="config_pos">X Position</string>

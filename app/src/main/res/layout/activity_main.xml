@@ -12,7 +12,7 @@
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
+        android:text="@string/config_start"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         />
@@ -21,7 +21,7 @@
         android:id="@+id/stop_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop"
+        android:text="@string/config_stop"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/start_button"
         />
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Config"
+            android:text="@string/config_config"
             android:layout_marginTop="30dp"
             />
 
@@ -103,6 +103,14 @@
 
         </LinearLayout>
 
+        <!-- Logarithm Bar -->
+        <CheckBox
+            android:id="@+id/logarithmCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_logarithm_bar"
+            />
+
         <!-- Bar Max [KB] -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,14 +130,6 @@
                 android:id="@+id/maxSpeedSpinner" />
 
         </LinearLayout>
-
-        <!-- Logarithm Bar -->
-        <CheckBox
-            android:id="@+id/logarithmCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/config_logarithm_bar"
-            />
 
 
         <!-- Preview -->
