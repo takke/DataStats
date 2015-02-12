@@ -29,6 +29,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private int mXPos = 90;  // [0, 100]
 
+    private int mBarMaxKB = 100;
 
     private int mIntervalMs = 1000;
 
@@ -136,6 +137,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         mXPos = pref.getInt(C.PREF_KEY_X_POS, 100);
         mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
+        mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 100);
     }
 
 
@@ -144,7 +146,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final int result = super.onStartCommand(intent, flags, startId);
 
         // パラメータ指定されていればサンプル表示ということでそちらを利用する
-        if (intent.hasExtra("PREVIEW_RX_KB")) {
+        if (intent == null) {
+            // Service Restarted
+            MyLog.d("LayerService.onStartCommand: restart");
+
+        } else if (intent.hasExtra("PREVIEW_RX_KB")) {
             mSnapshot = true;
             mSnapshotFirstTime = true;  // 2回描画しないとバーが出ないのですぐに2回描画させるフラグ。
             mSnapshotRxKb = intent.getLongExtra("PREVIEW_RX_KB", 0);
@@ -198,7 +204,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         long rxKb, txKb, rxD1Kb, txD1Kb;
 
+        //--------------------------------------------------
         // prepare
+        //--------------------------------------------------
         if (mSnapshot) {
             rxKb = mSnapshotRxKb;
             txKb = mSnapshotTxKb;
@@ -222,12 +230,12 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             else txD1Kb = txD1Kb / 100;
         }
 
-        // set padding
+        // set padding (x pos)
         {
             final int w0 = view.getWidth();
             final int w = view.findViewById(R.id.download_text_view).getRight() -
                     view.findViewById(R.id.upload_bar).getLeft();
-            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
+//            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
             view.setPadding(0, 0, (w0 - w) * (100 - mXPos) / 100, 0);
         }
 
@@ -255,18 +263,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             final View bar = view.findViewById(R.id.upload_bar);
 //            bar.setBackgroundColor(0xAAff2222);
             bar.setBackgroundResource(R.drawable.upload_background);
-            if (width > 0) {
-                final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
-
-                final long kb = txKb;
-                final long d1Kb = txD1Kb;
-                final int p = kb > 100 ? 1000 : (int) ((kb * 1000 + d1Kb*100) / 100);   // [0, 1000]
-                lp.rightMargin = width - width*p/1000;
-                bar.setVisibility(View.VISIBLE);
-                bar.setLayoutParams(lp);
-            } else {
-                bar.setVisibility(View.GONE);
-            }
+            setColorBar(txKb, txD1Kb, width, bar);
         }
 
         {
@@ -276,18 +273,22 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             final View bar = view.findViewById(R.id.download_bar);
 //            bar.setBackgroundColor(0xAAaaaaff);
             bar.setBackgroundResource(R.drawable.download_background);
-            if (width > 0) {
-                final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
+            setColorBar(rxKb, rxD1Kb, width, bar);
+        }
+    }
 
-                final long kb = rxKb;
-                final long d1Kb = rxD1Kb;
-                final int p = kb > 100 ? 1000 : (int) ((kb * 1000 + d1Kb*100) / 100);   // [0, 1000]
-                lp.rightMargin = width - width*p/1000;
-                bar.setVisibility(View.VISIBLE);
-                bar.setLayoutParams(lp);
-            } else {
-                bar.setVisibility(View.GONE);
-            }
+
+    private void setColorBar(long kb, long d1Kb, int width, View bar) {
+
+        if (width > 0) {
+            final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
+
+            final int p = kb > mBarMaxKB ? 1000 : (int) ((kb * 1000 + d1Kb *100) / mBarMaxKB);   // [0, 1000]
+            lp.rightMargin = width - width*p/1000;
+            bar.setVisibility(View.VISIBLE);
+            bar.setLayoutParams(lp);
+        } else {
+            bar.setVisibility(View.GONE);
         }
     }
 
@@ -297,7 +298,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         if (kb < 10) {
             return getResources().getColor(R.color.textShadowColorLow);
         }
-        if (kb < 100) {
+        if (kb < mBarMaxKB) {
             return getResources().getColor(R.color.textShadowColorMiddle);
         }
         return getResources().getColor(R.color.textShadowColorHigh);
@@ -309,7 +310,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         if (kb < 10) {
             return getResources().getColor(R.color.textColorLow);
         }
-        if (kb < 100) {
+        if (kb < mBarMaxKB) {
             return getResources().getColor(R.color.textColorMiddle);
         }
         return getResources().getColor(R.color.textColorHigh);

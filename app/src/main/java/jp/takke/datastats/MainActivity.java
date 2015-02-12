@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -96,48 +94,102 @@ public class MainActivity extends Activity {
         final int xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
         seekBar.setProgress(xPos);
 
-        // Spinner
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item);
-        final int[] intervals = new int[]{500, 1000, 1500, 2000};
-        for (int interval : intervals) {
-            adapter.add("" + (interval / 1000) + "." + (interval%1000/100) + "sec");
-        }
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Interval Spinner
+        {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this, android.R.layout.simple_spinner_item);
+            final int[] intervals = new int[]{500, 1000, 1500, 2000};
+            for (int interval : intervals) {
+                adapter.add("" + (interval / 1000) + "." + (interval % 1000 / 100) + "sec");
+            }
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        final Spinner spinner = (Spinner) findViewById(R.id.intervalSpinner);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            final Spinner spinner = (Spinner) findViewById(R.id.intervalSpinner);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (mPreparingConfigArea) {
-                    return;
+                    if (mPreparingConfigArea) {
+                        return;
+                    }
+                    MyLog.d("onItemSelected: [" + position + "]");
+
+                    final int interval = intervals[position];
+
+                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    final SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt(C.PREF_KEY_INTERVAL_MSEC, interval);
+                    editor.apply();
+
+                    // restart
+                    findViewById(R.id.start_button).performClick();
                 }
-                MyLog.d("onItemSelected: [" + position + "]");
 
-                final int interval = intervals[position];
 
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putInt(C.PREF_KEY_INTERVAL_MSEC, interval);
-                editor.apply();
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-                // restart
-                findViewById(R.id.start_button).performClick();
+                }
+            });
+            final int currentIntervalMsec = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
+            for (int i = 0; i < intervals.length; i++) {
+                if (currentIntervalMsec == intervals[i]) {
+                    spinner.setSelection(i);
+                    break;
+                }
             }
+        }
 
+        // Max Speed[KB] Spinner (Bar)
+        {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this, android.R.layout.simple_spinner_item);
+            final int[] speeds = new int[]{10, 50, 100, 500, 1024, 2048, 5120, 10240};
+            for (int s : speeds) {
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+                if (s >= 1024) {
+                    adapter.add("" + (s / 1024) + "MB/s");
+                } else {
+                    adapter.add("" + s + "KB/s");
+                }
             }
-        });
-        final int currentIntervalMsec = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
-        for (int i = 0; i < intervals.length; i++) {
-            if (currentIntervalMsec == intervals[i]) {
-                spinner.setSelection(i);
-                break;
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            final Spinner spinner = (Spinner) findViewById(R.id.maxSpeedSpinner);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    if (mPreparingConfigArea) {
+                        return;
+                    }
+                    MyLog.d("onItemSelected: [" + position + "]");
+
+                    final int speed = speeds[position];
+
+                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    final SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt(C.PREF_KEY_BAR_MAX_SPEED_KB, speed);
+                    editor.apply();
+
+                    // restart
+                    findViewById(R.id.start_button).performClick();
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            final int currentSpeed = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 100);
+            for (int i = 0; i < speeds.length; i++) {
+                if (currentSpeed == speeds[i]) {
+                    spinner.setSelection(i);
+                    break;
+                }
             }
         }
 
@@ -218,29 +270,5 @@ public class MainActivity extends Activity {
 
         final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
         kbText.setText(kb + "." + kbd1 + "KB");
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

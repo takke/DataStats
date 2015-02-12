@@ -35,24 +35,25 @@
         >
 
         <!-- Config -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Config"
             android:layout_marginTop="30dp"
             />
 
+        <!-- Pos -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:text="Pos:"
+                android:text="@string/config_pos"
                 android:gravity="center_vertical|left"
                 />
 
@@ -74,34 +75,53 @@
 
         </LinearLayout>
 
+        <!-- Interval -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="60dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="Interval:"
+                android:text="@string/config_interval"
                 android:gravity="center_vertical|left"
                 />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/intervalSpinner">
+                android:id="@+id/intervalSpinner" />
 
-            </Spinner>
+        </LinearLayout>
+
+        <!-- Bar Max [KB] -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="@string/config_bar_max_kb"
+                android:gravity="center_vertical|left"
+                />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/maxSpeedSpinner" />
 
         </LinearLayout>
 
 
         <!-- Preview -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preview"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/preview"
             android:layout_marginTop="30dp"
             />
 
