@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -136,6 +138,22 @@ public class MainActivity extends Activity {
 
         mPreparingConfigArea = true;
 
+        // auto start
+        final CheckBox autoStartOnBoot = (CheckBox) findViewById(R.id.autoStartOnBoot);
+        autoStartOnBoot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean(C.PREF_KEY_START_ON_BOOT, isChecked);
+                editor.apply();
+            }
+        });
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
+        autoStartOnBoot.setChecked(startOnBoot);
+
+        // pos
         final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -160,7 +178,6 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         final int xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
         seekBar.setProgress(xPos);
 

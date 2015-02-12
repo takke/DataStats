@@ -43,6 +43,13 @@
             android:layout_marginTop="30dp"
             />
 
+        <CheckBox
+            android:id="@+id/autoStartOnBoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_auto_start_on_boot"
+            />
+
         <!-- Pos -->
         <LinearLayout
             android:layout_width="match_parent"
