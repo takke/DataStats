@@ -1,10 +1,14 @@
 package jp.takke.datastats;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +25,26 @@ public class MainActivity extends Activity {
 
     private boolean mPreparingConfigArea = false;
 
+    private ILayerService mServiceIF = null;
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+            MyLog.d("onServiceConnected[" + name + "]");
+
+            mServiceIF = ILayerService.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+            MyLog.d("onServiceDisconnected[" + name + "]");
+
+            mServiceIF = null;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,32 +56,79 @@ public class MainActivity extends Activity {
         prepareConfigArea();
 
         preparePreviewArea();
+
+        final Intent service = new Intent(this, LayerService.class);
+        bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+        if (mServiceIF != null) {
+            unbindService(mServiceConnection);
+        }
+
+        super.onDestroy();
     }
 
 
     private void prepareStartStopButton() {
 
-        final Button button = (Button) findViewById(R.id.start_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // start
+        {
+            final Button button = (Button) findViewById(R.id.start_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                final Intent service = new Intent(MainActivity.this, LayerService.class);
-                stopService(service);
-                startService(service);
+                    doRestartService();
+                }
+            });
+        }
 
-                final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
-                kbText.setText("-");
+        // stop
+        {
+            final Button button = (Button) findViewById(R.id.stop_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mServiceIF != null) {
+
+                        try {
+                            mServiceIF.stop();
+                        } catch (RemoteException e) {
+                            MyLog.e(e);
+                        }
+
+                        unbindService(mServiceConnection);
+
+                        mServiceIF = null;
+                    }
+                }
+            });
+        }
+    }
+
+
+    private void doRestartService() {
+
+        if (mServiceIF != null) {
+            // restart
+            try {
+                mServiceIF.restart();
+            } catch (RemoteException e) {
+                MyLog.e(e);
             }
-        });
+        } else {
+            // rebind
+            final Intent service = new Intent(MainActivity.this, LayerService.class);
+            bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+        }
 
-        // auto start
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.start_button).performClick();
-            }
-        }, 10);
+        final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+        kbText.setText("-");
     }
 
 
@@ -71,6 +142,14 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 final TextView textView = (TextView) findViewById(R.id.pos_text);
                 textView.setText("" + progress + "%");
+
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putInt(C.PREF_KEY_X_POS, progress);
+                editor.apply();
+
+                // restart
+                doRestartService();
             }
 
             @Override
@@ -79,15 +158,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
-                final int progress = seekBar.getProgress();
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putInt(C.PREF_KEY_X_POS, progress);
-                editor.apply();
-
-                // restart
-                findViewById(R.id.start_button).performClick();
             }
         });
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -123,7 +193,7 @@ public class MainActivity extends Activity {
                     editor.apply();
 
                     // restart
-                    findViewById(R.id.start_button).performClick();
+                    doRestartService();
                 }
 
 
@@ -175,7 +245,7 @@ public class MainActivity extends Activity {
                     editor.apply();
 
                     // restart
-                    findViewById(R.id.start_button).performClick();
+                    doRestartService();
                 }
 
 
@@ -205,6 +275,8 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
                 kbText.setText("" + (progress/10) + "." + (progress%10) + "KB");
+
+                restartWithPreview(progress/10, progress%10);
             }
 
             @Override
@@ -213,21 +285,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
-                final int progress = seekBar.getProgress();
-                restartWithPreview(progress/10, progress%10);
             }
         });
-
-        {
-            final Button button = (Button) findViewById(R.id.stop_button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    stopService(new Intent(MainActivity.this, LayerService.class));
-                }
-            });
-        }
 
         final int[] sampleButtonIds = new int[]{R.id.sample_1kb_button,
                 R.id.sample_20kb_button,
@@ -255,15 +314,15 @@ public class MainActivity extends Activity {
 
     private void restartWithPreview(long kb, long kbd1) {
 
-        final Intent service = new Intent(MainActivity.this, LayerService.class);
+        if (mServiceIF != null) {
+            // preview
+            try {
+                mServiceIF.startSnapshot(kb * 1024 + kbd1*100);
+            } catch (RemoteException e) {
+                MyLog.e(e);
+            }
+        }
 
-        service.putExtra("PREVIEW_RX_KB", kb);
-        service.putExtra("PREVIEW_TX_KB", kb);
-        service.putExtra("PREVIEW_RX_KBD1", kbd1);
-        service.putExtra("PREVIEW_TX_KBD1", kbd1);
-
-        stopService(service);
-        startService(service);
 
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setProgress((int) (kb*10+kbd1));

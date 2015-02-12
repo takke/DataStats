@@ -12,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.net.TrafficStats;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +24,43 @@ import jp.takke.util.MyLog;
 
 public class LayerService extends Service implements View.OnAttachStateChangeListener {
 
-    private View view;
-    private WindowManager wm;
+    public class LocalBinder extends ILayerService.Stub {
+
+        @Override
+        public void restart() throws RemoteException {
+
+            MyLog.d("LayerService.restart");
+
+            mSnapshot = false;
+
+            loadPreferences();
+
+            execTask();
+        }
+
+        @Override
+        public void stop() throws RemoteException {
+
+            stopSelf();
+        }
+
+        @Override
+        public void startSnapshot(long previewBytes) throws RemoteException {
+
+            mSnapshot = true;
+            mSnapshotBytes = previewBytes;
+            MyLog.d("LayerService.startSnapshot " +
+                    "bytes[" + mSnapshotBytes + "]");
+
+            execTask();
+        }
+    }
+
+
+    private LocalBinder mBinder = new LocalBinder();
+
+    private View mView;
+    private WindowManager mWindowManager;
     private boolean mAttached = false;
 
     private int mXPos = 90;  // [0, 100]
@@ -45,20 +81,20 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private long mLastTime = System.currentTimeMillis();
     private long mElapsedMs = mIntervalMs;
 
+//    private long mLastCommandStarted = 0;
+
+
 
     // SNAPSHOTモードの送受信データ
     private boolean mSnapshot = false;
-    private boolean mSnapshotFirstTime = false;
-    private long mSnapshotRxKb = 0;
-    private long mSnapshotRxKbD1 = 0;
-    private long mSnapshotTxKb = 0;
-    private long mSnapshotTxKbD1 = 0;
+    private long mSnapshotBytes = 0;
 
 
     /**
      * スリープ状態(SCREEN_ON/OFF)の検出用レシーバ
      */
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
@@ -86,6 +122,35 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
 
     @Override
+    public IBinder onBind(Intent intent) {
+
+        MyLog.d("LayerService.onBind");
+
+        execTask();
+
+        return mBinder;
+    }
+
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+
+        MyLog.d("LayerService.onUnbind");
+
+        return super.onUnbind(intent);
+    }
+
+
+    @Override
+    public void onRebind(Intent intent) {
+
+        MyLog.d("LayerService.onRebind");
+
+        super.onRebind(intent);
+    }
+
+
+    @Override
     public void onCreate() {
         super.onCreate();
 
@@ -106,13 +171,13 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 PixelFormat.TRANSLUCENT);
 
         // WindowManagerを取得する
-        wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         // レイアウトファイルから重ね合わせするViewを作成する
-        view = layoutInflater.inflate(R.layout.overlay, null);
+        mView = layoutInflater.inflate(R.layout.overlay, null);
 
         // Viewを画面上に重ね合わせする
-        wm.addView(view, params);
+        mWindowManager.addView(mView, params);
 
         // スリープ状態のレシーバ登録
         getApplicationContext().registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
@@ -120,8 +185,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
 
         // attach されるまでサイズ不明
-        view.setVisibility(View.GONE);
-        view.addOnAttachStateChangeListener(this);
+        mView.setVisibility(View.GONE);
+        mView.addOnAttachStateChangeListener(this);
 
 
         loadPreferences();
@@ -145,27 +210,13 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     public int onStartCommand(Intent intent, int flags, int startId) {
         final int result = super.onStartCommand(intent, flags, startId);
 
-        // パラメータ指定されていればサンプル表示ということでそちらを利用する
-        if (intent == null) {
-            // Service Restarted
-            MyLog.d("LayerService.onStartCommand: restart");
-
-        } else if (intent.hasExtra("PREVIEW_RX_KB")) {
-            mSnapshot = true;
-            mSnapshotFirstTime = true;  // 2回描画しないとバーが出ないのですぐに2回描画させるフラグ。
-            mSnapshotRxKb = intent.getLongExtra("PREVIEW_RX_KB", 0);
-            mSnapshotTxKb = intent.getLongExtra("PREVIEW_TX_KB", 0);
-            mSnapshotRxKbD1 = intent.getLongExtra("PREVIEW_RX_KBD1", 0);
-            mSnapshotTxKbD1 = intent.getLongExtra("PREVIEW_TX_KBD1", 0);
-            MyLog.d("LayerService.onStartCommand: preview " +
-                    "rx[" + mSnapshotRxKb + "." + mSnapshotRxKbD1 + "KB] " +
-                    "tx[" + mSnapshotTxKb + "." + mSnapshotTxKbD1 + "KB]");
-
-        } else {
-
-            // 通常実行
-//            MyLog.d("LayerService.onStartCommand: no param");
-        }
+//        final long now = System.currentTimeMillis();
+//        if (mLastCommandStarted == 0) {
+//            MyLog.d("LayerService.onStartCommand: [first time]");
+//        } else {
+//            MyLog.d("LayerService.onStartCommand: [" + (now - mLastCommandStarted) + "ms]");
+//        }
+//        mLastCommandStarted = now;
 
         execTask();
 
@@ -182,9 +233,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             showTraffic();
 
             // 次回の実行予約
-            scheduleNextTime(mSnapshotFirstTime ? 10 : 5000);
-
-            mSnapshotFirstTime = false;
+            scheduleNextTime(5000);
         } else {
             gatherTraffic();
 
@@ -208,10 +257,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // prepare
         //--------------------------------------------------
         if (mSnapshot) {
-            rxKb = mSnapshotRxKb;
-            txKb = mSnapshotTxKb;
-            rxD1Kb = mSnapshotRxKbD1;
-            txD1Kb = mSnapshotTxKbD1;
+            rxKb = mSnapshotBytes/1024;
+            txKb = mSnapshotBytes/1024;
+            rxD1Kb = (mSnapshotBytes%1024)/100;
+            txD1Kb = (mSnapshotBytes%1024)/100;
         } else {
             rxKb = mDiffRxBytes / 1024 * 1000 / mElapsedMs;  // KB/s
             rxD1Kb = mDiffRxBytes % 1024;    // [0, 1023]
@@ -232,21 +281,21 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         // set padding (x pos)
         {
-            final int w0 = view.getWidth();
-            final int w = view.findViewById(R.id.download_text_view).getRight() -
-                    view.findViewById(R.id.upload_bar).getLeft();
+            final int w0 = mView.getWidth();
+            final int w = mView.findViewById(R.id.download_text_view).getRight() -
+                    mView.findViewById(R.id.upload_bar).getLeft();
 //            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
-            view.setPadding(0, 0, (w0 - w) * (100 - mXPos) / 100, 0);
+            mView.setPadding(0, 0, (w0 - w) * (100 - mXPos) / 100, 0);
         }
 
-        final TextView uploadTextView = (TextView) view.findViewById(R.id.upload_text_view);
+        final TextView uploadTextView = (TextView) mView.findViewById(R.id.upload_text_view);
         uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String u = txKb + "." + txD1Kb + "KB/s";
         uploadTextView.setText(u);
         uploadTextView.setTextColor(getTextColorByKb(txKb));
         uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(txKb));
 
-        final TextView downloadTextView = (TextView) view.findViewById(R.id.download_text_view);
+        final TextView downloadTextView = (TextView) mView.findViewById(R.id.download_text_view);
         downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String d = rxKb + "." + rxD1Kb + "KB/s";
         downloadTextView.setText(d);
@@ -257,20 +306,20 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         // bars
         {
-            final View mark = view.findViewById(R.id.upload_mark);
+            final View mark = mView.findViewById(R.id.upload_mark);
             final int width = uploadTextView.getWidth() + mark.getWidth();
 
-            final View bar = view.findViewById(R.id.upload_bar);
+            final View bar = mView.findViewById(R.id.upload_bar);
 //            bar.setBackgroundColor(0xAAff2222);
             bar.setBackgroundResource(R.drawable.upload_background);
             setColorBar(txKb, txD1Kb, width, bar);
         }
 
         {
-            final View mark = view.findViewById(R.id.download_mark);
+            final View mark = mView.findViewById(R.id.download_mark);
             final int width = downloadTextView.getWidth() + mark.getWidth();
 
-            final View bar = view.findViewById(R.id.download_bar);
+            final View bar = mView.findViewById(R.id.download_bar);
 //            bar.setBackgroundColor(0xAAaaaaff);
             bar.setBackgroundResource(R.drawable.download_background);
             setColorBar(rxKb, rxD1Kb, width, bar);
@@ -387,7 +436,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         final AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         am.cancel(pendingIntent);
-        // @see http://creadorgranoeste.blogspot.com/2011/06/alarmmanager.html
+        // @see "http://creadorgranoeste.blogspot.com/2011/06/alarmmanager.html"
     }
 
 
@@ -404,19 +453,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // スリープ状態のレシーバ解除
         getApplicationContext().unregisterReceiver(mReceiver);
 
-        view.removeOnAttachStateChangeListener(this);
+        mView.removeOnAttachStateChangeListener(this);
 
         // サービスが破棄されるときには重ね合わせしていたViewを削除する
-        wm.removeView(view);
-    }
-
-
-    @Override
-    public IBinder onBind(Intent intent) {
-
-        MyLog.d("LayerService.onBind");
-
-        return null;
+        mWindowManager.removeView(mView);
     }
 
 
@@ -426,7 +466,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mAttached = true;
 
         MyLog.d("LayerService.onViewAttachedToWindow");
-        view.setVisibility(View.VISIBLE);
+        mView.setVisibility(View.VISIBLE);
     }
 
 

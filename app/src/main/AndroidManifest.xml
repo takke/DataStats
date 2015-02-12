@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="jp.takke.datastats.LayerService"/>
+        <service android:enabled="true" android:exported="false" android:name="jp.takke.datastats.LayerService"/>
 
     </application>
 
