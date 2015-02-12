@@ -69,6 +69,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private int mIntervalMs = 1000;
 
+    // 文字色変更基準[Bytes]
+    private long mHighLimit;
+    private long mMiddleLimit;
+
 
     private boolean mSleeping = false;
 
@@ -83,7 +87,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private long mElapsedMs = mIntervalMs;
 
 //    private long mLastCommandStarted = 0;
-
 
 
     // SNAPSHOTモードの送受信データ
@@ -205,6 +208,22 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
         mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
         mLogBar = pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true);
+
+        // 文字色変更基準の再計算
+        if (mLogBar) {
+            // 「バー全体の (pXxxLimit*100) [%] を超えたらカラーを変更する」基準値を計算する
+            // 例: max=10MB/s ⇒ 30% は 3,238[B]
+            final double pMiddleLimit = 0.3;  // [0, 1]
+            mMiddleLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pMiddleLimit * 5.0));
+
+            // 例: max=10MB/s ⇒ 60% は 100[KB]
+            final double pHighLimit = 0.6;  // [0, 1]
+            mHighLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pHighLimit * 5.0));
+        } else {
+            mMiddleLimit = 10 * 1024;
+            mHighLimit = 100 * 1024;
+        }
+        MyLog.d("loadPreferences: update limit for colors: middle[" + mMiddleLimit + "B], high[" + mHighLimit + "B]");
     }
 
 
@@ -299,15 +318,15 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String u = txKb + "." + txD1Kb + "KB/s";
         uploadTextView.setText(u);
-        uploadTextView.setTextColor(getTextColorByKb(txKb));
-        uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(txKb));
+        uploadTextView.setTextColor(getTextColorByBytes(tx));
+        uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByBytes(tx));
 
         final TextView downloadTextView = (TextView) mView.findViewById(R.id.download_text_view);
         downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String d = rxKb + "." + rxD1Kb + "KB/s";
         downloadTextView.setText(d);
-        downloadTextView.setTextColor(getTextColorByKb(rxKb));
-        downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByKb(rxKb));
+        downloadTextView.setTextColor(getTextColorByBytes(rx));
+        downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByBytes(rx));
 
 //        MyLog.d("LayerService.showTraffic: U: " + u + ", D:" + d + ", elapsed[" + mElapsedMs + "]");
 
@@ -316,25 +335,21 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             final View mark = mView.findViewById(R.id.upload_mark);
             final int width = uploadTextView.getWidth() + mark.getWidth();
 
-            final View bar = mView.findViewById(R.id.upload_bar);
-//            bar.setBackgroundColor(0xAAff2222);
-            bar.setBackgroundResource(R.drawable.upload_background);
-            setColorBar(tx, width, bar);
+            setColorBar(tx, width, R.id.upload_bar);
         }
 
         {
             final View mark = mView.findViewById(R.id.download_mark);
             final int width = downloadTextView.getWidth() + mark.getWidth();
 
-            final View bar = mView.findViewById(R.id.download_bar);
-//            bar.setBackgroundColor(0xAAaaaaff);
-            bar.setBackgroundResource(R.drawable.download_background);
-            setColorBar(rx, width, bar);
+            setColorBar(rx, width, R.id.download_bar);
         }
     }
 
 
-    private void setColorBar(long bytes, int width, View bar) {
+    private void setColorBar(long bytes, int width, int barId) {
+
+        final View bar = mView.findViewById(barId);
 
         if (width > 0) {
             final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
@@ -370,24 +385,24 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     }
 
 
-    private int getTextShadowColorByKb(long kb) {
+    private int getTextShadowColorByBytes(long bytes) {
 
-        if (kb < 10) {
+        if (bytes < mMiddleLimit) {
             return getResources().getColor(R.color.textShadowColorLow);
         }
-        if (kb < mBarMaxKB) {
+        if (bytes < mHighLimit) {
             return getResources().getColor(R.color.textShadowColorMiddle);
         }
         return getResources().getColor(R.color.textShadowColorHigh);
     }
 
 
-    private int getTextColorByKb(long kb) {
+    private int getTextColorByBytes(long bytes) {
 
-        if (kb < 10) {
+        if (bytes < mMiddleLimit) {
             return getResources().getColor(R.color.textColorLow);
         }
-        if (kb < mBarMaxKB) {
+        if (bytes < mHighLimit) {
             return getResources().getColor(R.color.textColorMiddle);
         }
         return getResources().getColor(R.color.textColorHigh);

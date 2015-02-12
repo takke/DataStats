@@ -13,6 +13,7 @@
         android:layout_alignRight="@+id/upload_text_view"
         android:layout_alignTop="@id/upload_text_view"
         android:layout_alignBottom="@id/upload_text_view"
+        android:background="@drawable/upload_background"
         />
     <ImageView
         android:id="@+id/upload_mark"
@@ -47,6 +48,7 @@
         android:layout_alignRight="@+id/download_text_view"
         android:layout_alignTop="@id/download_text_view"
         android:layout_alignBottom="@id/download_text_view"
+        android:background="@drawable/download_background"
         />
     <ImageView
         android:id="@+id/download_mark"
