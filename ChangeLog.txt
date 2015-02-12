@@ -1,0 +1,9 @@
+v1.1.0 (2015.02.12)
+- Add logarithm bar config
+- Add max speed config
+- Add auto start on boot feature
+- Replace service interface to "bind interface"
+- Add ja resource
+
+v1.0.0 (2015.02.10)
+- Initial release
