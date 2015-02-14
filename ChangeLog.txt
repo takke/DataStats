@@ -1,3 +1,7 @@
+v1.2.0 (2015.02.14)
+- Change text color limits
+- Others
+
 v1.1.0 (2015.02.12)
 - Add logarithm bar config
 - Add max speed config

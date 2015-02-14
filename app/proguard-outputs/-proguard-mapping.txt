@@ -23,17 +23,19 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     int mBarMaxKB -> f
     boolean mLogBar -> g
     int mIntervalMs -> h
-    boolean mSleeping -> i
-    boolean mServiceAlive -> j
-    long mLastRxBytes -> k
-    long mLastTxBytes -> l
-    long mDiffRxBytes -> m
-    long mDiffTxBytes -> n
-    long mLastTime -> o
-    long mElapsedMs -> p
-    boolean mSnapshot -> q
-    long mSnapshotBytes -> r
-    android.content.BroadcastReceiver mReceiver -> s
+    long mHighLimit -> i
+    long mMiddleLimit -> j
+    boolean mSleeping -> k
+    boolean mServiceAlive -> l
+    long mLastRxBytes -> m
+    long mLastTxBytes -> n
+    long mDiffRxBytes -> o
+    long mDiffTxBytes -> p
+    long mLastTime -> q
+    long mElapsedMs -> r
+    boolean mSnapshot -> s
+    long mSnapshotBytes -> t
+    android.content.BroadcastReceiver mReceiver -> u
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onRebind(android.content.Intent) -> onRebind
@@ -42,9 +44,9 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
     void execTask() -> b
     void showTraffic() -> c
-    void setColorBar(long,int,android.view.View) -> a
-    int getTextShadowColorByKb(long) -> a
-    int getTextColorByKb(long) -> b
+    void setColorBar(long,int,int) -> a
+    int getTextShadowColorByBytes(long) -> a
+    int getTextColorByBytes(long) -> b
     void gatherTraffic() -> d
     void scheduleNextTime(int) -> a
     void stopAlarm() -> e
