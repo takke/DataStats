@@ -168,10 +168,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_TOAST,
-                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
 
         // WindowManagerを取得する
@@ -311,7 +311,14 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             final int w = mView.findViewById(R.id.download_text_view).getRight() -
                     mView.findViewById(R.id.upload_bar).getLeft();
 //            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
-            mView.setPadding(0, 0, (w0 - w) * (100 - mXPos) / 100, 0);
+
+            int statusBarHeight = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            mView.setPadding(0, statusBarHeight, (w0 - w) * (100 - mXPos) / 100, 0);
         }
 
         final TextView uploadTextView = (TextView) mView.findViewById(R.id.upload_text_view);
