@@ -14,6 +14,7 @@ import android.net.TrafficStats;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -166,13 +167,14 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // 重ね合わせするViewの設定を行う
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_TOAST,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
+        params.gravity = Gravity.TOP | Gravity.LEFT;
 
         // WindowManagerを取得する
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
