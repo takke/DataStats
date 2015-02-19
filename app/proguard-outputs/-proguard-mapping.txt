@@ -25,17 +25,18 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     int mIntervalMs -> h
     long mHighLimit -> i
     long mMiddleLimit -> j
-    boolean mSleeping -> k
-    boolean mServiceAlive -> l
-    long mLastRxBytes -> m
-    long mLastTxBytes -> n
-    long mDiffRxBytes -> o
-    long mDiffTxBytes -> p
-    long mLastTime -> q
-    long mElapsedMs -> r
-    boolean mSnapshot -> s
-    long mSnapshotBytes -> t
-    android.content.BroadcastReceiver mReceiver -> u
+    boolean mHideWhenInFullscreen -> k
+    boolean mSleeping -> l
+    boolean mServiceAlive -> m
+    long mLastRxBytes -> n
+    long mLastTxBytes -> o
+    long mDiffRxBytes -> p
+    long mDiffTxBytes -> q
+    long mLastTime -> r
+    long mElapsedMs -> s
+    boolean mSnapshot -> t
+    long mSnapshotBytes -> u
+    android.content.BroadcastReceiver mReceiver -> v
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onRebind(android.content.Intent) -> onRebind
@@ -93,41 +94,44 @@ jp.takke.datastats.MainActivity$1 -> jp.takke.datastats.f:
     void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
 jp.takke.datastats.MainActivity$10 -> jp.takke.datastats.g:
-    int val$kb -> a
-    jp.takke.datastats.MainActivity this$0 -> b
-    void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.h:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.i:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.j:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.k:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.l:
     jp.takke.datastats.MainActivity this$0 -> a
     void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
     void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
     void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.m:
+jp.takke.datastats.MainActivity$11 -> jp.takke.datastats.h:
+    int val$kb -> a
+    jp.takke.datastats.MainActivity this$0 -> b
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.i:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.j:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.k:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.l:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.m:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.n:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
+jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.o:
     int[] val$intervals -> a
     jp.takke.datastats.MainActivity this$0 -> b
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.n:
+jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.p:
     int[] val$speeds -> a
     jp.takke.datastats.MainActivity this$0 -> b
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.o:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
-    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
-    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
 jp.takke.util.MyLog -> jp.takke.a.a:
     void d(java.lang.String) -> a
     void i(java.lang.String) -> b
