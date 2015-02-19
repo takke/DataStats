@@ -170,6 +170,19 @@ public class MainActivity extends Activity {
         final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
         autoStartOnBoot.setChecked(startOnBoot);
 
+        // hide when in fullscreen
+        final CheckBox hideCheckbox = (CheckBox) findViewById(R.id.hideWhenInFullscreen);
+        hideCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, isChecked);
+                editor.apply();
+            }
+        });
+        hideCheckbox.setChecked(pref.getBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, true));
+
         // Logarithm bar
         final CheckBox logCheckbox = (CheckBox) findViewById(R.id.logarithmCheckbox);
         logCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

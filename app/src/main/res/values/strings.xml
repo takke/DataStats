@@ -7,6 +7,7 @@
     <string name="config_start">Start</string>
     <string name="config_stop">Stop</string>
     <string name="config_auto_start_on_boot">Auto start on boot</string>
+    <string name="config_hide_when_in_fullscreen">Hide when in fullscreen</string>
     <string name="config_interval">Interval</string>
     <string name="config_pos">X Position</string>
     <string name="config_bar_max_kb">Max Speed[KB](Bar)</string>

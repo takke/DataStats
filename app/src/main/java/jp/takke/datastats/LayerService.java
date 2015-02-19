@@ -75,6 +75,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private long mHighLimit;
     private long mMiddleLimit;
 
+    private boolean mHideWhenInFullscreen = true;
+    
 
     private boolean mSleeping = false;
 
@@ -211,6 +213,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
         mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
         mLogBar = pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true);
+        mHideWhenInFullscreen = pref.getBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, true);
 
         // 文字色変更基準の再計算
         if (mLogBar) {
@@ -278,14 +281,21 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         //--------------------------------------------------
         // hide when in fullscreen
         //--------------------------------------------------
+        boolean inFullScreen;
         {
             final Rect dim = new Rect();
             mView.getWindowVisibleDisplayFrame(dim);
 //            MyLog.d("LayerService.showTraffic: top[" + dim.top + "]");
             
-            final boolean isFullScreen = dim.top == 0;
-            if (isFullScreen) {
-                mView.setVisibility(View.GONE);
+            inFullScreen = dim.top == 0;
+
+//            MyLog.d("LayerService.showTraffic: hide[" + mHideWhenInFullscreen + "], fullscreen[" + inFullScreen + "]");
+            if (mHideWhenInFullscreen) {
+                if (inFullScreen) {
+                    mView.setVisibility(View.GONE);
+                } else {
+                    mView.setVisibility(View.VISIBLE);
+                }
             } else {
                 mView.setVisibility(View.VISIBLE);
             }
@@ -332,9 +342,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 //            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
 
             int statusBarHeight = 0;
-            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            if (!inFullScreen) {
+                int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+                if (resourceId > 0) {
+                    statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+                }
             }
 
             mView.setPadding(0, statusBarHeight, (w0 - w) * (100 - mXPos) / 100, 0);

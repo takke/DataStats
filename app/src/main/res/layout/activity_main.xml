@@ -55,6 +55,14 @@
                 android:text="@string/config_auto_start_on_boot"
                 />
 
+            <!-- hide when in fullscreen -->
+            <CheckBox
+                android:id="@+id/hideWhenInFullscreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/config_hide_when_in_fullscreen"
+                />
+
             <!-- Pos -->
             <LinearLayout
                 android:layout_width="match_parent"
