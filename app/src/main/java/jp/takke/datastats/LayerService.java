@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.TrafficStats;
 import android.os.IBinder;
@@ -272,6 +273,22 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         if (!mAttached) {
             return;
+        }
+        
+        //--------------------------------------------------
+        // hide when in fullscreen
+        //--------------------------------------------------
+        {
+            final Rect dim = new Rect();
+            mView.getWindowVisibleDisplayFrame(dim);
+//            MyLog.d("LayerService.showTraffic: top[" + dim.top + "]");
+            
+            final boolean isFullScreen = dim.top == 0;
+            if (isFullScreen) {
+                mView.setVisibility(View.GONE);
+            } else {
+                mView.setVisibility(View.VISIBLE);
+            }
         }
 
         final long rx, tx;
