@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -336,20 +337,24 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         // set padding (x pos)
         {
-            final int w0 = mView.getWidth();
-            final int w = mView.findViewById(R.id.download_text_view).getRight() -
-                    mView.findViewById(R.id.upload_bar).getLeft();
-//            MyLog.d("LayerService.onViewAttachedToWindow: w[" + w + "]");
+            final Resources resources = getResources();
+            
+            final int screenWidth = mView.getWidth();
+            final int widgetWidth = 
+                    resources.getDimensionPixelSize(R.dimen.ud_mark_size) * 2
+                    + resources.getDimensionPixelSize(R.dimen.textWidth) * 2;
+            
+//            MyLog.d("LayerService.onViewAttachedToWindow: w[" + widgetWidth + "]");
 
             int statusBarHeight = 0;
             if (!inFullScreen) {
-                int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+                int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
                 if (resourceId > 0) {
-                    statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+                    statusBarHeight = resources.getDimensionPixelSize(resourceId);
                 }
             }
 
-            mView.setPadding(0, statusBarHeight, (w0 - w) * (100 - mXPos) / 100, 0);
+            mView.setPadding(0, statusBarHeight, (screenWidth - widgetWidth) * (100 - mXPos) / 100, 0);
         }
 
         final TextView uploadTextView = (TextView) mView.findViewById(R.id.upload_text_view);
