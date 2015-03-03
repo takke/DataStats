@@ -18,8 +18,8 @@ android {
         applicationId "jp.takke.datastats"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 8
-        versionName "1.2.3"
+        versionCode 10
+        versionName "1.2.4"
     }
     buildTypes {
         release {
