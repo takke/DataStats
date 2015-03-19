@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.net.TrafficStats;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -20,8 +19,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import jp.takke.util.MyLog;
 
@@ -299,7 +296,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
 
         final long rx, tx;
-        long rxKb, txKb, rxD1Kb, txD1Kb;
 
         //--------------------------------------------------
         // prepare
@@ -307,18 +303,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         if (mSnapshot) {
             rx = mSnapshotBytes;
             tx = mSnapshotBytes;
-            rxKb = mSnapshotBytes/1024;
-            txKb = mSnapshotBytes/1024;
-            rxD1Kb = (mSnapshotBytes%1024)/100;
-            txD1Kb = (mSnapshotBytes%1024)/100;
         } else {
             rx = mDiffRxBytes * 1000 / mElapsedMs;          // B/s
-            rxKb = MyTrafficUtil.convertByteToKb(rx);       // KB/s
-            rxD1Kb = MyTrafficUtil.convertByteToD1Kb(rx);   // [0, 9]
-
             tx = mDiffTxBytes * 1000 / mElapsedMs;          // B/s
-            txKb = MyTrafficUtil.convertByteToKb(tx);       // KB/s
-            txD1Kb = MyTrafficUtil.convertByteToD1Kb(tx);   // [0, 9]
         }
 
         // set padding (x pos)
@@ -343,61 +330,19 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             mView.setPadding(0, statusBarHeight, (screenWidth - widgetWidth) * (100 - mXPos) / 100, 0);
         }
 
-        final TextView uploadTextView = (TextView) mView.findViewById(R.id.upload_text_view);
-        uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-        final String u = txKb + "." + txD1Kb + "KB/s";
-        uploadTextView.setText(u);
-        final Resources resources = getResources();
-        uploadTextView.setTextColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
-        uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
-
-        final TextView downloadTextView = (TextView) mView.findViewById(R.id.download_text_view);
-        downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-        final String d = rxKb + "." + rxD1Kb + "KB/s";
-        downloadTextView.setText(d);
-        downloadTextView.setTextColor(MyTrafficUtil.getTextColorByBytes(resources, rx));
-        downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
-
+//        final String u = txKb + "." + txD1Kb + "KB/s";
+//        final String d = rxKb + "." + rxD1Kb + "KB/s";
 //        MyLog.d("LayerService.showTraffic: U: " + u + ", D:" + d + ", elapsed[" + mElapsedMs + "]");
 
         // bars
-        int pTx;
-        {
-            final View mark = mView.findViewById(R.id.upload_mark);
-            final int width = uploadTextView.getWidth() + mark.getWidth();
+        final int pTx = convertBytesToPerThousand(tx);    // [0, 1000]
+//      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
 
-            pTx = convertBytesToPerThousand(tx);    // [0, 1000]
-//          MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
-            
-            setColorBar(pTx, width, R.id.upload_bar);
-        }
+        final int pRx = convertBytesToPerThousand(rx);    // [0, 1000]
+//      MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
 
-        int pRx;
-        {
-            final View mark = mView.findViewById(R.id.download_mark);
-            final int width = downloadTextView.getWidth() + mark.getWidth();
-
-            pRx = convertBytesToPerThousand(rx);    // [0, 1000]
-//          MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
-            setColorBar(pRx, width, R.id.download_bar);
-        }
-        
-    }
-
-
-    private void setColorBar(int p, int width, int barId) {
-
-        final View bar = mView.findViewById(barId);
-
-        if (width > 0) {
-            final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
-
-            lp.rightMargin = width - width * p / 1000;
-            bar.setVisibility(View.VISIBLE);
-            bar.setLayoutParams(lp);
-        } else {
-            bar.setVisibility(View.GONE);
-        }
+        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        mySurfaceView.setTraffic(tx, pTx, rx, pRx);
     }
 
 

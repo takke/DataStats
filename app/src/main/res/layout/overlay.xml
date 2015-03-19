@@ -5,75 +5,12 @@
     android:layout_height="wrap_content"
     >
 
-    <View
-        android:id="@+id/upload_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/upload_mark"
-        android:layout_alignRight="@+id/upload_text_view"
-        android:layout_alignTop="@id/upload_text_view"
-        android:layout_alignBottom="@id/upload_text_view"
-        android:background="@drawable/upload_background"
-        />
-    <ImageView
-        android:id="@+id/upload_mark"
-        android:layout_width="@dimen/ud_mark_size"
-        android:layout_height="@dimen/ud_mark_size"
-        android:paddingLeft="@dimen/myOverlayPaddingLeft"
-        android:layout_toLeftOf="@+id/upload_text_view"
-        android:layout_alignTop="@+id/download_text_view"
-        android:layout_alignBottom="@id/download_text_view"
-        android:src="@drawable/ic_find_previous_holo_dark"
-        android:background="@color/textBackgroundColor"
-        />
-    <TextView
-        android:id="@+id/upload_text_view"
-        android:layout_width="@dimen/textWidth"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/download_mark"
-        android:textSize="@dimen/textSize"
-        android:gravity="right"
-        android:background="@color/textBackgroundColor"
-        android:typeface="monospace"
-        android:textStyle="normal"
-        android:paddingRight="@dimen/myOverlayPaddingRight"
-        />
-
-    <View
-        android:id="@+id/download_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/download_mark"
-        android:layout_alignRight="@+id/download_text_view"
-        android:layout_alignTop="@id/download_text_view"
-        android:layout_alignBottom="@id/download_text_view"
-        android:background="@drawable/download_background"
-        />
-    <ImageView
-        android:id="@+id/download_mark"
-        android:layout_width="@dimen/ud_mark_size"
-        android:layout_height="@dimen/ud_mark_size"
-        android:paddingLeft="@dimen/myOverlayPaddingLeft"
-        android:layout_toLeftOf="@+id/download_text_view"
-        android:layout_alignTop="@+id/download_text_view"
-        android:layout_alignBottom="@id/download_text_view"
-        android:src="@drawable/ic_find_next_holo_dark"
-        android:background="@color/textBackgroundColor"
-        />
-
-    <TextView
-        android:id="@+id/download_text_view"
-        android:layout_width="@dimen/textWidth"
-        android:layout_height="wrap_content"
+    <jp.takke.datastats.MySurfaceView
+        android:id="@+id/mySurfaceView"
+        android:layout_width="@dimen/widgetWidth"
+        android:layout_height="@dimen/widgetHeight"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/textSize"
-        android:gravity="right"
-        android:background="@color/textBackgroundColor"
-        android:typeface="monospace"
-        android:textStyle="normal"
-        android:paddingRight="@dimen/myOverlayPaddingRight"
         />
 
 </RelativeLayout>
