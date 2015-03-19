@@ -162,7 +162,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final int pRx = mInterpolateMode ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
-        if (pTx == mLastPTx && pRx == mLastPRx) {
+        if (pTx == 0 && pTx == mLastPTx && pRx == 0 && pRx == mLastPRx) {
 //            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "], rx[" + pRx + "]");
             return;
 //        } else {
