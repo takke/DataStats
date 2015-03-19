@@ -72,10 +72,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private int mIntervalMs = 1000;
 
-    // 文字色変更基準[Bytes]
-    private long mHighLimit;
-    private long mMiddleLimit;
-
     private boolean mHideWhenInFullscreen = true;
     
 
@@ -221,16 +217,16 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             // 「バー全体の (pXxxLimit*100) [%] を超えたらカラーを変更する」基準値を計算する
             // 例: max=10MB/s ⇒ 30% は 3,238[B]
             final double pMiddleLimit = 0.3;  // [0, 1]
-            mMiddleLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pMiddleLimit * 5.0));
+            MyTrafficUtil.sMiddleLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pMiddleLimit * 5.0));
 
             // 例: max=10MB/s ⇒ 60% は 100[KB]
             final double pHighLimit = 0.6;  // [0, 1]
-            mHighLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pHighLimit * 5.0));
+            MyTrafficUtil.sHighLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pHighLimit * 5.0));
         } else {
-            mMiddleLimit = 10 * 1024;
-            mHighLimit = 100 * 1024;
+            MyTrafficUtil.sMiddleLimit = 10 * 1024;
+            MyTrafficUtil.sHighLimit = 100 * 1024;
         }
-        MyLog.d("loadPreferences: update limit for colors: middle[" + mMiddleLimit + "B], high[" + mHighLimit + "B]");
+        MyLog.d("loadPreferences: update limit for colors: middle[" + MyTrafficUtil.sMiddleLimit + "B], high[" + MyTrafficUtil.sHighLimit + "B]");
     }
 
 
@@ -316,23 +312,13 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             rxD1Kb = (mSnapshotBytes%1024)/100;
             txD1Kb = (mSnapshotBytes%1024)/100;
         } else {
-            rx = mDiffRxBytes * 1000 / mElapsedMs;  // B/s
-            rxKb = rx / 1024;                       // KB/s
-            rxD1Kb = rx % 1024;                     // [0, 1023]
-            // to [0, 9]
-            if (rxD1Kb >= 900) rxD1Kb = 9;
-            else if (rxD1Kb == 0) rxD1Kb = 0;
-            else if (rxD1Kb <= 100) rxD1Kb = 1;
-            else rxD1Kb = rxD1Kb / 100;
+            rx = mDiffRxBytes * 1000 / mElapsedMs;          // B/s
+            rxKb = MyTrafficUtil.convertByteToKb(rx);       // KB/s
+            rxD1Kb = MyTrafficUtil.convertByteToD1Kb(rx);   // [0, 9]
 
-            tx = mDiffTxBytes * 1000 / mElapsedMs;  // B/s
-            txKb = tx / 1024;                       // KB/s
-            txD1Kb = tx % 1024;                     // [0, 1023]
-            // to [0, 9]
-            if (txD1Kb >= 900) txD1Kb = 9;
-            else if (txD1Kb == 0) txD1Kb = 0;
-            else if (txD1Kb <= 100) txD1Kb = 1;
-            else txD1Kb = txD1Kb / 100;
+            tx = mDiffTxBytes * 1000 / mElapsedMs;          // B/s
+            txKb = MyTrafficUtil.convertByteToKb(tx);       // KB/s
+            txD1Kb = MyTrafficUtil.convertByteToD1Kb(tx);   // [0, 9]
         }
 
         // set padding (x pos)
@@ -361,64 +347,51 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         uploadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String u = txKb + "." + txD1Kb + "KB/s";
         uploadTextView.setText(u);
-        uploadTextView.setTextColor(getTextColorByBytes(tx));
-        uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByBytes(tx));
+        final Resources resources = getResources();
+        uploadTextView.setTextColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
+        uploadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
 
         final TextView downloadTextView = (TextView) mView.findViewById(R.id.download_text_view);
         downloadTextView.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         final String d = rxKb + "." + rxD1Kb + "KB/s";
         downloadTextView.setText(d);
-        downloadTextView.setTextColor(getTextColorByBytes(rx));
-        downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, getTextShadowColorByBytes(rx));
+        downloadTextView.setTextColor(MyTrafficUtil.getTextColorByBytes(resources, rx));
+        downloadTextView.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
 
 //        MyLog.d("LayerService.showTraffic: U: " + u + ", D:" + d + ", elapsed[" + mElapsedMs + "]");
 
         // bars
+        int pTx;
         {
             final View mark = mView.findViewById(R.id.upload_mark);
             final int width = uploadTextView.getWidth() + mark.getWidth();
 
-            setColorBar(tx, width, R.id.upload_bar);
+            pTx = convertBytesToPerThousand(tx);    // [0, 1000]
+//          MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
+            
+            setColorBar(pTx, width, R.id.upload_bar);
         }
 
+        int pRx;
         {
             final View mark = mView.findViewById(R.id.download_mark);
             final int width = downloadTextView.getWidth() + mark.getWidth();
 
-            setColorBar(rx, width, R.id.download_bar);
+            pRx = convertBytesToPerThousand(rx);    // [0, 1000]
+//          MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
+            setColorBar(pRx, width, R.id.download_bar);
         }
+        
     }
 
 
-    private void setColorBar(long bytes, int width, int barId) {
+    private void setColorBar(int p, int width, int barId) {
 
         final View bar = mView.findViewById(barId);
 
         if (width > 0) {
             final RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bar.getLayoutParams();
 
-
-            final int p;
-            if (!mLogBar) {
-                p = bytes/1024 > mBarMaxKB ? 1000 : (int) (bytes / mBarMaxKB);   // [0, 1000]
-            } else {
-                // 100KB基準値
-                final long normalBytes = bytes * 100 / mBarMaxKB;
-                if (normalBytes < 1) {
-                    p = 0;
-                } else {
-                    // max=100KB
-                    //   1KB -> 300
-                    //  10KB -> 400
-                    // 100KB -> 500
-                    final int log = (int) (Math.log10(normalBytes) * 100);
-
-                    // max=100KB -> 500*2 = 1000
-                    p = log * 2;
-
-//                    MyLog.d("setColorBar[" + bytes + "byes] -> [" + p + "]");
-                }
-            }
             lp.rightMargin = width - width * p / 1000;
             bar.setVisibility(View.VISIBLE);
             bar.setLayoutParams(lp);
@@ -428,29 +401,27 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     }
 
 
-    private int getTextShadowColorByBytes(long bytes) {
+    private int convertBytesToPerThousand(long bytes) {
+        
+        if (!mLogBar) {
+            return bytes/1024 > mBarMaxKB ? 1000 : (int) (bytes / mBarMaxKB);   // [0, 1000]
+        } else {
+            // 100KB基準値
+            final long normalBytes = bytes * 100 / mBarMaxKB;
+            if (normalBytes < 1) {
+                return 0;
+            } else {
+                // max=100KB
+                //   1KB -> 300
+                //  10KB -> 400
+                // 100KB -> 500
+                final int log = (int) (Math.log10(normalBytes) * 100);
 
-        if (bytes < mMiddleLimit) {
-            return getResources().getColor(R.color.textShadowColorLow);
+                // max=100KB -> 500*2 = 1000
+                return log * 2;
+            }
         }
-        if (bytes < mHighLimit) {
-            return getResources().getColor(R.color.textShadowColorMiddle);
-        }
-        return getResources().getColor(R.color.textShadowColorHigh);
     }
-
-
-    private int getTextColorByBytes(long bytes) {
-
-        if (bytes < mMiddleLimit) {
-            return getResources().getColor(R.color.textColorLow);
-        }
-        if (bytes < mHighLimit) {
-            return getResources().getColor(R.color.textColorMiddle);
-        }
-        return getResources().getColor(R.color.textColorHigh);
-    }
-
 
 
     private void gatherTraffic() {
