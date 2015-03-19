@@ -149,78 +149,97 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-    private void myDrawFrame(@SuppressWarnings("UnusedParameters") long startTime) {
+    private void myDrawFrame(long now) {
 
+        if (mTrafficList.size() < 1) {
+            return;
+        }
+
+        final Traffic t = mTrafficList.getLast();
+
+        // 補間実行
+        final int pTx = mInterpolateMode ? interpolate(t, now, true)  : t.pTx;
+        final int pRx = mInterpolateMode ? interpolate(t, now, false) : t.pRx;
+
+        // 前回と同じなら再描画しない
+        if (pTx == mLastPTx && pRx == mLastPRx) {
+//            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "], rx[" + pRx + "]");
+            return;
+//        } else {
+//            MyLog.d("MySurfaceView.myDrawFrame: tx[" + pTx + "], rx[" + pRx + "]");
+        }
+        mLastPTx = pTx;
+        mLastPRx = pRx;
+
+
+        //--------------------------------------------------
+        // draw start
+        //--------------------------------------------------
         final Canvas canvas = mSurfaceHolder.lockCanvas();
         if (canvas == null) {
             return;
         }
+
         
+        //--------------------------------------------------
+        // clear background
+        //--------------------------------------------------
         final Paint paint = new Paint();
+        final Resources resources = getResources();
 
         // clear
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
         // Background
-        final Resources resources = getResources();
         canvas.drawColor(resources.getColor(R.color.textBackgroundColor));
+
 
         //--------------------------------------------------
         // upload, download
         //--------------------------------------------------
-        final int udMarkSize = resources.getDimensionPixelSize(R.dimen.ud_mark_size);
-        final int paddingLeft = resources.getDimensionPixelSize(R.dimen.myOverlayPaddingLeft);
         final int paddingRight = resources.getDimensionPixelSize(R.dimen.myOverlayPaddingRight);
-        
         final int xDownloadStart = mScreenWidth / 2;
 
-        if (mTrafficList.size() >= 1) {
-            final Traffic t = mTrafficList.getLast();
-            final long now = System.currentTimeMillis();
-            
-            // upload gradient
-            if (uploadDrawable == null) {
-                uploadDrawable = resources.getDrawable(R.drawable.upload_background);
-            }
-            final int pTx = mInterpolateMode ? interpolate(t, now, true) : t.pTx;
-            mLastPTx = pTx;
-            uploadDrawable.setBounds(0, 0, (int) (pTx / 1000f * xDownloadStart), mScreenHeight);
-            uploadDrawable.draw(canvas);
-            
-            // download gradient
-            if (downloadDrawable == null) {
-                downloadDrawable = resources.getDrawable(R.drawable.download_background);
-            }
-            final int pRx = mInterpolateMode ? interpolate(t, now, false) : t.pRx;
-            mLastPRx = pRx;
-            downloadDrawable.setBounds(xDownloadStart, 0, (int) (xDownloadStart + pRx / 1000f * xDownloadStart), mScreenHeight);
-            downloadDrawable.draw(canvas);
-
-            // upload text
-            final long tx = t.tx;
-            paint.setTypeface(Typeface.MONOSPACE);
-            paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
-            paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
-            final String u = MyTrafficUtil.convertByteToKb(tx) + "." + MyTrafficUtil.convertByteToD1Kb(tx) + "KB/s";
-            paint.setTextAlign(Paint.Align.RIGHT);
-            paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
-            canvas.drawText(u, xDownloadStart-paddingRight, paint.getTextSize(), paint);
-
-            // download text
-            final long rx = t.rx;
-            paint.setTypeface(Typeface.MONOSPACE);
-            paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, rx));
-            paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
-            final String d = MyTrafficUtil.convertByteToKb(rx) + "." + MyTrafficUtil.convertByteToD1Kb(rx) + "KB/s";
-            paint.setTextAlign(Paint.Align.RIGHT);
-            paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
-            canvas.drawText(d, mScreenWidth - paddingRight, paint.getTextSize(), paint);
-            
-            paint.setShader(null);
+        // upload gradient
+        if (uploadDrawable == null) {
+            uploadDrawable = resources.getDrawable(R.drawable.upload_background);
         }
+        uploadDrawable.setBounds(0, 0, (int) (pTx / 1000f * xDownloadStart), mScreenHeight);
+        uploadDrawable.draw(canvas);
+
+        // download gradient
+        if (downloadDrawable == null) {
+            downloadDrawable = resources.getDrawable(R.drawable.download_background);
+        }
+        downloadDrawable.setBounds(xDownloadStart, 0, (int) (xDownloadStart + pRx / 1000f * xDownloadStart), mScreenHeight);
+        downloadDrawable.draw(canvas);
+
+        // upload text
+        final long tx = t.tx;
+        paint.setTypeface(Typeface.MONOSPACE);
+        paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
+        paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
+        final String u = MyTrafficUtil.convertByteToKb(tx) + "." + MyTrafficUtil.convertByteToD1Kb(tx) + "KB/s";
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
+        canvas.drawText(u, xDownloadStart-paddingRight, paint.getTextSize(), paint);
+
+        // download text
+        final long rx = t.rx;
+        paint.setTypeface(Typeface.MONOSPACE);
+        paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, rx));
+        paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
+        final String d = MyTrafficUtil.convertByteToKb(rx) + "." + MyTrafficUtil.convertByteToD1Kb(rx) + "KB/s";
+        paint.setTextAlign(Paint.Align.RIGHT);
+        paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
+        canvas.drawText(d, mScreenWidth - paddingRight, paint.getTextSize(), paint);
+
+        paint.setShader(null);
 
         // upload/download mark
         final Paint paintUd = new Paint();
+        final int udMarkSize = resources.getDimensionPixelSize(R.dimen.ud_mark_size);
+        final int paddingLeft = resources.getDimensionPixelSize(R.dimen.myOverlayPaddingLeft);
         {
             if (mUploadMarkBitmap == null) {
                 mUploadMarkBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_find_previous_holo_dark);
