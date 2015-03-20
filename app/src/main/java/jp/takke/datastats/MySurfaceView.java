@@ -165,9 +165,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final int pRx = mInterpolateMode ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
-        if (pTx == 0 && pTx == mLastPTx && mLastTx == 0 &&
-            pRx == 0 && pRx == mLastPRx && mLastRx == 0) {
-//            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "], rx[" + pRx + "]");
+        if (pTx == mLastPTx && mLastTx == t.tx &&
+            pRx == mLastPRx && mLastRx == t.rx) {
+//            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "=" + t.tx + "], rx[" + pRx + "=" + t.rx + "]");
             return;
 //        } else {
 //            MyLog.d("MySurfaceView.myDrawFrame: tx[" + pTx + "], rx[" + pRx + "]");
@@ -208,15 +208,28 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         if (uploadDrawable == null) {
             uploadDrawable = resources.getDrawable(R.drawable.upload_background);
         }
-        uploadDrawable.setBounds(0, 0, (int) (pTx / 1000f * xDownloadStart), mScreenHeight);
+        final int xUploadEnd = (int) (pTx / 1000f * xDownloadStart);
+        uploadDrawable.setBounds(0, 0, xUploadEnd, mScreenHeight);
         uploadDrawable.draw(canvas);
-
+        if (pTx > 0) {
+            paint.setColor(resources.getColor(R.color.uploadBorder));
+            paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.ud_border_size));
+            canvas.drawLine(xUploadEnd, 0, xUploadEnd, mScreenHeight, paint);
+        }
+        
         // download gradient
         if (downloadDrawable == null) {
             downloadDrawable = resources.getDrawable(R.drawable.download_background);
         }
-        downloadDrawable.setBounds(xDownloadStart, 0, (int) (xDownloadStart + pRx / 1000f * xDownloadStart), mScreenHeight);
+        final int xDownloadEnd = (int) (xDownloadStart + pRx / 1000f * xDownloadStart);
+        downloadDrawable.setBounds(xDownloadStart, 0, xDownloadEnd, mScreenHeight);
         downloadDrawable.draw(canvas);
+        if (pRx > 0) {
+            paint.setColor(resources.getColor(R.color.downloadBorder));
+            paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.ud_border_size));
+            canvas.drawLine(xDownloadEnd, 0, xDownloadEnd, mScreenHeight, paint);
+        }
+
 
         // upload text
         final long tx = t.tx;

@@ -13,4 +13,5 @@
     <dimen name="myOverlayPaddingRight">3dp</dimen>
     <dimen name="ud_mark_size">12sp</dimen>
     <dimen name="sampleButtonTextSize">12sp</dimen>
+    <dimen name="ud_border_size">0.1dp</dimen>
 </resources>

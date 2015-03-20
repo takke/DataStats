@@ -14,10 +14,12 @@
     <!--<color name="uploadBackgroundStart">#ccff4444</color>-->
     <!--<color name="uploadBackgroundEnd">#ccffbbbb</color>-->
     <color name="uploadBackgroundStart">#ccaa2222</color>
-    <color name="uploadBackgroundEnd">#cc997777</color>
-    
+    <color name="uploadBackgroundEnd">#cccc7777</color>
+    <color name="uploadBorder">#ff555555</color>
+
     <!--<color name="downloadBackgroundStart">#cc7777ff</color>-->
     <!--<color name="downloadBackgroundEnd">#ccbbbbff</color>-->
     <color name="downloadBackgroundStart">#cc4444bb</color>
-    <color name="downloadBackgroundEnd">#cc777799</color>
+    <color name="downloadBackgroundEnd">#cc7777cc</color>
+    <color name="downloadBorder">#ff555555</color>
 </resources>
