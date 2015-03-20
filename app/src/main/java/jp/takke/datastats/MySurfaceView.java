@@ -24,7 +24,7 @@ import jp.takke.util.MyLog;
 
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
-    private static final long TARGET_FPS = 30;
+    private static final long TARGET_FPS = 20;
 
     private SurfaceHolder mSurfaceHolder;
     private Thread mThread;
