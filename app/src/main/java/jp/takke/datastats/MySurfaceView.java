@@ -35,6 +35,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     private ArrayDeque<Long> mDrawTimes = new ArrayDeque<>();
 
+
     private class Traffic {
 
         public long time;
@@ -65,6 +66,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     private int mLastPTx;
     private int mLastPRx;
+    private long mLastTx;
+    private long mLastRx;
 
     public MySurfaceView(Context context) {
         super(context);
@@ -162,7 +165,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final int pRx = mInterpolateMode ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
-        if (pTx == 0 && pTx == mLastPTx && pRx == 0 && pRx == mLastPRx) {
+        if (pTx == 0 && pTx == mLastPTx && mLastTx == 0 &&
+            pRx == 0 && pRx == mLastPRx && mLastRx == 0) {
 //            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "], rx[" + pRx + "]");
             return;
 //        } else {
@@ -222,7 +226,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final String u = MyTrafficUtil.convertByteToKb(tx) + "." + MyTrafficUtil.convertByteToD1Kb(tx) + "KB/s";
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
-        canvas.drawText(u, xDownloadStart-paddingRight, paint.getTextSize(), paint);
+        canvas.drawText(u, xDownloadStart - paddingRight, paint.getTextSize(), paint);
+        mLastTx = tx;
 
         // download text
         final long rx = t.rx;
@@ -233,6 +238,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
         canvas.drawText(d, mScreenWidth - paddingRight, paint.getTextSize(), paint);
+        mLastRx = rx;
 
         paint.setShader(null);
 
