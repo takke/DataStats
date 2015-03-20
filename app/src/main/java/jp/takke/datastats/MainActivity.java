@@ -113,20 +113,26 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
 
-                    if (mServiceIF != null) {
-
-                        try {
-                            mServiceIF.stop();
-                        } catch (RemoteException e) {
-                            MyLog.e(e);
-                        }
-
-                        unbindService(mServiceConnection);
-
-                        mServiceIF = null;
-                    }
+                    doStopService();
                 }
             });
+        }
+    }
+
+
+    private void doStopService() {
+        
+        if (mServiceIF != null) {
+
+            try {
+                mServiceIF.stop();
+            } catch (RemoteException e) {
+                MyLog.e(e);
+            }
+
+            unbindService(mServiceConnection);
+
+            mServiceIF = null;
         }
     }
 
@@ -193,6 +199,25 @@ public class MainActivity extends Activity {
                 editor.putBoolean(C.PREF_KEY_LOGARITHM_BAR, isChecked);
                 editor.apply();
 
+                // restart
+                doRestartService();
+            }
+        });
+        logCheckbox.setChecked(pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true));
+
+        // Interpolate mode
+        final CheckBox interpolateCheckBox = (CheckBox) findViewById(R.id.interpolateCheckBox);
+        interpolateCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor editor = pref.edit();
+                editor.putBoolean(C.PREF_KEY_INTERPOLATE_MODE, isChecked);
+                editor.apply();
+
+                // kill surface
+                doStopService();
+                
                 // restart
                 doRestartService();
             }

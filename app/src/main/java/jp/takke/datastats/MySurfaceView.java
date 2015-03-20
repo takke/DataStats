@@ -61,9 +61,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private Drawable uploadDrawable;
     private Drawable downloadDrawable;
     
-    // 補間モード
-    private boolean mInterpolateMode = true;
-
     private int mLastPTx;
     private int mLastPRx;
     private long mLastTx;
@@ -107,7 +104,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         
-        if (!mInterpolateMode) {
+        if (!LayerService.sInterpolateMode) {
             myDraw();
         }
     }
@@ -161,8 +158,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final Traffic t = mTrafficList.getLast();
 
         // 補間実行
-        final int pTx = mInterpolateMode ? interpolate(t, now, true)  : t.pTx;
-        final int pRx = mInterpolateMode ? interpolate(t, now, false) : t.pRx;
+        final int pTx = LayerService.sInterpolateMode ? interpolate(t, now, true)  : t.pTx;
+        final int pRx = LayerService.sInterpolateMode ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
         if (pTx == mLastPTx && mLastTx == t.tx &&
@@ -385,7 +382,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
         MyLog.d("MySurfaceView.surfaceCreated");
 
-        if (mInterpolateMode) {
+        if (LayerService.sInterpolateMode) {
             mThread = new Thread(this);
         }
     }

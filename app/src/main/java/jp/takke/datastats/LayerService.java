@@ -66,6 +66,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private int mXPos = 90;  // [0, 100]
     private int mBarMaxKB = 100;
     private boolean mLogBar = true;
+    public static boolean sInterpolateMode = false;
 
     private int mIntervalMs = 1000;
 
@@ -202,12 +203,15 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private void loadPreferences() {
 
+        MyLog.d("LayerService.loadPreferences");
+
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         mXPos = pref.getInt(C.PREF_KEY_X_POS, 100);
         mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
         mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
         mLogBar = pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true);
         mHideWhenInFullscreen = pref.getBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, true);
+        sInterpolateMode = pref.getBoolean(C.PREF_KEY_INTERPOLATE_MODE, false);
 
         // 文字色変更基準の再計算
         if (mLogBar) {
