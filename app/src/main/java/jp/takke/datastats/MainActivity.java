@@ -222,7 +222,7 @@ public class MainActivity extends Activity {
                 doRestartService();
             }
         });
-        logCheckbox.setChecked(pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true));
+        interpolateCheckBox.setChecked(pref.getBoolean(C.PREF_KEY_INTERPOLATE_MODE, false));
 
         // pos
         final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
