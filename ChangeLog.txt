@@ -1,3 +1,7 @@
+v2.0.1 (2015.03.22)
+- Save battery life (on interpolation mode)
+- Fix some bugs
+
 v2.0.0 (2015.03.20)
 - Add interpolation mode (Notice decreasing your battery life)
 - Improve performance

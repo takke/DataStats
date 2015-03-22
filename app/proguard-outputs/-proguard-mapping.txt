@@ -1,46 +1,50 @@
 jp.takke.datastats.BootReceiver -> jp.takke.datastats.BootReceiver:
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-jp.takke.datastats.ILayerService -> jp.takke.datastats.a:
+jp.takke.datastats.Config -> jp.takke.datastats.a:
+    long highLimit -> a
+    long middleLimit -> b
+    int xPos -> c
+    int barMaxKB -> d
+    boolean logBar -> e
+    int intervalMs -> f
+    boolean hideWhenInFullscreen -> g
+    boolean interpolateMode -> h
+    void loadPreferences(android.content.Context) -> a
+jp.takke.datastats.ILayerService -> jp.takke.datastats.b:
     void restart() -> a
     void stop() -> b
     void startSnapshot(long) -> a
-jp.takke.datastats.ILayerService$Stub -> jp.takke.datastats.b:
+jp.takke.datastats.ILayerService$Stub -> jp.takke.datastats.c:
     jp.takke.datastats.ILayerService asInterface(android.os.IBinder) -> a
     android.os.IBinder asBinder() -> asBinder
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-jp.takke.datastats.ILayerService$Stub$Proxy -> jp.takke.datastats.c:
+jp.takke.datastats.ILayerService$Stub$Proxy -> jp.takke.datastats.d:
     android.os.IBinder mRemote -> a
     android.os.IBinder asBinder() -> asBinder
     void restart() -> a
     void stop() -> b
     void startSnapshot(long) -> a
 jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
-    jp.takke.datastats.LayerService$LocalBinder mBinder -> b
-    android.view.View mView -> c
-    android.view.WindowManager mWindowManager -> d
-    boolean mAttached -> e
-    int mXPos -> f
-    int mBarMaxKB -> g
-    boolean mLogBar -> h
-    boolean sInterpolateMode -> a
-    int mIntervalMs -> i
-    boolean mHideWhenInFullscreen -> j
-    boolean mSleeping -> k
-    boolean mServiceAlive -> l
-    long mLastRxBytes -> m
-    long mLastTxBytes -> n
-    long mDiffRxBytes -> o
-    long mDiffTxBytes -> p
-    long mLastTime -> q
-    long mElapsedMs -> r
-    boolean mSnapshot -> s
-    long mSnapshotBytes -> t
-    android.content.BroadcastReceiver mReceiver -> u
+    jp.takke.datastats.LayerService$LocalBinder mBinder -> a
+    android.view.View mView -> b
+    android.view.WindowManager mWindowManager -> c
+    boolean mAttached -> d
+    boolean mSleeping -> e
+    boolean mServiceAlive -> f
+    long mLastRxBytes -> g
+    long mLastTxBytes -> h
+    long mDiffRxBytes -> i
+    long mDiffTxBytes -> j
+    long mLastTime -> k
+    long mElapsedMs -> l
+    boolean mSnapshot -> m
+    long mSnapshotBytes -> n
+    android.content.BroadcastReceiver mReceiver -> o
+    void setSleepingFlagToSurfaceView() -> a
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onRebind(android.content.Intent) -> onRebind
     void onCreate() -> onCreate
-    void loadPreferences() -> a
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
     void execTask() -> b
     void showTraffic() -> c
@@ -53,17 +57,16 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
     boolean access$002(jp.takke.datastats.LayerService,boolean) -> a
     void access$100(jp.takke.datastats.LayerService) -> a
-    void access$200(jp.takke.datastats.LayerService) -> b
-    long access$302(jp.takke.datastats.LayerService,long) -> a
-    long access$300(jp.takke.datastats.LayerService) -> c
-    boolean access$402(jp.takke.datastats.LayerService,boolean) -> b
-    int access$500(jp.takke.datastats.LayerService) -> d
-    void access$600(jp.takke.datastats.LayerService,int) -> a
-    void access$700(jp.takke.datastats.LayerService) -> e
-jp.takke.datastats.LayerService$1 -> jp.takke.datastats.d:
+    long access$202(jp.takke.datastats.LayerService,long) -> a
+    long access$200(jp.takke.datastats.LayerService) -> b
+    boolean access$302(jp.takke.datastats.LayerService,boolean) -> b
+    void access$400(jp.takke.datastats.LayerService) -> c
+    void access$500(jp.takke.datastats.LayerService,int) -> a
+    void access$600(jp.takke.datastats.LayerService) -> d
+jp.takke.datastats.LayerService$1 -> jp.takke.datastats.e:
     jp.takke.datastats.LayerService this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-jp.takke.datastats.LayerService$LocalBinder -> jp.takke.datastats.e:
+jp.takke.datastats.LayerService$LocalBinder -> jp.takke.datastats.f:
     jp.takke.datastats.LayerService this$0 -> a
     void restart() -> a
     void stop() -> b
@@ -86,48 +89,48 @@ jp.takke.datastats.MainActivity -> jp.takke.datastats.MainActivity:
     void access$200(jp.takke.datastats.MainActivity) -> b
     boolean access$300(jp.takke.datastats.MainActivity) -> c
     void access$400(jp.takke.datastats.MainActivity,long,long) -> a
-jp.takke.datastats.MainActivity$1 -> jp.takke.datastats.f:
+jp.takke.datastats.MainActivity$1 -> jp.takke.datastats.g:
     jp.takke.datastats.MainActivity this$0 -> a
     void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
-jp.takke.datastats.MainActivity$10 -> jp.takke.datastats.g:
+jp.takke.datastats.MainActivity$10 -> jp.takke.datastats.h:
     int[] val$speeds -> a
     jp.takke.datastats.MainActivity this$0 -> b
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-jp.takke.datastats.MainActivity$11 -> jp.takke.datastats.h:
+jp.takke.datastats.MainActivity$11 -> jp.takke.datastats.i:
     jp.takke.datastats.MainActivity this$0 -> a
     void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
     void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
     void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$12 -> jp.takke.datastats.i:
+jp.takke.datastats.MainActivity$12 -> jp.takke.datastats.j:
     int val$kb -> a
     jp.takke.datastats.MainActivity this$0 -> b
     void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.j:
+jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.k:
     jp.takke.datastats.MainActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.k:
+jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.l:
     jp.takke.datastats.MainActivity this$0 -> a
     void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.l:
+jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.m:
     jp.takke.datastats.MainActivity this$0 -> a
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.m:
+jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.n:
     jp.takke.datastats.MainActivity this$0 -> a
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.n:
+jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.o:
     jp.takke.datastats.MainActivity this$0 -> a
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.o:
+jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.p:
     jp.takke.datastats.MainActivity this$0 -> a
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.p:
+jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.q:
     jp.takke.datastats.MainActivity this$0 -> a
     void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
     void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
     void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.q:
+jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.r:
     int[] val$intervals -> a
     jp.takke.datastats.MainActivity this$0 -> b
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
@@ -135,9 +138,9 @@ jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.q:
 jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     android.view.SurfaceHolder mSurfaceHolder -> a
     java.lang.Thread mThread -> b
-    int mScreenWidth -> c
-    int mScreenHeight -> d
-    java.util.ArrayDeque mDrawTimes -> e
+    boolean mThreadActive -> c
+    int mScreenWidth -> d
+    int mScreenHeight -> e
     java.util.LinkedList mTrafficList -> f
     android.graphics.Bitmap mDownloadMarkBitmap -> g
     android.graphics.Bitmap mUploadMarkBitmap -> h
@@ -148,6 +151,7 @@ jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     long mLastTx -> m
     long mLastRx -> n
     void init() -> a
+    void setSleeping(boolean) -> setSleeping
     void setTraffic(long,int,long,int) -> a
     void run() -> run
     void myDraw() -> b
@@ -157,16 +161,16 @@ jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     void surfaceCreated(android.view.SurfaceHolder) -> surfaceCreated
     void surfaceChanged(android.view.SurfaceHolder,int,int,int) -> surfaceChanged
     void surfaceDestroyed(android.view.SurfaceHolder) -> surfaceDestroyed
-jp.takke.datastats.MySurfaceView$Traffic -> jp.takke.datastats.r:
+    void startThread() -> c
+    void stopThread() -> d
+jp.takke.datastats.MySurfaceView$Traffic -> jp.takke.datastats.s:
     long time -> a
     long tx -> b
     int pTx -> c
     long rx -> d
     int pRx -> e
     jp.takke.datastats.MySurfaceView this$0 -> f
-jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.s:
-    long sHighLimit -> a
-    long sMiddleLimit -> b
+jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.t:
     long convertByteToKb(long) -> a
     long convertByteToD1Kb(long) -> b
     int getTextShadowColorByBytes(android.content.res.Resources,long) -> a

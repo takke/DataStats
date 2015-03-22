@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
+    //noinspection GroovyAssignabilityCheck
     signingConfigs {
         myConfig
 
@@ -17,9 +18,9 @@ android {
     defaultConfig {
         applicationId "jp.takke.datastats"
         minSdkVersion 14
-        targetSdkVersion 21
-        versionCode 11
-        versionName "2.0.0"
+        targetSdkVersion 22
+        versionCode 12
+        versionName "2.0.1"
     }
     buildTypes {
         release {
