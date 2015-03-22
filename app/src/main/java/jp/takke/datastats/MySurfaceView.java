@@ -17,7 +17,6 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 
 import jp.takke.util.MyLog;
@@ -36,7 +35,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
     private int mScreenHeight;
 
-    private ArrayDeque<Long> mDrawTimes = new ArrayDeque<>();
+//    private ArrayDeque<Long> mDrawTimes = new ArrayDeque<>();
 
 
     private class Traffic {
@@ -154,13 +153,13 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         SystemClock.sleep(waitMs);
         
         // for actual FPS
-        mDrawTimes.addLast(now);
-        if (mDrawTimes.size() > 24) {
-            final int n = mDrawTimes.size() - 24;
-            for (int i=0; i<n; i++) {
-                mDrawTimes.removeFirst();
-            }
-        }
+//        mDrawTimes.addLast(now);
+//        if (mDrawTimes.size() > 24) {
+//            final int n = mDrawTimes.size() - 24;
+//            for (int i=0; i<n; i++) {
+//                mDrawTimes.removeFirst();
+//            }
+//        }
     }
 
 
@@ -382,14 +381,14 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-    @SuppressWarnings("UnusedDeclaration")
-    private float calcCurrentFps(final long now) {
-        if (mDrawTimes.size() <= 0) {
-            return 1;
-        }
-        final long firstDrawTime = mDrawTimes.getFirst();
-        return (1000f * mDrawTimes.size() / (now - firstDrawTime));
-    }
+//    @SuppressWarnings("UnusedDeclaration")
+//    private float calcCurrentFps(final long now) {
+//        if (mDrawTimes.size() <= 0) {
+//            return 1;
+//        }
+//        final long firstDrawTime = mDrawTimes.getFirst();
+//        return (1000f * mDrawTimes.size() / (now - firstDrawTime));
+//    }
     
 
     @Override
