@@ -29,6 +29,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private SurfaceHolder mSurfaceHolder;
     private Thread mThread;
 
+//    private boolean mSleeping;
+    private boolean mThreadActive;
+
     private int mScreenWidth;
     @SuppressWarnings({"FieldCanBeLocal", "UnusedDeclaration"})
     private int mScreenHeight;
@@ -92,6 +95,18 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
+    public void setSleeping(boolean sleeping) {
+
+//        mSleeping = sleeping;
+
+        if (sleeping) {
+            stopThread();
+        } else {
+            startThread();
+        }
+    }
+
+
     public void setTraffic(long tx, int pTx, long rx, int pRx) {
 
         mTrafficList.add(new Traffic(System.currentTimeMillis(), tx, pTx, rx, pRx));
@@ -113,7 +128,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void run() {
 
-        while (mThread != null) {
+        while (mThread != null && mThreadActive) {
 
             myDraw();
         }
@@ -376,15 +391,12 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         return (1000f * mDrawTimes.size() / (now - firstDrawTime));
     }
     
-    
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
         MyLog.d("MySurfaceView.surfaceCreated");
 
-        if (LayerService.sInterpolateMode) {
-            mThread = new Thread(this);
-        }
     }
 
 
@@ -395,10 +407,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
         mScreenWidth = width;
         mScreenHeight = height;
-        
-        if (mThread != null) {
-            mThread.start();
-        }
+
+        startThread();
     }
 
 
@@ -407,6 +417,44 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
         MyLog.d("MySurfaceView.surfaceDestroyed");
         
-        mThread = null;
+        stopThread();
     }
+
+
+    private void startThread() {
+
+        if (LayerService.sInterpolateMode) {
+
+            if (mThread == null) {
+                mThread = new Thread(this);
+                mThreadActive = true;
+                mThread.start();
+                MyLog.d("MySurfaceView.startThread: thread start");
+            } else {
+                MyLog.d("MySurfaceView.startThread: already running");
+            }
+        }
+    }
+
+
+    private void stopThread() {
+
+        if (mThreadActive && mThread != null) {
+            MyLog.d("MySurfaceView.stopThread");
+            
+            mThreadActive = false;
+            while (true) {
+                try {
+                    mThread.join();
+                    break;
+                } catch (InterruptedException ignored) {
+                    MyLog.e(ignored);
+                }
+            }
+            mThread = null;
+        } else {
+            MyLog.d("MySurfaceView.stopThread: no thread");
+        }
+    }
+
 }

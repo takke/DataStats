@@ -107,6 +107,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 // 停止していれば再開する
                 mSleeping = false;
 
+                // SurfaceViewに設定
+                setSleepingFlagToSurfaceView();
+
                 // 次の onStart を呼ぶ
                 scheduleNextTime(mIntervalMs);
 
@@ -117,11 +120,28 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 // 停止する
                 mSleeping = true;
 
+                // SurfaceViewに設定
+                setSleepingFlagToSurfaceView();
+                
                 // アラーム停止
                 stopAlarm();
             }
         }
     };
+
+
+    private void setSleepingFlagToSurfaceView() {
+
+        if (mView == null) {
+            return;
+        }
+        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        if (mySurfaceView == null) {
+            return;
+        }
+        
+        mySurfaceView.setSleeping(mSleeping);
+    }
 
 
     @Override
