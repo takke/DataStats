@@ -7,14 +7,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.net.TrafficStats;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +31,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             mSnapshot = false;
 
-            loadPreferences();
+            Config.loadPreferences(LayerService.this);
 
             execTask();
         }
@@ -63,15 +61,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private WindowManager mWindowManager;
     private boolean mAttached = false;
 
-    private int mXPos = 90;  // [0, 100]
-    private int mBarMaxKB = 100;
-    private boolean mLogBar = true;
-    public static boolean sInterpolateMode = false;
-
-    private int mIntervalMs = 1000;
-
-    private boolean mHideWhenInFullscreen = true;
-    
 
     private boolean mSleeping = false;
 
@@ -83,7 +72,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private long mDiffTxBytes = 0;
 
     private long mLastTime = System.currentTimeMillis();
-    private long mElapsedMs = mIntervalMs;
+    private long mElapsedMs = Config.intervalMs;
 
 //    private long mLastCommandStarted = 0;
 
@@ -111,7 +100,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 setSleepingFlagToSurfaceView();
 
                 // 次の onStart を呼ぶ
-                scheduleNextTime(mIntervalMs);
+                scheduleNextTime(Config.intervalMs);
 
             } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
@@ -213,41 +202,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mView.addOnAttachStateChangeListener(this);
 
 
-        loadPreferences();
+        Config.loadPreferences(this);
 
 
         // 定期処理開始
-//        scheduleNextTime(mIntervalMs);
-    }
-
-
-    private void loadPreferences() {
-
-        MyLog.d("LayerService.loadPreferences");
-
-        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        mXPos = pref.getInt(C.PREF_KEY_X_POS, 100);
-        mIntervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
-        mBarMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
-        mLogBar = pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true);
-        mHideWhenInFullscreen = pref.getBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, true);
-        sInterpolateMode = pref.getBoolean(C.PREF_KEY_INTERPOLATE_MODE, false);
-
-        // 文字色変更基準の再計算
-        if (mLogBar) {
-            // 「バー全体の (pXxxLimit*100) [%] を超えたらカラーを変更する」基準値を計算する
-            // 例: max=10MB/s ⇒ 30% は 3,238[B]
-            final double pMiddleLimit = 0.3;  // [0, 1]
-            MyTrafficUtil.sMiddleLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pMiddleLimit * 5.0));
-
-            // 例: max=10MB/s ⇒ 60% は 100[KB]
-            final double pHighLimit = 0.6;  // [0, 1]
-            MyTrafficUtil.sHighLimit = (long) (mBarMaxKB / 100.0 * Math.pow(10.0, pHighLimit * 5.0));
-        } else {
-            MyTrafficUtil.sMiddleLimit = 10 * 1024;
-            MyTrafficUtil.sHighLimit = 100 * 1024;
-        }
-        MyLog.d("loadPreferences: update limit for colors: middle[" + MyTrafficUtil.sMiddleLimit + "B], high[" + MyTrafficUtil.sHighLimit + "B]");
+//        scheduleNextTime(intervalMs);
     }
 
 
@@ -285,7 +244,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             showTraffic();
 
             // 次回の実行予約
-            scheduleNextTime(mIntervalMs);
+            scheduleNextTime(Config.intervalMs);
         }
     }
 
@@ -307,8 +266,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             
             inFullScreen = dim.top == 0;
 
-//            MyLog.d("LayerService.showTraffic: hide[" + mHideWhenInFullscreen + "], fullscreen[" + inFullScreen + "]");
-            if (mHideWhenInFullscreen) {
+//            MyLog.d("LayerService.showTraffic: hide[" + hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "]");
+            if (Config.hideWhenInFullscreen) {
                 if (inFullScreen) {
                     mView.setVisibility(View.GONE);
                 } else {
@@ -351,7 +310,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 }
             }
 
-            mView.setPadding(0, statusBarHeight, (screenWidth - widgetWidth) * (100 - mXPos) / 100, 0);
+            mView.setPadding(0, statusBarHeight, (screenWidth - widgetWidth) * (100 - Config.xPos) / 100, 0);
         }
 
 //        final String u = txKb + "." + txD1Kb + "KB/s";
@@ -372,11 +331,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private int convertBytesToPerThousand(long bytes) {
         
-        if (!mLogBar) {
-            return bytes/1024 > mBarMaxKB ? 1000 : (int) (bytes / mBarMaxKB);   // [0, 1000]
+        if (!Config.logBar) {
+            return bytes/1024 > Config.barMaxKB ? 1000 : (int) (bytes / Config.barMaxKB);   // [0, 1000]
         } else {
             // 100KB基準値
-            final long normalBytes = bytes * 100 / mBarMaxKB;
+            final long normalBytes = bytes * 100 / Config.barMaxKB;
             if (normalBytes < 1) {
                 return 0;
             } else {
@@ -408,7 +367,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final long now = System.currentTimeMillis();
         mElapsedMs = now - mLastTime;
         if (mElapsedMs == 0) {  // prohibit div by zero
-            mElapsedMs = mIntervalMs;
+            mElapsedMs = Config.intervalMs;
         }
         mLastTime = now;
 

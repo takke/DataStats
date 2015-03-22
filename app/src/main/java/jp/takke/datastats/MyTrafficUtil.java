@@ -4,10 +4,6 @@ import android.content.res.Resources;
 
 public class MyTrafficUtil {
 
-    // 文字色変更基準[Bytes]
-    public static long sHighLimit;
-    public static long sMiddleLimit;
-
 
     public static long convertByteToKb(long bytes) {
         return bytes / 1024;
@@ -34,10 +30,10 @@ public class MyTrafficUtil {
 
     static int getTextShadowColorByBytes(Resources resources, long bytes) {
 
-        if (bytes < sMiddleLimit) {
+        if (bytes < Config.middleLimit) {
             return resources.getColor(R.color.textShadowColorLow);
         }
-        if (bytes < sHighLimit) {
+        if (bytes < Config.highLimit) {
             return resources.getColor(R.color.textShadowColorMiddle);
         }
         return resources.getColor(R.color.textShadowColorHigh);
@@ -46,10 +42,10 @@ public class MyTrafficUtil {
 
     static int getTextColorByBytes(Resources resources, long bytes) {
 
-        if (bytes < sMiddleLimit) {
+        if (bytes < Config.middleLimit) {
             return resources.getColor(R.color.textColorLow);
         }
-        if (bytes < sHighLimit) {
+        if (bytes < Config.highLimit) {
             return resources.getColor(R.color.textColorMiddle);
         }
         return resources.getColor(R.color.textColorHigh);
