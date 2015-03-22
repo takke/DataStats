@@ -63,6 +63,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private Drawable uploadDrawable;
     private Drawable downloadDrawable;
     
+    // 前のフレームの値
     private int mLastPTx;
     private int mLastPRx;
     private long mLastTx;
@@ -165,26 +166,40 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     private void myDrawFrame(long now) {
 
-        if (mTrafficList.size() < 1) {
+        if (mTrafficList.size() <= 0) {
             return;
         }
-
+        
         final Traffic t = mTrafficList.getLast();
+        final long tx = t.tx;
+        final long rx = t.rx;
 
+        // skip zero
+        if (mLastTx == 0 && mLastPTx == 0 && tx == 0 &&
+            mLastRx == 0 && mLastPRx == 0 && rx == 0) {
+            
+            // 一度ゼロになったら通信量が発生するまで待機する
+//            MyLog.d("MySurfaceView.myDrawFrame: same frame, zero");
+            return;
+        }
+            
+            
         // 補間実行
         final int pTx = LayerService.sInterpolateMode ? interpolate(t, now, true)  : t.pTx;
         final int pRx = LayerService.sInterpolateMode ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
-        if (pTx == mLastPTx && mLastTx == t.tx &&
-            pRx == mLastPRx && mLastRx == t.rx) {
-//            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "=" + t.tx + "], rx[" + pRx + "=" + t.rx + "]");
+        if (pTx == mLastPTx && mLastTx == tx &&
+            pRx == mLastPRx && mLastRx == rx) {
+//            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "=" + tx + "], rx[" + pRx + "=" + rx + "]");
             return;
 //        } else {
 //            MyLog.d("MySurfaceView.myDrawFrame: tx[" + pTx + "], rx[" + pRx + "]");
         }
         mLastPTx = pTx;
         mLastPRx = pRx;
+        mLastTx = tx;
+        mLastRx = rx;
 
 
         //--------------------------------------------------
@@ -243,7 +258,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
 
         // upload text
-        final long tx = t.tx;
         paint.setTypeface(Typeface.MONOSPACE);
         paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
         paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
@@ -251,10 +265,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
         canvas.drawText(u, xDownloadStart - paddingRight, paint.getTextSize(), paint);
-        mLastTx = tx;
 
         // download text
-        final long rx = t.rx;
         paint.setTypeface(Typeface.MONOSPACE);
         paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, rx));
         paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
@@ -262,7 +274,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
         canvas.drawText(d, mScreenWidth - paddingRight, paint.getTextSize(), paint);
-        mLastRx = rx;
 
         paint.setShader(null);
 
