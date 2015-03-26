@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
@@ -396,11 +397,24 @@ public class MainActivity extends Activity {
         editor.putInt(C.PREF_KEY_TEXT_SIZE_SP, Config.textSizeSp);
         editor.apply();
 
-        // kill surface
-        doStopService();
-        
         // restart
-        doRestartService();
+        Config.loadPreferences(this);
+        
+        MySurfaceView.sForceRedraw = true;
+        startSnapshot(1);
+        MySurfaceView.sForceRedraw = false;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                MySurfaceView.sForceRedraw = true;
+                startSnapshot(1);
+                MySurfaceView.sForceRedraw = false;
+
+                doRestartService();
+            }
+        }, 1);
     }
 
 
@@ -451,14 +465,7 @@ public class MainActivity extends Activity {
 
     private void restartWithPreview(long kb, long kbd1) {
 
-        if (mServiceIF != null) {
-            // preview
-            try {
-                mServiceIF.startSnapshot(kb * 1024 + kbd1*100);
-            } catch (RemoteException e) {
-                MyLog.e(e);
-            }
-        }
+        startSnapshot(kb * 1024 + kbd1 * 100);
 
 
         final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -466,5 +473,17 @@ public class MainActivity extends Activity {
 
         final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
         kbText.setText(kb + "." + kbd1 + "KB");
+    }
+
+
+    private void startSnapshot(long previewBytes) {
+        if (mServiceIF != null) {
+            // preview
+            try {
+                mServiceIF.startSnapshot(previewBytes);
+            } catch (RemoteException e) {
+                MyLog.e(e);
+            }
+        }
     }
 }

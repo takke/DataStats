@@ -69,6 +69,10 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private long mLastTx;
     private long mLastRx;
 
+
+    public static boolean sForceRedraw = false;
+
+
     public MySurfaceView(Context context) {
         super(context);
 
@@ -119,7 +123,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         
-        if (!Config.interpolateMode) {
+        if (!Config.interpolateMode || sForceRedraw) {
             myDraw();
         }
     }
@@ -136,7 +140,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-    private void myDraw() {
+    public void myDraw() {
 
         final long startTime = System.currentTimeMillis();
 
@@ -175,7 +179,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final long rx = t.rx;
 
         // skip zero
-        if (mLastTx == 0 && mLastPTx == 0 && tx == 0 &&
+        if (!sForceRedraw &&
+            mLastTx == 0 && mLastPTx == 0 && tx == 0 &&
             mLastRx == 0 && mLastPRx == 0 && rx == 0) {
             
             // 一度ゼロになったら通信量が発生するまで待機する
@@ -189,7 +194,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final int pRx = Config.interpolateMode ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
-        if (pTx == mLastPTx && mLastTx == tx &&
+        if (!sForceRedraw &&
+            pTx == mLastPTx && mLastTx == tx &&
             pRx == mLastPRx && mLastRx == rx) {
 //            MyLog.d("MySurfaceView.myDrawFrame: same frame, tx[" + pTx + "=" + tx + "], rx[" + pRx + "=" + rx + "]");
             return;

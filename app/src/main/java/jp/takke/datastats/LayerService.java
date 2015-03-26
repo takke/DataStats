@@ -256,28 +256,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             return;
         }
         
+        
         //--------------------------------------------------
-        // hide when in fullscreen
+        // update widget size and location
         //--------------------------------------------------
-        boolean inFullScreen;
-        {
-            final Rect dim = new Rect();
-            mView.getWindowVisibleDisplayFrame(dim);
-//            MyLog.d("LayerService.showTraffic: top[" + dim.top + "]");
-            
-            inFullScreen = dim.top == 0;
-
-//            MyLog.d("LayerService.showTraffic: hide[" + hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "]");
-            if (Config.hideWhenInFullscreen) {
-                if (inFullScreen) {
-                    mView.setVisibility(View.GONE);
-                } else {
-                    mView.setVisibility(View.VISIBLE);
-                }
-            } else {
-                mView.setVisibility(View.VISIBLE);
-            }
-        }
+        updateWidgetSize();
 
 
         //--------------------------------------------------
@@ -291,7 +274,47 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             rx = mDiffRxBytes * 1000 / mElapsedMs;          // B/s
             tx = mDiffTxBytes * 1000 / mElapsedMs;          // B/s
         }
+        
 
+        //--------------------------------------------------
+        // bars
+        //--------------------------------------------------
+        final int pTx = convertBytesToPerThousand(tx);    // [0, 1000]
+        final int pRx = convertBytesToPerThousand(rx);    // [0, 1000]
+//      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
+//      MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
+
+        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        mySurfaceView.setTraffic(tx, pTx, rx, pRx);
+    }
+
+
+    private void updateWidgetSize() {
+
+        //--------------------------------------------------
+        // hide when in fullscreen
+        //--------------------------------------------------
+        boolean inFullScreen;
+        {
+            final Rect dim = new Rect();
+            mView.getWindowVisibleDisplayFrame(dim);
+//            MyLog.d("LayerService.showTraffic: top[" + dim.top + "]");
+
+            inFullScreen = dim.top == 0;
+
+//            MyLog.d("LayerService.showTraffic: hide[" + hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "]");
+            if (Config.hideWhenInFullscreen) {
+                if (inFullScreen) {
+                    mView.setVisibility(View.GONE);
+                } else {
+                    mView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                mView.setVisibility(View.VISIBLE);
+            }
+        }
+        
+        
         //--------------------------------------------------
         // set widget width
         //--------------------------------------------------
@@ -301,26 +324,27 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final int textSizeSp = Config.textSizeSp;
 
         final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
-        
+
         // width = (iconSize + textAreaWidth) * 2
         // iconSize = textSize+4
         // textAreaWidth = (textSize+2) * 6
         final int widgetWidthSp = ((textSizeSp + 4) + (textSizeSp + 2) * 6) * 2;
 //        MyLog.d("LayerService.showTraffic: widgetWidth[" + widgetWidthSp + "sp]");
-        
-        
+
+
         final int widgetWidth = (int) (widgetWidthSp * scaledDensity);
-        
+
         {
             final ViewGroup.LayoutParams params = mySurfaceView.getLayoutParams();
-            
+
             params.width = widgetWidth;
-            
+
             // height = textSize * 1.25
             params.height = (int) ((textSizeSp * 1.25) * scaledDensity);
-            
+
             mySurfaceView.setLayoutParams(params);
         }
+
 
         //--------------------------------------------------
         // set padding (x pos)
@@ -336,18 +360,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 }
             }
 
-            mView.setPadding(0, statusBarHeight, (screenWidth - widgetWidth) * (100 - Config.xPos) / 100, 0);
+            final int right = (screenWidth - widgetWidth) * (100 - Config.xPos) / 100;
+//            MyLog.d("LayerService.showTraffic: right-padding[" + right + "]");
+            mView.setPadding(0, statusBarHeight, right, 0);
         }
-
-        //--------------------------------------------------
-        // bars
-        //--------------------------------------------------
-        final int pTx = convertBytesToPerThousand(tx);    // [0, 1000]
-        final int pRx = convertBytesToPerThousand(rx);    // [0, 1000]
-//      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
-//      MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
-
-        mySurfaceView.setTraffic(tx, pTx, rx, pRx);
     }
 
 
