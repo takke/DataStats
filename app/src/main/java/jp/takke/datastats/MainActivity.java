@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ZoomControls;
 
 import jp.takke.util.MyLog;
 
@@ -160,6 +161,8 @@ public class MainActivity extends Activity {
     private void prepareConfigArea() {
 
         mPreparingConfigArea = true;
+        
+        Config.loadPreferences(this);
 
         // auto start
         final CheckBox autoStartOnBoot = (CheckBox) findViewById(R.id.autoStartOnBoot);
@@ -187,7 +190,7 @@ public class MainActivity extends Activity {
                 editor.apply();
             }
         });
-        hideCheckbox.setChecked(pref.getBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, true));
+        hideCheckbox.setChecked(Config.hideWhenInFullscreen);
 
         // Logarithm bar
         final CheckBox logCheckbox = (CheckBox) findViewById(R.id.logarithmCheckbox);
@@ -203,7 +206,7 @@ public class MainActivity extends Activity {
                 doRestartService();
             }
         });
-        logCheckbox.setChecked(pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true));
+        logCheckbox.setChecked(Config.logBar);
 
         // Interpolate mode
         final CheckBox interpolateCheckBox = (CheckBox) findViewById(R.id.interpolateCheckBox);
@@ -222,7 +225,24 @@ public class MainActivity extends Activity {
                 doRestartService();
             }
         });
-        interpolateCheckBox.setChecked(pref.getBoolean(C.PREF_KEY_INTERPOLATE_MODE, false));
+        interpolateCheckBox.setChecked(Config.interpolateMode);
+
+        // text size
+        final ZoomControls textSizeZoom = (ZoomControls) findViewById(R.id.text_size_zoom);
+        textSizeZoom.setOnZoomOutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTextSize(false);
+            }
+        });
+        textSizeZoom.setOnZoomInClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTextSize(true);
+            }
+        });
+        final TextView textSizeValue = (TextView) findViewById(R.id.text_size_value);
+        textSizeValue.setText(Config.textSizeSp + "sp");
 
         // pos
         final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
@@ -249,8 +269,7 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        final int xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
-        seekBar.setProgress(xPos);
+        seekBar.setProgress(Config.xPos);
 
         // Interval Spinner
         {
@@ -352,6 +371,36 @@ public class MainActivity extends Activity {
         }
 
         mPreparingConfigArea = false;
+    }
+
+
+    private void updateTextSize(boolean isZoomIn) {
+        
+        if (isZoomIn) {
+            if (Config.textSizeSp >= 24) {
+                return;
+            }
+            Config.textSizeSp ++;
+        } else {
+            if (Config.textSizeSp <= 6) {
+                return;
+            }
+            Config.textSizeSp --;
+        }
+
+        final TextView textSizeValue = (TextView) findViewById(R.id.text_size_value);
+        textSizeValue.setText(Config.textSizeSp + "sp");
+        
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        final SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(C.PREF_KEY_TEXT_SIZE_SP, Config.textSizeSp);
+        editor.apply();
+
+        // kill surface
+        doStopService();
+        
+        // restart
+        doRestartService();
     }
 
 

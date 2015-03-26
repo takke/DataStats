@@ -19,6 +19,8 @@ public class Config {
     static boolean hideWhenInFullscreen = true;
     
     public static boolean interpolateMode = false;
+    
+    public static int textSizeSp = C.DEFAULT_TEXT_SIZE_SP;
 
 
     public static void loadPreferences(Context context) {
@@ -32,6 +34,7 @@ public class Config {
         logBar = pref.getBoolean(C.PREF_KEY_LOGARITHM_BAR, true);
         hideWhenInFullscreen = pref.getBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, true);
         interpolateMode = pref.getBoolean(C.PREF_KEY_INTERPOLATE_MODE, false);
+        textSizeSp = pref.getInt(C.PREF_KEY_TEXT_SIZE_SP, C.DEFAULT_TEXT_SIZE_SP);
 
         // 文字色変更基準の再計算
         if (logBar) {

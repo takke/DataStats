@@ -7,8 +7,8 @@
 
     <jp.takke.datastats.MySurfaceView
         android:id="@+id/mySurfaceView"
-        android:layout_width="@dimen/widgetWidth"
-        android:layout_height="@dimen/widgetHeight"
+        android:layout_width="@dimen/initialWidgetWidth"
+        android:layout_height="@dimen/initialWidgetHeight"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         />

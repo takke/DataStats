@@ -227,7 +227,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         //--------------------------------------------------
         // upload, download
         //--------------------------------------------------
-        final int paddingRight = resources.getDimensionPixelSize(R.dimen.myOverlayPaddingRight);
+        final int paddingRight = resources.getDimensionPixelSize(R.dimen.overlay_padding_right);
         final int xDownloadStart = mScreenWidth / 2;
 
         // upload gradient
@@ -239,7 +239,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         uploadDrawable.draw(canvas);
         if (pTx > 0) {
             paint.setColor(resources.getColor(R.color.uploadBorder));
-            paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.ud_border_size));
+            paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.updown_bar_right_border_size));
             canvas.drawLine(xUploadEnd, 0, xUploadEnd, mScreenHeight, paint);
         }
         
@@ -252,18 +252,22 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         downloadDrawable.draw(canvas);
         if (pRx > 0) {
             paint.setColor(resources.getColor(R.color.downloadBorder));
-            paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.ud_border_size));
+            paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.updown_bar_right_border_size));
             canvas.drawLine(xDownloadEnd, 0, xDownloadEnd, mScreenHeight, paint);
         }
 
 
+        final float scaledDensity = resources.getDisplayMetrics().scaledDensity;
+        final int textSizeSp = Config.textSizeSp;
+        final float textSizePx = textSizeSp * scaledDensity;
+        
         // upload text
         paint.setTypeface(Typeface.MONOSPACE);
         paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
         paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
         final String u = MyTrafficUtil.convertByteToKb(tx) + "." + MyTrafficUtil.convertByteToD1Kb(tx) + "KB/s";
         paint.setTextAlign(Paint.Align.RIGHT);
-        paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
+        paint.setTextSize(textSizePx);
         canvas.drawText(u, xDownloadStart - paddingRight, paint.getTextSize(), paint);
 
         // download text
@@ -272,21 +276,21 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
         final String d = MyTrafficUtil.convertByteToKb(rx) + "." + MyTrafficUtil.convertByteToD1Kb(rx) + "KB/s";
         paint.setTextAlign(Paint.Align.RIGHT);
-        paint.setTextSize(resources.getDimensionPixelSize(R.dimen.textSize));
+        paint.setTextSize(textSizePx);
         canvas.drawText(d, mScreenWidth - paddingRight, paint.getTextSize(), paint);
 
         paint.setShader(null);
 
         // upload/download mark
         final Paint paintUd = new Paint();
-        final int udMarkSize = resources.getDimensionPixelSize(R.dimen.ud_mark_size);
-        final int paddingLeft = resources.getDimensionPixelSize(R.dimen.myOverlayPaddingLeft);
+        final float udMarkSize = (textSizeSp+2) * scaledDensity;
+        final int paddingLeft = resources.getDimensionPixelSize(R.dimen.overlay_padding_left);
         {
             if (mUploadMarkBitmap == null) {
                 mUploadMarkBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_find_previous_holo_dark);
             }
             final Matrix matrix = new Matrix();
-            final float s = (float) (udMarkSize - paddingLeft) / mUploadMarkBitmap.getWidth();
+            final float s = udMarkSize / mUploadMarkBitmap.getWidth();
             matrix.setScale(s, s);
             matrix.postTranslate(paddingLeft, 0);
             canvas.drawBitmap(mUploadMarkBitmap, matrix, paintUd);
@@ -296,7 +300,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                 mDownloadMarkBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_find_next_holo_dark);
             }
             final Matrix matrix = new Matrix();
-            final float s = (float) (udMarkSize - paddingLeft) / mDownloadMarkBitmap.getWidth();
+            final float s = udMarkSize / mDownloadMarkBitmap.getWidth();
             matrix.setScale(s, s);
             matrix.postTranslate(xDownloadStart + paddingLeft, 0);
             canvas.drawBitmap(mDownloadMarkBitmap, matrix, paintUd);

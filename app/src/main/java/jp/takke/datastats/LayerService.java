@@ -16,6 +16,7 @@ import android.os.RemoteException;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import jp.takke.util.MyLog;
@@ -278,11 +279,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             }
         }
 
-        final long rx, tx;
 
         //--------------------------------------------------
         // prepare
         //--------------------------------------------------
+        final long rx, tx;
         if (mSnapshot) {
             rx = mSnapshotBytes;
             tx = mSnapshotBytes;
@@ -291,16 +292,41 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             tx = mDiffTxBytes * 1000 / mElapsedMs;          // B/s
         }
 
-        // set padding (x pos)
+        //--------------------------------------------------
+        // set widget width
+        //--------------------------------------------------
+        final Resources resources = getResources();
+
+        final float scaledDensity = resources.getDisplayMetrics().scaledDensity;
+        final int textSizeSp = Config.textSizeSp;
+
+        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        
+        // width = (iconSize + textAreaWidth) * 2
+        // iconSize = textSize+4
+        // textAreaWidth = (textSize+2) * 6
+        final int widgetWidthSp = ((textSizeSp + 4) + (textSizeSp + 2) * 6) * 2;
+//        MyLog.d("LayerService.showTraffic: widgetWidth[" + widgetWidthSp + "sp]");
+        
+        
+        final int widgetWidth = (int) (widgetWidthSp * scaledDensity);
+        
         {
-            final Resources resources = getResources();
+            final ViewGroup.LayoutParams params = mySurfaceView.getLayoutParams();
             
+            params.width = widgetWidth;
+            
+            // height = textSize * 1.25
+            params.height = (int) ((textSizeSp * 1.25) * scaledDensity);
+            
+            mySurfaceView.setLayoutParams(params);
+        }
+
+        //--------------------------------------------------
+        // set padding (x pos)
+        //--------------------------------------------------
+        {
             final int screenWidth = mView.getWidth();
-            final int widgetWidth = 
-                    resources.getDimensionPixelSize(R.dimen.ud_mark_size) * 2
-                    + resources.getDimensionPixelSize(R.dimen.textWidth) * 2;
-            
-//            MyLog.d("LayerService.onViewAttachedToWindow: w[" + widgetWidth + "]");
 
             int statusBarHeight = 0;
             if (!inFullScreen) {
@@ -313,18 +339,14 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             mView.setPadding(0, statusBarHeight, (screenWidth - widgetWidth) * (100 - Config.xPos) / 100, 0);
         }
 
-//        final String u = txKb + "." + txD1Kb + "KB/s";
-//        final String d = rxKb + "." + rxD1Kb + "KB/s";
-//        MyLog.d("LayerService.showTraffic: U: " + u + ", D:" + d + ", elapsed[" + mElapsedMs + "]");
-
+        //--------------------------------------------------
         // bars
+        //--------------------------------------------------
         final int pTx = convertBytesToPerThousand(tx);    // [0, 1000]
-//      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
-
         final int pRx = convertBytesToPerThousand(rx);    // [0, 1000]
+//      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
 //      MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
 
-        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
         mySurfaceView.setTraffic(tx, pTx, rx, pRx);
     }
 
