@@ -9,6 +9,7 @@ jp.takke.datastats.Config -> jp.takke.datastats.a:
     int intervalMs -> f
     boolean hideWhenInFullscreen -> g
     boolean interpolateMode -> h
+    int textSizeSp -> i
     void loadPreferences(android.content.Context) -> a
 jp.takke.datastats.ILayerService -> jp.takke.datastats.b:
     void restart() -> a
@@ -48,10 +49,11 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
     void execTask() -> b
     void showTraffic() -> c
+    void updateWidgetSize() -> d
     int convertBytesToPerThousand(long) -> a
-    void gatherTraffic() -> d
+    void gatherTraffic() -> e
     void scheduleNextTime(int) -> a
-    void stopAlarm() -> e
+    void stopAlarm() -> f
     void onDestroy() -> onDestroy
     void onViewAttachedToWindow(android.view.View) -> onViewAttachedToWindow
     void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
@@ -82,79 +84,93 @@ jp.takke.datastats.MainActivity -> jp.takke.datastats.MainActivity:
     void doStopService() -> b
     void doRestartService() -> c
     void prepareConfigArea() -> d
+    void updateTextSize(boolean) -> a
     void preparePreviewArea() -> e
     void restartWithPreview(long,long) -> a
+    void startSnapshot(long) -> a
     jp.takke.datastats.ILayerService access$002(jp.takke.datastats.MainActivity,jp.takke.datastats.ILayerService) -> a
     void access$100(jp.takke.datastats.MainActivity) -> a
     void access$200(jp.takke.datastats.MainActivity) -> b
-    boolean access$300(jp.takke.datastats.MainActivity) -> c
-    void access$400(jp.takke.datastats.MainActivity,long,long) -> a
+    void access$300(jp.takke.datastats.MainActivity,boolean) -> a
+    boolean access$400(jp.takke.datastats.MainActivity) -> c
+    void access$500(jp.takke.datastats.MainActivity,long) -> a
+    void access$600(jp.takke.datastats.MainActivity,long,long) -> a
 jp.takke.datastats.MainActivity$1 -> jp.takke.datastats.g:
     jp.takke.datastats.MainActivity this$0 -> a
     void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
 jp.takke.datastats.MainActivity$10 -> jp.takke.datastats.h:
-    int[] val$speeds -> a
-    jp.takke.datastats.MainActivity this$0 -> b
-    void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
-    void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
 jp.takke.datastats.MainActivity$11 -> jp.takke.datastats.i:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
-    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
-    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$12 -> jp.takke.datastats.j:
-    int val$kb -> a
-    jp.takke.datastats.MainActivity this$0 -> b
-    void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.k:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.l:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.m:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.n:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.o:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.p:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.q:
-    jp.takke.datastats.MainActivity this$0 -> a
-    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
-    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
-    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.r:
     int[] val$intervals -> a
     jp.takke.datastats.MainActivity this$0 -> b
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+jp.takke.datastats.MainActivity$12 -> jp.takke.datastats.j:
+    int[] val$speeds -> a
+    jp.takke.datastats.MainActivity this$0 -> b
+    void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
+    void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
+jp.takke.datastats.MainActivity$13 -> jp.takke.datastats.k:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void run() -> run
+jp.takke.datastats.MainActivity$14 -> jp.takke.datastats.l:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
+    void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
+    void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
+jp.takke.datastats.MainActivity$15 -> jp.takke.datastats.m:
+    int val$kb -> a
+    jp.takke.datastats.MainActivity this$0 -> b
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.n:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.o:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.p:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.q:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.r:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.s:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.t:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
+jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.u:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void onClick(android.view.View) -> onClick
 jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
-    android.view.SurfaceHolder mSurfaceHolder -> a
-    java.lang.Thread mThread -> b
-    boolean mThreadActive -> c
-    int mScreenWidth -> d
-    int mScreenHeight -> e
-    java.util.LinkedList mTrafficList -> f
-    android.graphics.Bitmap mDownloadMarkBitmap -> g
-    android.graphics.Bitmap mUploadMarkBitmap -> h
-    android.graphics.drawable.Drawable uploadDrawable -> i
-    android.graphics.drawable.Drawable downloadDrawable -> j
-    int mLastPTx -> k
-    int mLastPRx -> l
-    long mLastTx -> m
-    long mLastRx -> n
-    void init() -> a
+    android.view.SurfaceHolder mSurfaceHolder -> b
+    java.lang.Thread mThread -> c
+    boolean mThreadActive -> d
+    int mScreenWidth -> e
+    int mScreenHeight -> f
+    java.util.LinkedList mTrafficList -> g
+    android.graphics.Bitmap mDownloadMarkBitmap -> h
+    android.graphics.Bitmap mUploadMarkBitmap -> i
+    android.graphics.drawable.Drawable uploadDrawable -> j
+    android.graphics.drawable.Drawable downloadDrawable -> k
+    int mLastPTx -> l
+    int mLastPRx -> m
+    long mLastTx -> n
+    long mLastRx -> o
+    boolean sForceRedraw -> a
+    void init() -> b
     void setSleeping(boolean) -> setSleeping
     void setTraffic(long,int,long,int) -> a
     void run() -> run
-    void myDraw() -> b
+    void myDraw() -> a
     void myDrawFrame(long) -> a
     int interpolate(jp.takke.datastats.MySurfaceView$Traffic,long,boolean) -> a
     double lagrange(int,double[],double[],double) -> a
@@ -163,14 +179,14 @@ jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     void surfaceDestroyed(android.view.SurfaceHolder) -> surfaceDestroyed
     void startThread() -> c
     void stopThread() -> d
-jp.takke.datastats.MySurfaceView$Traffic -> jp.takke.datastats.s:
+jp.takke.datastats.MySurfaceView$Traffic -> jp.takke.datastats.v:
     long time -> a
     long tx -> b
     int pTx -> c
     long rx -> d
     int pRx -> e
     jp.takke.datastats.MySurfaceView this$0 -> f
-jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.t:
+jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.w:
     long convertByteToKb(long) -> a
     long convertByteToD1Kb(long) -> b
     int getTextShadowColorByBytes(android.content.res.Resources,long) -> a

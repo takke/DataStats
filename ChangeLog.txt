@@ -1,3 +1,6 @@
+v2.1.0 (2015.03.26)
+- Add text size config
+
 v2.0.1 (2015.03.22)
 - Save battery life (on interpolation mode)
 - Fix some bugs
