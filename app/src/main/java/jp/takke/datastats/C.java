@@ -9,5 +9,12 @@ public class C {
     public static final String PREF_KEY_HIDE_WHEN_IN_FULLSCREEN = "hideWhenInFullscreen";
     public static final String PREF_KEY_INTERPOLATE_MODE = "interpolateMode";
     public static final String PREF_KEY_TEXT_SIZE_SP = "textSizeSp";
+
     public static final int DEFAULT_TEXT_SIZE_SP = 8;
+
+    // ‰ŠúAlarm‚Ì’x‰„ŠÔ[ms]
+    public static final int ALARM_STARTUP_DELAY_MSEC = 1000;
+
+    // ServiceˆÛ‚Ì‚½‚ß‚ÌAlarm‚ÌXVŠÔŠu[ms]
+    public static final int ALARM_INTERVAL_MSEC = 60 * 1000;
 }

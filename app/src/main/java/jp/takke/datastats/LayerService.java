@@ -11,8 +11,10 @@ import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.net.TrafficStats;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +36,23 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             Config.loadPreferences(LayerService.this);
 
-            execTask();
+            // Alarmループ開始
+            stopAlarm();
+            scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
+
+            // 通信量取得スレッド再起動
+            stopGatherThread();
+            startGatherThread();
         }
 
         @Override
         public void stop() throws RemoteException {
 
+            MyLog.d("LayerService.stop");
+
             stopSelf();
+
+            // -> スレッド停止処理等は onDestroy で。
         }
 
         @Override
@@ -51,7 +63,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             MyLog.d("LayerService.startSnapshot " +
                     "bytes[" + mSnapshotBytes + "]");
 
-            execTask();
+            showTraffic();
         }
     }
 
@@ -66,6 +78,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private boolean mSleeping = false;
 
     private boolean mServiceAlive = true;
+
     private long mLastRxBytes = 0;
     private long mLastTxBytes = 0;
 
@@ -83,6 +96,13 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private long mSnapshotBytes = 0;
 
 
+    // 通信量取得スレッド管理
+    private GatherThread mThread = null;
+    private boolean mThreadActive = false;
+    private Handler mHandler = new Handler();
+
+
+
     /**
      * スリープ状態(SCREEN_ON/OFF)の検出用レシーバ
      */
@@ -90,28 +110,36 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+
+            final String action = intent.getAction();
+            if (action.equals(Intent.ACTION_SCREEN_ON)) {
 
                 MyLog.d("LayerService: screen on");
 
                 // 停止していれば再開する
                 mSleeping = false;
 
-                // SurfaceViewに設定
+                // SurfaceViewにSleepingフラグを反映
                 setSleepingFlagToSurfaceView();
 
-                // 次の onStart を呼ぶ
-                scheduleNextTime(Config.intervalMs);
+                // 通信量取得スレッド開始
+                startGatherThread();
 
-            } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+                // Alarmループ開始
+                scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
+
+            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
 
                 MyLog.d("LayerService: screen off");
 
                 // 停止する
                 mSleeping = true;
 
-                // SurfaceViewに設定
+                // SurfaceViewにSleepingフラグを反映
                 setSleepingFlagToSurfaceView();
+
+                // 通信量取得スレッド停止
+                stopGatherThread();
                 
                 // アラーム停止
                 stopAlarm();
@@ -139,7 +167,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         MyLog.d("LayerService.onBind");
 
-        execTask();
+        // 定期取得スレッド開始
+        startGatherThread();
+
+//        showTraffic();
 
         return mBinder;
     }
@@ -223,30 +254,15 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 //        }
 //        mLastCommandStarted = now;
 
-        execTask();
+        // 通信量取得スレッド開始
+        if (mThread == null) {
+            startGatherThread();
+        }
+
+        // Alarmループ続行
+        scheduleNextTime(C.ALARM_INTERVAL_MSEC);
 
         return result;
-    }
-
-
-    private void execTask() {
-
-//        MyLog.d("LayerService.execTask");
-
-        if (mSnapshot) {
-
-            showTraffic();
-
-            // 次回の実行予約
-            scheduleNextTime(5000);
-        } else {
-            gatherTraffic();
-
-            showTraffic();
-
-            // 次回の実行予約
-            scheduleNextTime(Config.intervalMs);
-        }
     }
 
 
@@ -473,6 +489,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         stopAlarm();
 
+        // 通信量取得スレッド停止
+        stopGatherThread();
+
         // スリープ状態のレシーバ解除
         getApplicationContext().unregisterReceiver(mReceiver);
 
@@ -497,5 +516,73 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     public void onViewDetachedFromWindow(View v) {
 
         mAttached = false;
+    }
+
+
+    private void startGatherThread() {
+
+        if (mThread == null) {
+            mThread = new GatherThread();
+            mThreadActive = true;
+            mThread.start();
+            MyLog.d("LayerService.startGatherThread: thread start");
+        } else {
+            MyLog.d("LayerService.startGatherThread: already running");
+        }
+    }
+
+
+    private void stopGatherThread() {
+
+        if (mThreadActive && mThread != null) {
+            MyLog.d("LayerService.stopGatherThread");
+
+            mThreadActive = false;
+            while (true) {
+                try {
+                    mThread.join();
+                    break;
+                } catch (InterruptedException ignored) {
+                    MyLog.e(ignored);
+                }
+            }
+            mThread = null;
+        } else {
+            MyLog.d("LayerService.stopGatherThread: no thread");
+        }
+    }
+
+
+    /**
+     * 通信量取得スレッド
+     */
+    private class GatherThread extends Thread {
+
+        @Override
+        public void run() {
+
+            MyLog.d("LayerService$GatherThread: start");
+
+            while (mThread != null && mThreadActive) {
+
+                SystemClock.sleep(Config.intervalMs);
+
+                gatherTraffic();
+
+                if (mAttached) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (mThreadActive && mAttached) {
+                                showTraffic();
+                            }
+                        }
+                    });
+                }
+            }
+
+            MyLog.d("LayerService$GatherThread: done");
+        }
     }
 }
