@@ -12,9 +12,9 @@ public class C {
 
     public static final int DEFAULT_TEXT_SIZE_SP = 8;
 
-    // ‰ŠúAlarm‚Ì’x‰„ŠÔ[ms]
+    // åˆæœŸAlarmã®é…å»¶æ™‚é–“[ms]
     public static final int ALARM_STARTUP_DELAY_MSEC = 1000;
 
-    // ServiceˆÛ‚Ì‚½‚ß‚ÌAlarm‚ÌXVŠÔŠu[ms]
+    // Serviceç¶­æŒã®ãŸã‚ã®Alarmã®æ›´æ–°é–“éš”[ms]
     public static final int ALARM_INTERVAL_MSEC = 60 * 1000;
 }
