@@ -188,10 +188,10 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             return;
         }
             
-            
+
         // 補間実行
-        final int pTx = Config.interpolateMode ? interpolate(t, now, true)  : t.pTx;
-        final int pRx = Config.interpolateMode ? interpolate(t, now, false) : t.pRx;
+        final int pTx = (Config.interpolateMode && Config.logBar) ? interpolate(t, now, true)  : t.pTx;
+        final int pRx = (Config.interpolateMode && Config.logBar) ? interpolate(t, now, false) : t.pRx;
 
         // 前回と同じなら再描画しない
         if (!sForceRedraw &&
@@ -429,6 +429,11 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         mScreenHeight = height;
 
         startThread();
+
+        // 初期描画のために強制的に1フレーム描画する
+        sForceRedraw = true;
+        myDraw();
+        sForceRedraw = false;
     }
 
 
@@ -443,7 +448,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     private void startThread() {
 
-        if (Config.interpolateMode) {
+        // 補間モードは logMode on の場合のみ有効
+        if (Config.interpolateMode && Config.logBar) {
 
             if (mThread == null) {
                 mThread = new Thread(this);

@@ -205,6 +205,11 @@ public class MainActivity extends Activity {
 
                 // restart
                 doRestartService();
+
+                // 補間モードは logMode on の場合のみ有効
+                final CheckBox interpolateCheckBox = (CheckBox) findViewById(R.id.interpolateCheckBox);
+                interpolateCheckBox.setEnabled(isChecked);
+
             }
         });
         logCheckbox.setChecked(Config.logBar);
@@ -227,6 +232,8 @@ public class MainActivity extends Activity {
             }
         });
         interpolateCheckBox.setChecked(Config.interpolateMode);
+        // 補間モードは logMode on の場合のみ有効
+        interpolateCheckBox.setEnabled(Config.logBar);
 
         // text size
         final ZoomControls textSizeZoom = (ZoomControls) findViewById(R.id.text_size_zoom);
