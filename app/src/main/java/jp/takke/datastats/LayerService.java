@@ -41,8 +41,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
 
             // 通信量取得スレッド再起動
-            stopGatherThread();
-            startGatherThread();
+            if (mThread == null) {
+                startGatherThread();
+            }
+
+            showTraffic();
         }
 
         @Override
