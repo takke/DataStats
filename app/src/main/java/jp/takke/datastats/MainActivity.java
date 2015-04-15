@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,8 +57,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        prepareStartStopButton();
-
         prepareConfigArea();
 
         preparePreviewArea();
@@ -94,31 +94,41 @@ public class MainActivity extends Activity {
     }
 
 
-    private void prepareStartStopButton() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         // start
         {
-            final Button button = (Button) findViewById(R.id.start_button);
-            button.setOnClickListener(new View.OnClickListener() {
+            final MenuItem item = menu.add(R.string.config_start);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onMenuItemClick(MenuItem item) {
 
                     doRestartService();
+                    return true;
                 }
             });
         }
 
         // stop
         {
-            final Button button = (Button) findViewById(R.id.stop_button);
-            button.setOnClickListener(new View.OnClickListener() {
+            final MenuItem item = menu.add(R.string.config_stop);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onMenuItemClick(MenuItem item) {
 
                     doStopService();
+                    return true;
                 }
             });
         }
+
+
+        return true;
     }
 
 
@@ -399,7 +409,7 @@ public class MainActivity extends Activity {
                     }
                     MyLog.d("unitTypeSpinner onItemSelected: [" + position + "]");
 
-                    final boolean unitTypeBps = position==1;
+                    final boolean unitTypeBps = position == 1;
 
                     final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                     final SharedPreferences.Editor editor = pref.edit();
