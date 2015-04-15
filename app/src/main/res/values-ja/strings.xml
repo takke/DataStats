@@ -12,6 +12,7 @@
     <string name="config_interval">更新間隔</string>
     <string name="config_pos">X 位置</string>
     <string name="config_bar_max_kb">バーの最大速度[KB]</string>
+    <string name="config_unit_type">通信速度の単位</string>
     <string name="config_logarithm_bar">バーの対数表示</string>
     <string name="config_interpolate">補間モード(バッテリ消費量に注意)</string>
 

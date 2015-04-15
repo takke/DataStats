@@ -12,6 +12,7 @@
     <string name="config_interval">Interval</string>
     <string name="config_pos">X Position</string>
     <string name="config_bar_max_kb">Max Speed[KB](Bar)</string>
+    <string name="config_unit_type">Unit Type</string>
     <string name="config_logarithm_bar">Logarithm bar</string>
     <string name="config_interpolate">Interpolate(notice battery life)</string>
 

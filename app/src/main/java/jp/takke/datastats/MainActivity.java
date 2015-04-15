@@ -378,6 +378,48 @@ public class MainActivity extends Activity {
             }
         }
 
+        // 通信速度の単位
+        {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this, android.R.layout.simple_spinner_item);
+
+            adapter.add("KB/s");
+            adapter.add("Kbps");
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            final Spinner spinner = (Spinner) findViewById(R.id.unitTypeSpinner);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    if (mPreparingConfigArea) {
+                        return;
+                    }
+                    MyLog.d("unitTypeSpinner onItemSelected: [" + position + "]");
+
+                    final boolean unitTypeBps = position==1;
+
+                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    final SharedPreferences.Editor editor = pref.edit();
+                    editor.putBoolean(C.PREF_KEY_UNIT_TYPE_BPS, unitTypeBps);
+                    editor.apply();
+
+                    // restart
+                    doRestartService();
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            final boolean unitTypeBps = pref.getBoolean(C.PREF_KEY_UNIT_TYPE_BPS, false);
+            spinner.setSelection(unitTypeBps ? 1 : 0);
+        }
+
         mPreparingConfigArea = false;
     }
 

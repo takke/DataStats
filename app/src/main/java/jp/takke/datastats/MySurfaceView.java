@@ -178,6 +178,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final long tx = t.tx;
         final long rx = t.rx;
 
+//        MyLog.d(" myDrawFrame: tx[" + tx + "B], rx[" + rx + "B] " + now + "");
+
         // skip zero
         if (!sForceRedraw &&
             mLastTx == 0 && mLastPTx == 0 && tx == 0 &&
@@ -271,19 +273,17 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         paint.setTypeface(Typeface.MONOSPACE);
         paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
         paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, tx));
-        final String u = MyTrafficUtil.convertByteToKb(tx) + "." + MyTrafficUtil.convertByteToD1Kb(tx) + "KB/s";
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(textSizePx);
-        canvas.drawText(u, xDownloadStart - paddingRight, paint.getTextSize(), paint);
+        canvas.drawText(getReadableUDText(tx), xDownloadStart - paddingRight, paint.getTextSize(), paint);
 
         // download text
         paint.setTypeface(Typeface.MONOSPACE);
         paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, rx));
         paint.setShadowLayer(1.5f, 1.5f, 1.5f, MyTrafficUtil.getTextShadowColorByBytes(resources, rx));
-        final String d = MyTrafficUtil.convertByteToKb(rx) + "." + MyTrafficUtil.convertByteToD1Kb(rx) + "KB/s";
         paint.setTextAlign(Paint.Align.RIGHT);
         paint.setTextSize(textSizePx);
-        canvas.drawText(d, mScreenWidth - paddingRight, paint.getTextSize(), paint);
+        canvas.drawText(getReadableUDText(rx), mScreenWidth - paddingRight, paint.getTextSize(), paint);
 
         paint.setShader(null);
 
@@ -325,6 +325,19 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
 
         mSurfaceHolder.unlockCanvasAndPost(canvas);
+    }
+
+
+    private String getReadableUDText(long bytes) {
+
+//        MyLog.d(" getReadableUDText: " + bytes + "B");
+
+        if (Config.unitTypeBps) {
+            final long bits = bytes * 8;
+            return MyTrafficUtil.convertByteToKb(bits) + "." + MyTrafficUtil.convertByteToD1Kb(bits) + "Kbps";
+        } else {
+            return MyTrafficUtil.convertByteToKb(bytes) + "." + MyTrafficUtil.convertByteToD1Kb(bytes) + "KB/s";
+        }
     }
 
 

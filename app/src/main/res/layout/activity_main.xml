@@ -144,14 +144,6 @@
 
             </LinearLayout>
 
-            <!-- Logarithm Bar -->
-            <CheckBox
-                android:id="@+id/logarithmCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/config_logarithm_bar"
-                />
-
             <!-- Bar Max [KB] -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,6 +163,34 @@
                     android:id="@+id/maxSpeedSpinner" />
 
             </LinearLayout>
+
+            <!-- Unit Type "KB/s" or "kbps" -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/config_unit_type"
+                    android:gravity="center_vertical|left"
+                    />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/unitTypeSpinner" />
+
+            </LinearLayout>
+
+            <!-- Logarithm Bar -->
+            <CheckBox
+                android:id="@+id/logarithmCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/config_logarithm_bar"
+                />
 
             <!-- interpolate -->
             <CheckBox
