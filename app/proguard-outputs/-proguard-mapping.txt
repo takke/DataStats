@@ -45,23 +45,24 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     boolean mThreadActive -> p
     android.os.Handler mHandler -> q
     android.content.BroadcastReceiver mReceiver -> r
-    void setSleepingFlagToSurfaceView() -> a
+    void onScreenOff() -> a
+    void setSleepingFlagToSurfaceView() -> b
     android.os.IBinder onBind(android.content.Intent) -> onBind
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onRebind(android.content.Intent) -> onRebind
     void onCreate() -> onCreate
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    void showTraffic() -> b
-    void updateWidgetSize() -> c
+    void showTraffic() -> c
+    void updateWidgetSize() -> d
     int convertBytesToPerThousand(long) -> a
-    void gatherTraffic() -> d
+    void gatherTraffic() -> e
     void scheduleNextTime(int) -> a
-    void stopAlarm() -> e
+    void stopAlarm() -> f
     void onDestroy() -> onDestroy
     void onViewAttachedToWindow(android.view.View) -> onViewAttachedToWindow
     void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
-    void startGatherThread() -> f
-    void stopGatherThread() -> g
+    void startGatherThread() -> g
+    void stopGatherThread() -> h
     boolean access$002(jp.takke.datastats.LayerService,boolean) -> a
     void access$100(jp.takke.datastats.LayerService) -> a
     void access$200(jp.takke.datastats.LayerService,int) -> a
@@ -72,11 +73,12 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     long access$600(jp.takke.datastats.LayerService) -> e
     boolean access$702(jp.takke.datastats.LayerService,boolean) -> b
     void access$800(jp.takke.datastats.LayerService) -> f
-    void access$900(jp.takke.datastats.LayerService) -> g
-    boolean access$1100(jp.takke.datastats.LayerService) -> h
-    void access$1200(jp.takke.datastats.LayerService) -> i
-    boolean access$1300(jp.takke.datastats.LayerService) -> j
-    android.os.Handler access$1400(jp.takke.datastats.LayerService) -> k
+    boolean access$1000(jp.takke.datastats.LayerService) -> g
+    void access$1100(jp.takke.datastats.LayerService) -> h
+    boolean access$1200(jp.takke.datastats.LayerService) -> i
+    boolean access$700(jp.takke.datastats.LayerService) -> j
+    android.os.Handler access$1300(jp.takke.datastats.LayerService) -> k
+    void access$1400(jp.takke.datastats.LayerService) -> l
 jp.takke.datastats.LayerService$1 -> jp.takke.datastats.e:
     jp.takke.datastats.LayerService this$0 -> a
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
