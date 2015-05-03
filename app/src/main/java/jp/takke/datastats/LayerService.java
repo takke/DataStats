@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.view.Gravity;
@@ -133,22 +134,35 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
 
-                MyLog.d("LayerService: screen off");
-
-                // 停止する
-                mSleeping = true;
-
-                // SurfaceViewにSleepingフラグを反映
-                setSleepingFlagToSurfaceView();
-
-                // 通信量取得スレッド停止
-                stopGatherThread();
-                
-                // アラーム停止
-                stopAlarm();
+                // たいていは GatherThread で検出したほうが早いんだけど設定値によっては
+                // 遅い場合もあるので Receiver での検出時も呼び出しておく
+                onScreenOff();
             }
         }
     };
+
+
+    private void onScreenOff() {
+
+        if (mSleeping) {
+            MyLog.d("LayerService.onScreenOff: already sleeping");
+            return;
+        }
+
+        MyLog.d("LayerService.onScreenOff");
+
+        // 停止する
+        mSleeping = true;
+
+        // SurfaceViewにSleepingフラグを反映
+        setSleepingFlagToSurfaceView();
+
+        // 通信量取得スレッド停止
+        stopGatherThread();
+
+        // アラーム停止
+        stopAlarm();
+    }
 
 
     private void setSleepingFlagToSurfaceView() {
@@ -566,13 +580,16 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             MyLog.d("LayerService$GatherThread: start");
 
+            final PowerManager powermanager;
+            powermanager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
             while (mThread != null && mThreadActive) {
 
                 SystemClock.sleep(Config.intervalMs);
 
                 gatherTraffic();
 
-                if (mAttached) {
+                if (mAttached && !mSleeping) {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -582,6 +599,12 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                             }
                         }
                     });
+
+                    //noinspection deprecation
+                    if (!powermanager.isScreenOn()) {
+                        MyLog.d("LayerService$GatherThread: not interactive");
+                        onScreenOff();
+                    }
                 }
             }
 
