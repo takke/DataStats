@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ZoomControls;
 
 import jp.takke.util.MyLog;
+import jp.takke.util.TkConfig;
 
 
 public class MainActivity extends Activity {
@@ -63,6 +64,9 @@ public class MainActivity extends Activity {
 
         final Intent service = new Intent(this, LayerService.class);
         bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+
+        // 外部ストレージのログファイルを削除する
+        MyLog.deleteBigExternalLogFile();
     }
 
 
@@ -141,6 +145,32 @@ public class MainActivity extends Activity {
                     return true;
                 }
             });
+        }
+
+        // debug
+        {
+            final MenuItem item = menu.add(R.string.config_debug_mode);
+//            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+
+                    TkConfig.debugMode = !TkConfig.debugMode;
+                    item.setChecked(TkConfig.debugMode);
+
+                    // save
+                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    final SharedPreferences.Editor edit = pref.edit();
+                    edit.putBoolean(C.PREF_KEY_DEBUG_MODE, TkConfig.debugMode);
+                    edit.apply();
+
+                    return true;
+                }
+            });
+
+            item.setCheckable(true);
+            item.setChecked(TkConfig.debugMode);
         }
 
 

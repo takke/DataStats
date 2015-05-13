@@ -1,5 +1,5 @@
 package jp.takke.util;
 
 public class TkConfig {
-    public static boolean debugMode = true;
+    public static boolean debugMode = false;
 }

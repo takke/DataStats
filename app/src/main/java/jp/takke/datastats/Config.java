@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import jp.takke.util.MyLog;
+import jp.takke.util.TkConfig;
 
 public class Config {
     
@@ -30,6 +31,7 @@ public class Config {
         MyLog.d("Config.loadPreferences");
 
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        TkConfig.debugMode = pref.getBoolean(C.PREF_KEY_DEBUG_MODE, false);
         xPos = pref.getInt(C.PREF_KEY_X_POS, 100);
         intervalMs = pref.getInt(C.PREF_KEY_INTERVAL_MSEC, 1000);
         barMaxKB = pref.getInt(C.PREF_KEY_BAR_MAX_SPEED_KB, 10240);
