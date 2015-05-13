@@ -6,6 +6,7 @@
     <string name="config_config">Config</string>
     <string name="config_start">Start</string>
     <string name="config_stop">Stop</string>
+    <string name="config_restart">Restart</string>
     <string name="config_text_size">TextSize</string>
     <string name="config_auto_start_on_boot">Auto start on boot</string>
     <string name="config_hide_when_in_fullscreen">Hide when in fullscreen</string>

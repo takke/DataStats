@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
         // start
         {
             final MenuItem item = menu.add(R.string.config_start);
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -115,13 +115,29 @@ public class MainActivity extends Activity {
         // stop
         {
             final MenuItem item = menu.add(R.string.config_stop);
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
 
                     doStopService();
+                    return true;
+                }
+            });
+        }
+
+        // restart
+        {
+            final MenuItem item = menu.add(R.string.config_restart);
+//            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+
+                    doStopService();
+                    doRestartService();
                     return true;
                 }
             });

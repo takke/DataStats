@@ -6,6 +6,7 @@
     <string name="config_config">設定</string>
     <string name="config_start">開始</string>
     <string name="config_stop">停止</string>
+    <string name="config_restart">再起動</string>
     <string name="config_text_size">文字サイズ</string>
     <string name="config_auto_start_on_boot">端末起動時に自動起動する</string>
     <string name="config_hide_when_in_fullscreen">フルスクリーン時に非表示にする</string>
