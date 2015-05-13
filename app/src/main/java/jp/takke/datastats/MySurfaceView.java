@@ -111,6 +111,14 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
+    public void drawBlank() {
+
+        MyLog.d("drawBlank");
+
+        myDrawFrame(-1, -1, 0, 0);
+    }
+
+
     public void setTraffic(long tx, int pTx, long rx, int pRx) {
 
         mTrafficList.add(new Traffic(System.currentTimeMillis(), tx, pTx, rx, pRx));
@@ -209,6 +217,11 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         mLastTx = tx;
         mLastRx = rx;
 
+        myDrawFrame(tx, rx, pTx, pRx);
+    }
+
+
+    private void myDrawFrame(long tx, long rx, int pTx, int pRx) {
 
         //--------------------------------------------------
         // draw start
@@ -218,7 +231,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             return;
         }
 
-        
+
         //--------------------------------------------------
         // clear background
         //--------------------------------------------------
@@ -250,7 +263,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             paint.setStrokeWidth(resources.getDimensionPixelSize(R.dimen.updown_bar_right_border_size));
             canvas.drawLine(xUploadEnd, 0, xUploadEnd, mScreenHeight, paint);
         }
-        
+
         // download gradient
         if (downloadDrawable == null) {
             downloadDrawable = resources.getDrawable(R.drawable.download_background);
@@ -268,7 +281,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         final float scaledDensity = resources.getDisplayMetrics().scaledDensity;
         final int textSizeSp = Config.textSizeSp;
         final float textSizePx = textSizeSp * scaledDensity;
-        
+
         // upload text
         paint.setTypeface(Typeface.MONOSPACE);
         paint.setColor(MyTrafficUtil.getTextColorByBytes(resources, tx));
@@ -331,6 +344,10 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     private String getReadableUDText(long bytes) {
 
 //        MyLog.d(" getReadableUDText: " + bytes + "B");
+
+        if (bytes < 0) {
+            return "";
+        }
 
         if (Config.unitTypeBps) {
             final long bits = bytes * 8;

@@ -19,4 +19,7 @@ public class C {
 
     // Service維持のためのAlarmの更新間隔[ms]
     public static final int ALARM_INTERVAL_MSEC = 60 * 1000;
+
+    public static final int SCREEN_ON_LOGIC_DELAY_MSEC = 3000;
+    public static final int SCREEN_OFF_LOGIC_DELAY_MSEC = 3000;
 }

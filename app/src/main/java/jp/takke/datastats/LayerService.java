@@ -106,6 +106,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     private Handler mHandler = new Handler();
 
 
+    private int mScreenOnOffSequence = 0;
 
     /**
      * スリープ状態(SCREEN_ON/OFF)の検出用レシーバ
@@ -115,16 +116,59 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            mScreenOnOffSequence ++;
+
             final String action = intent.getAction();
             if (action.equals(Intent.ACTION_SCREEN_ON)) {
 
-                MyLog.d("LayerService: screen on");
+                onScreenOn(mScreenOnOffSequence);
 
-                // 停止していれば再開する
-                mSleeping = false;
+            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
 
-                // SurfaceViewにSleepingフラグを反映
-                setSleepingFlagToSurfaceView();
+                // たいていは GatherThread で検出したほうが早いんだけど設定値によっては
+                // 遅い場合もあるので Receiver での検出時も呼び出しておく
+                onScreenOff(mScreenOnOffSequence, "Intent");
+            }
+        }
+    };
+
+
+    private void onScreenOn(final int screenOnOffSequence) {
+
+        MyLog.d("LayerService: onScreenOn[" + screenOnOffSequence + "]");
+
+        // 停止していれば再開する
+        mSleeping = false;
+
+        // SurfaceViewにSleepingフラグを反映
+        setSleepingFlagToSurfaceView();
+
+        // 表示初期化
+        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        if (mySurfaceView != null) {
+            mySurfaceView.drawBlank();
+        }
+
+
+        // スレッド開始は少し遅延させる
+        // ※スレッド開始処理は重いので端末をロックさせてしまう。一時的なスリープ解除で端末がロックしてしまうのを回避するため。
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // スリープ状態に戻っていたら開始しない
+                if (mSleeping) {
+                    MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: skip to start threads (sleeping)");
+                    return;
+                }
+
+                // 既にスレッドが開始していたら処理しない
+                if (mThread != null) {
+                    MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: skip to start threads (already started)");
+                    return;
+                }
+
+                MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: starting threads");
 
                 // 通信量取得スレッド開始
                 startGatherThread();
@@ -132,24 +176,19 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 // Alarmループ開始
                 scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
 
-            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-
-                // たいていは GatherThread で検出したほうが早いんだけど設定値によっては
-                // 遅い場合もあるので Receiver での検出時も呼び出しておく
-                onScreenOff();
             }
-        }
-    };
+        }, C.SCREEN_ON_LOGIC_DELAY_MSEC);
+    }
 
 
-    private void onScreenOff() {
+    private void onScreenOff(final int screenOnOffSequence, String cause) {
 
         if (mSleeping) {
-            MyLog.d("LayerService.onScreenOff: already sleeping");
+            MyLog.d("LayerService.onScreenOff[" + screenOnOffSequence + "][" + cause + "]: already sleeping");
             return;
         }
 
-        MyLog.d("LayerService.onScreenOff");
+        MyLog.d("LayerService.onScreenOff[" + screenOnOffSequence + "][" + cause + "]");
 
         // 停止する
         mSleeping = true;
@@ -157,11 +196,34 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // SurfaceViewにSleepingフラグを反映
         setSleepingFlagToSurfaceView();
 
-        // 通信量取得スレッド停止
-        stopGatherThread();
+        // スレッド停止は少し遅延させる
+        // ※スレッド開始と同様
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        // アラーム停止
-        stopAlarm();
+                // スリープ復帰済みなら停止しない
+                if (!mSleeping) {
+                    MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: skip to stop threads (not sleeping)");
+                    return;
+                }
+
+                // 既にスレッドが停止していたら処理しない
+                if (mThread == null) {
+                    MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: skip to stop threads (already stopped)");
+                    return;
+                }
+
+                MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: stopping threads");
+
+                // 通信量取得スレッド停止
+                stopGatherThread();
+
+                // アラーム停止
+                stopAlarm();
+
+            }
+        }, C.SCREEN_OFF_LOGIC_DELAY_MSEC);
     }
 
 
@@ -603,7 +665,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                     //noinspection deprecation
                     if (!powermanager.isScreenOn()) {
                         MyLog.d("LayerService$GatherThread: not interactive");
-                        onScreenOff();
+                        onScreenOff(mScreenOnOffSequence, "GatherThread");
                     }
                 }
             }
