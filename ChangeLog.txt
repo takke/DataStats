@@ -1,3 +1,8 @@
+v2.2.2 (2015.05.13)
+- Improve sleep on/off behavior
+- Add restart menu
+- Add debug feature (dump logs to internal storage, add WRITE_EXTERNAL_STORAGE permission)
+
 v2.2.1 (2015.05.04)
 - Fix delay to detect screen off
 
