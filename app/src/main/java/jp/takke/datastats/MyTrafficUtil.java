@@ -2,6 +2,11 @@ package jp.takke.datastats;
 
 import android.content.res.Resources;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class MyTrafficUtil {
 
 
@@ -49,5 +54,45 @@ public class MyTrafficUtil {
             return resources.getColor(R.color.textColorMiddle);
         }
         return resources.getColor(R.color.textColorHigh);
+    }
+
+    static long getLoopbackRxBytes() {
+
+        long rxBytes = 0;
+        File file = new File("/sys/class/net/lo/statistics/rx_bytes");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            String line;
+            if ((line = br.readLine()) != null) {
+                rxBytes = Long.valueOf(line);
+            }
+
+            br.close();
+        } catch (IOException e) {
+            rxBytes = 0;
+        }
+
+        return rxBytes;
+    }
+
+    static long getLoopbackTxBytes() {
+
+        long txBytes = 0;
+        File file = new File("/sys/class/net/lo/statistics/tx_bytes");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            String line;
+            if ((line = br.readLine()) != null) {
+                txBytes = Long.valueOf(line);
+            }
+
+            br.close();
+        } catch (IOException e) {
+            txBytes = 0;
+        }
+
+        return txBytes;
     }
 }

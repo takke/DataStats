@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.net.TrafficStats;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -85,6 +86,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private long mLastRxBytes = 0;
     private long mLastTxBytes = 0;
+
+    private long mLastLoopbackRxBytes = 0;
+    private long mLastLoopbackTxBytes = 0;
 
     private long mDiffRxBytes = 0;
     private long mDiffTxBytes = 0;
@@ -495,6 +499,20 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
         if (mLastTxBytes > 0) {
             mDiffTxBytes = totalTxBytes - mLastTxBytes;
+        }
+
+        // loopback通信量を省く処理
+        // Android4.3未満はTrafficStats.getTotalRx/TxBytes()に
+        // loopback通信量を含んでいないのでこの処理はしない
+        if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT) {
+            final long loopbackRxBytes = MyTrafficUtil.getLoopbackRxBytes();
+            final long loopbackTxBytes = MyTrafficUtil.getLoopbackTxBytes();
+            long diffLoopbackRxBytes = loopbackRxBytes - mLastLoopbackRxBytes;
+            long diffLoopbackTxBytes = loopbackTxBytes - mLastLoopbackTxBytes;
+            mDiffRxBytes -= diffLoopbackRxBytes;
+            mDiffTxBytes -= diffLoopbackTxBytes;
+            mLastLoopbackRxBytes = loopbackRxBytes;
+            mLastLoopbackTxBytes = loopbackTxBytes;
         }
 
         final long now = System.currentTimeMillis();
