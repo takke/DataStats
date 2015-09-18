@@ -35,17 +35,19 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     boolean mServiceAlive -> f
     long mLastRxBytes -> g
     long mLastTxBytes -> h
-    long mDiffRxBytes -> i
-    long mDiffTxBytes -> j
-    long mLastTime -> k
-    long mElapsedMs -> l
-    boolean mSnapshot -> m
-    long mSnapshotBytes -> n
-    jp.takke.datastats.LayerService$GatherThread mThread -> o
-    boolean mThreadActive -> p
-    android.os.Handler mHandler -> q
-    int mScreenOnOffSequence -> r
-    android.content.BroadcastReceiver mReceiver -> s
+    long mLastLoopbackRxBytes -> i
+    long mLastLoopbackTxBytes -> j
+    long mDiffRxBytes -> k
+    long mDiffTxBytes -> l
+    long mLastTime -> m
+    long mElapsedMs -> n
+    boolean mSnapshot -> o
+    long mSnapshotBytes -> p
+    jp.takke.datastats.LayerService$GatherThread mThread -> q
+    boolean mThreadActive -> r
+    android.os.Handler mHandler -> s
+    int mScreenOnOffSequence -> t
+    android.content.BroadcastReceiver mReceiver -> u
     void onScreenOn(int) -> a
     void onScreenOff(int,java.lang.String) -> a
     void setSleepingFlagToSurfaceView() -> a
@@ -236,6 +238,9 @@ jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.ad:
     long convertByteToD1Kb(long) -> b
     int getTextShadowColorByBytes(android.content.res.Resources,long) -> a
     int getTextColorByBytes(android.content.res.Resources,long) -> b
+    long getLoopbackRxBytes() -> a
+    long getLoopbackTxBytes() -> b
+    long readLongValueFromFile(java.lang.String) -> a
 jp.takke.util.IOUtil -> jp.takke.a.a:
     java.io.File getExternalStorageFile(java.lang.String,android.content.Context) -> a
 jp.takke.util.MyLog -> jp.takke.a.b:

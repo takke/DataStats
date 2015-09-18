@@ -1,3 +1,6 @@
+v2.2.3 (2015.09.18)
+- Fix to exclude loopback traffics (Android 4.3 or later)
+
 v2.2.2 (2015.05.13)
 - Improve sleep on/off behavior
 - Add restart menu
