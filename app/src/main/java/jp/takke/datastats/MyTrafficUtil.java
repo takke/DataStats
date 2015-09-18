@@ -3,9 +3,7 @@ package jp.takke.datastats;
 import android.content.res.Resources;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class MyTrafficUtil {
 
@@ -56,43 +54,37 @@ public class MyTrafficUtil {
         return resources.getColor(R.color.textColorHigh);
     }
 
+
     static long getLoopbackRxBytes() {
 
-        long rxBytes = 0;
-        File file = new File("/sys/class/net/lo/statistics/rx_bytes");
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-
-            String line;
-            if ((line = br.readLine()) != null) {
-                rxBytes = Long.valueOf(line);
-            }
-
-            br.close();
-        } catch (IOException e) {
-            rxBytes = 0;
-        }
-
-        return rxBytes;
+        return readLongValueFromFile("/sys/class/net/lo/statistics/rx_bytes");
     }
+
 
     static long getLoopbackTxBytes() {
 
-        long txBytes = 0;
-        File file = new File("/sys/class/net/lo/statistics/tx_bytes");
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+        return readLongValueFromFile("/sys/class/net/lo/statistics/tx_bytes");
+    }
 
-            String line;
-            if ((line = br.readLine()) != null) {
-                txBytes = Long.valueOf(line);
-            }
+
+    private static long readLongValueFromFile(String path) {
+
+        try {
+            final FileReader in = new FileReader(path);
+            final BufferedReader br = new BufferedReader(in);
+
+            final String line = br.readLine();
 
             br.close();
-        } catch (IOException e) {
-            txBytes = 0;
-        }
+            in.close();
 
-        return txBytes;
+            if (line == null) {
+                return 0;
+            }
+            return Long.valueOf(line);
+
+        } catch (Throwable ignored) {
+            return 0;
+        }
     }
 }

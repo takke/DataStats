@@ -507,12 +507,13 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT) {
             final long loopbackRxBytes = MyTrafficUtil.getLoopbackRxBytes();
             final long loopbackTxBytes = MyTrafficUtil.getLoopbackTxBytes();
-            long diffLoopbackRxBytes = loopbackRxBytes - mLastLoopbackRxBytes;
-            long diffLoopbackTxBytes = loopbackTxBytes - mLastLoopbackTxBytes;
+            final long diffLoopbackRxBytes = loopbackRxBytes - mLastLoopbackRxBytes;
+            final long diffLoopbackTxBytes = loopbackTxBytes - mLastLoopbackTxBytes;
             mDiffRxBytes -= diffLoopbackRxBytes;
             mDiffTxBytes -= diffLoopbackTxBytes;
             mLastLoopbackRxBytes = loopbackRxBytes;
             mLastLoopbackTxBytes = loopbackTxBytes;
+//            MyLog.d("loopback[" + diffLoopbackRxBytes + "][" + diffLoopbackTxBytes + "]");
         }
 
         final long now = System.currentTimeMillis();
