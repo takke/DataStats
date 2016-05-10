@@ -1,6 +1,7 @@
 package jp.takke.datastats;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -17,6 +18,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,9 @@ import android.view.WindowManager;
 import jp.takke.util.MyLog;
 
 public class LayerService extends Service implements View.OnAttachStateChangeListener {
+
+    private static final int MY_NOTIFICATION_ID = 1;
+
 
     public class LocalBinder extends ILayerService.Stub {
 
@@ -37,6 +42,12 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             mSnapshot = false;
 
             Config.loadPreferences(LayerService.this);
+
+            // 通知(常駐)
+            hideNotification();
+            if (Config.residentMode) {
+                showNotification();
+            }
 
             // Alarmループ開始
             stopAlarm();
@@ -177,6 +188,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 // 通信量取得スレッド開始
                 startGatherThread();
 
+                // 通知(常駐)
+                if (Config.residentMode) {
+                    showNotification();
+                }
+
                 // Alarmループ開始
                 scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
 
@@ -222,6 +238,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
                 // 通信量取得スレッド停止
                 stopGatherThread();
+
+                // 通知終了(常駐解除)
+                hideNotification();
 
                 // アラーム停止
                 stopAlarm();
@@ -319,9 +338,42 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         Config.loadPreferences(this);
 
-
         // 定期処理開始
 //        scheduleNextTime(intervalMs);
+    }
+
+
+    private void showNotification() {
+
+        MyLog.d("showNotification");
+
+        final NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+
+        // 通知ウインドウをクリックした際に起動するインテント
+        final Intent intent = new Intent(this, MainActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setOngoing(true);
+        builder.setPriority(NotificationCompat.PRIORITY_MIN);
+
+        builder.setContentTitle(getString(R.string.resident_service_running));
+//        builder.setContentText("表示・非表示を切り替える");
+        builder.setContentIntent(pendingIntent);
+
+        nm.notify(MY_NOTIFICATION_ID, builder.build());
+    }
+
+
+    private void hideNotification() {
+
+        MyLog.d("hideNotification");
+
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(MY_NOTIFICATION_ID);
     }
 
 
@@ -340,6 +392,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // 通信量取得スレッド開始
         if (mThread == null) {
             startGatherThread();
+        }
+
+        // 通知(常駐)
+        if (Config.residentMode) {
+            showNotification();
         }
 
         // Alarmループ続行
@@ -586,6 +643,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mServiceAlive = false;
 
         stopAlarm();
+
+        hideNotification();
 
         // 通信量取得スレッド停止
         stopGatherThread();

@@ -17,7 +17,9 @@
     <string name="config_unit_type">通信速度の単位</string>
     <string name="config_logarithm_bar">バーの対数表示</string>
     <string name="config_interpolate">補間モード(バッテリ消費量に注意)</string>
+    <string name="config_resident">常駐</string>
 
     <string name="preview">プレビュー</string>
+    <string name="resident_service_running">DataStatsサービスを実行中</string>
 
 </resources>
