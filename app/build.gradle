@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion rootProject.ext.compileSdkVersion as Integer
+    buildToolsVersion rootProject.ext.buildToolsVersion as String
 
     //noinspection GroovyAssignabilityCheck
     signingConfigs {
@@ -17,10 +17,10 @@ android {
     }
     defaultConfig {
         applicationId "jp.takke.datastats"
-        minSdkVersion 14
-        targetSdkVersion 22
-        versionCode 17
-        versionName "2.2.3"
+        targetSdkVersion rootProject.ext.targetSdkVersion as Integer
+        minSdkVersion rootProject.ext.minSdkVersion as Integer
+        versionCode rootProject.ext.versionCode as Integer
+        versionName rootProject.ext.versionName as String
     }
     buildTypes {
         release {
