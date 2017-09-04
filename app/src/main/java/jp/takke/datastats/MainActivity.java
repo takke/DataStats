@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,8 @@ import jp.takke.util.TkConfig;
 
 
 public class MainActivity extends Activity {
+
+    private static final int REQUEST_SYSTEM_OVERLAY = 1;
 
     private boolean mPreparingConfigArea = false;
 
@@ -62,11 +66,47 @@ public class MainActivity extends Activity {
 
         preparePreviewArea();
 
-        final Intent service = new Intent(this, LayerService.class);
-        bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+        // M以降の権限対応
+        if (!OverlayUtil.checkOverlayPermission(this)) {
+            requestOverlayPermission();
+        } else {
+            doBindService();
+        }
 
         // 外部ストレージのログファイルを削除する
         MyLog.deleteBigExternalLogFile();
+    }
+
+
+    private void doBindService() {
+
+        final Intent service = new Intent(this, LayerService.class);
+        bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+
+    private void requestOverlayPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, REQUEST_SYSTEM_OVERLAY);
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_SYSTEM_OVERLAY) {
+            if (OverlayUtil.checkOverlayPermission(this)) {
+                MyLog.i("overlay permission OK");
+                doBindService();
+            } else {
+                MyLog.i("overlay permission NG");
+                finish();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -206,8 +246,7 @@ public class MainActivity extends Activity {
             }
         } else {
             // rebind
-            final Intent service = new Intent(MainActivity.this, LayerService.class);
-            bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+            doBindService();
         }
 
         final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);

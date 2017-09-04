@@ -74,11 +74,11 @@ public class MyLog {
 //	}
 
 	
-//	public static void w(String msg) {
-//		Log.w(TkConsts.LOG_NAME, msg);
-//
-//		MyLog.dumpToExternalLogFile(Log.WARN, msg);
-//	}
+	public static void w(String msg) {
+		Log.w(TkConsts.LOG_NAME, msg);
+
+		MyLog.dumpToExternalLogFile(Log.WARN, msg);
+	}
 
 //	public static void wWithElapsedTime(String msg, long startTick) {
 //

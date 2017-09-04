@@ -302,6 +302,12 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         MyLog.d("LayerService.onCreate");
 
+        // M以降の権限対応
+        if (!OverlayUtil.checkOverlayPermission(this)) {
+            MyLog.w("no overlay permission");
+            return;
+        }
+
         // Viewからインフレータを作成する
         LayoutInflater layoutInflater = LayoutInflater.from(this);
 
@@ -309,7 +315,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_TOAST,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                        ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                        : WindowManager.LayoutParams.TYPE_TOAST,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
@@ -651,13 +659,15 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // 通信量取得スレッド停止
         stopGatherThread();
 
-        // スリープ状態のレシーバ解除
-        getApplicationContext().unregisterReceiver(mReceiver);
+        if (mView != null) {
+            // スリープ状態のレシーバ解除
+            getApplicationContext().unregisterReceiver(mReceiver);
 
-        mView.removeOnAttachStateChangeListener(this);
+            mView.removeOnAttachStateChangeListener(this);
 
-        // サービスが破棄されるときには重ね合わせしていたViewを削除する
-        mWindowManager.removeView(mView);
+            // サービスが破棄されるときには重ね合わせしていたViewを削除する
+            mWindowManager.removeView(mView);
+        }
     }
 
 
