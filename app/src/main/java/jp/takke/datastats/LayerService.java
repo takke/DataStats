@@ -561,7 +561,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // loopback通信量を省く処理
         // Android4.3未満はTrafficStats.getTotalRx/TxBytes()に
         // loopback通信量を含んでいないのでこの処理はしない
-        if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT) {
+        // ※Android 8.0以降は denied となるので除外する
+        if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT &&
+            Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
             final long loopbackRxBytes = MyTrafficUtil.getLoopbackRxBytes();
             final long loopbackTxBytes = MyTrafficUtil.getLoopbackTxBytes();
             final long diffLoopbackRxBytes = loopbackRxBytes - mLastLoopbackRxBytes;
