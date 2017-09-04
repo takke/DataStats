@@ -1,6 +1,7 @@
 package jp.takke.datastats;
 
 import android.app.AlarmManager;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -30,6 +31,8 @@ import jp.takke.util.MyLog;
 public class LayerService extends Service implements View.OnAttachStateChangeListener {
 
     private static final int MY_NOTIFICATION_ID = 1;
+
+    private final static String CHANNEL_ID = "resident";
 
 
     public class LocalBinder extends ILayerService.Stub {
@@ -362,7 +365,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
-
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
 
         builder.setSmallIcon(R.drawable.ic_launcher);
@@ -372,6 +374,14 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         builder.setContentTitle(getString(R.string.resident_service_running));
 //        builder.setContentText("表示・非表示を切り替える");
         builder.setContentIntent(pendingIntent);
+
+        // channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "常駐通知", NotificationManager.IMPORTANCE_LOW);
+            nm.createNotificationChannel(channel);
+            builder.setChannelId(CHANNEL_ID);
+        }
+
 
         nm.notify(MY_NOTIFICATION_ID, builder.build());
     }
