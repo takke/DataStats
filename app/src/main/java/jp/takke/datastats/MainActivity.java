@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -62,6 +63,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MyLog.d("MainActivity.onCreate");
+
         prepareConfigArea();
 
         preparePreviewArea();
@@ -80,8 +83,19 @@ public class MainActivity extends Activity {
 
     private void doBindService() {
 
-        final Intent service = new Intent(this, LayerService.class);
-        bindService(service, mServiceConnection, Context.BIND_AUTO_CREATE);
+        final Intent serviceIntent = new Intent(this, LayerService.class);
+
+        // start
+        MyLog.d("MainActivity: startService of LayerService");
+        if (Build.VERSION.SDK_INT >= 26) {
+            startForegroundService(serviceIntent);
+        } else {
+            startService(serviceIntent);
+        }
+
+        // bind
+        MyLog.d("MainActivity: bindService of LayerService");
+        bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
 
@@ -98,10 +112,10 @@ public class MainActivity extends Activity {
 
         if (requestCode == REQUEST_SYSTEM_OVERLAY) {
             if (OverlayUtil.checkOverlayPermission(this)) {
-                MyLog.i("overlay permission OK");
+                MyLog.i("MainActivity: overlay permission OK");
                 doBindService();
             } else {
-                MyLog.i("overlay permission NG");
+                MyLog.i("MainActivity: overlay permission NG");
                 finish();
             }
         }
@@ -236,6 +250,12 @@ public class MainActivity extends Activity {
 
 
     private void doRestartService() {
+
+        if (mPreparingConfigArea) {
+            MyLog.d("MainActivity.doRestartService -> cancel (preparing)");
+            return;
+        }
+        MyLog.d("MainActivity.doRestartService");
 
         if (mServiceIF != null) {
             // restart

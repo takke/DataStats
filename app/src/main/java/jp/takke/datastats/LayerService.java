@@ -320,7 +320,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                         ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                        : WindowManager.LayoutParams.TYPE_TOAST,
+                        : Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                            ? WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+                            : WindowManager.LayoutParams.TYPE_TOAST,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
@@ -382,8 +384,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             builder.setChannelId(CHANNEL_ID);
         }
 
-
-        nm.notify(MY_NOTIFICATION_ID, builder.build());
+        startForeground(MY_NOTIFICATION_ID, builder.build());
     }
 
 
@@ -399,13 +400,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     public int onStartCommand(Intent intent, int flags, int startId) {
         final int result = super.onStartCommand(intent, flags, startId);
 
-//        final long now = System.currentTimeMillis();
-//        if (mLastCommandStarted == 0) {
-//            MyLog.d("LayerService.onStartCommand: [first time]");
-//        } else {
-//            MyLog.d("LayerService.onStartCommand: [" + (now - mLastCommandStarted) + "ms]");
-//        }
-//        mLastCommandStarted = now;
+        MyLog.d("LayerService.onStartCommand[" + flags + "][" + startId + "]");
 
         // 通信量取得スレッド開始
         if (mThread == null) {
