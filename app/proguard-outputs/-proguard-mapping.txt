@@ -1,4 +1,969 @@
+android.support.annotation.Keep -> android.support.annotation.Keep:
+android.support.v4.app.BundleCompat -> android.support.v4.a.a:
+    android.os.IBinder getBinder(android.os.Bundle,java.lang.String) -> a
+android.support.v4.app.BundleCompat$BundleCompatBaseImpl -> android.support.v4.a.a$a:
+    java.lang.reflect.Method sGetIBinderMethod -> a
+    boolean sGetIBinderMethodFetched -> b
+    android.os.IBinder getBinder(android.os.Bundle,java.lang.String) -> a
+android.support.v4.app.NotificationBuilderWithActions -> android.support.v4.a.b:
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+android.support.v4.app.NotificationBuilderWithBuilderAccessor -> android.support.v4.a.c:
+    android.app.Notification build() -> a
+android.support.v4.app.NotificationCompat -> android.support.v4.a.d:
+    android.support.v4.app.NotificationCompat$NotificationCompatImpl IMPL -> a
+    void addActionsToBuilder(android.support.v4.app.NotificationBuilderWithActions,java.util.ArrayList) -> a
+    android.os.Bundle getExtras(android.app.Notification) -> a
+    void <clinit>() -> <clinit>
+android.support.v4.app.NotificationCompat$Action -> android.support.v4.a.d$a:
+    android.os.Bundle mExtras -> a
+    android.support.v4.app.RemoteInput[] mRemoteInputs -> f
+    android.support.v4.app.RemoteInput[] mDataOnlyRemoteInputs -> g
+    boolean mAllowGeneratedReplies -> h
+    int icon -> b
+    java.lang.CharSequence title -> c
+    android.app.PendingIntent actionIntent -> d
+    android.support.v4.app.NotificationCompatBase$Action$Factory FACTORY -> e
+    int getIcon() -> a
+    java.lang.CharSequence getTitle() -> b
+    android.app.PendingIntent getActionIntent() -> c
+    android.os.Bundle getExtras() -> d
+    boolean getAllowGeneratedReplies() -> e
+    android.support.v4.app.RemoteInput[] getRemoteInputs() -> f
+    android.support.v4.app.RemoteInput[] getDataOnlyRemoteInputs() -> g
+    android.support.v4.app.RemoteInputCompatBase$RemoteInput[] getDataOnlyRemoteInputs() -> h
+    android.support.v4.app.RemoteInputCompatBase$RemoteInput[] getRemoteInputs() -> i
+    void <clinit>() -> <clinit>
+android.support.v4.app.NotificationCompat$Action$1 -> android.support.v4.a.d$a$1:
+    void <init>() -> <init>
+android.support.v4.app.NotificationCompat$Builder -> android.support.v4.a.d$b:
+    android.content.Context mContext -> a
+    java.lang.CharSequence mContentTitle -> b
+    java.lang.CharSequence mContentText -> c
+    android.app.PendingIntent mContentIntent -> d
+    android.app.PendingIntent mFullScreenIntent -> e
+    android.widget.RemoteViews mTickerView -> f
+    android.graphics.Bitmap mLargeIcon -> g
+    java.lang.CharSequence mContentInfo -> h
+    int mNumber -> i
+    int mPriority -> j
+    boolean mShowWhen -> k
+    boolean mUseChronometer -> l
+    android.support.v4.app.NotificationCompat$Style mStyle -> m
+    java.lang.CharSequence mSubText -> n
+    java.lang.CharSequence[] mRemoteInputHistory -> o
+    int mProgressMax -> p
+    int mProgress -> q
+    boolean mProgressIndeterminate -> r
+    java.lang.String mGroupKey -> s
+    boolean mGroupSummary -> t
+    java.lang.String mSortKey -> u
+    java.util.ArrayList mActions -> v
+    boolean mLocalOnly -> w
+    boolean mColorized -> x
+    boolean mColorizedSet -> y
+    java.lang.String mCategory -> z
+    android.os.Bundle mExtras -> A
+    int mColor -> B
+    int mVisibility -> C
+    android.app.Notification mPublicVersion -> D
+    android.widget.RemoteViews mContentView -> E
+    android.widget.RemoteViews mBigContentView -> F
+    android.widget.RemoteViews mHeadsUpContentView -> G
+    java.lang.String mChannelId -> H
+    int mBadgeIcon -> I
+    java.lang.String mShortcutId -> J
+    long mTimeout -> K
+    int mGroupAlertBehavior -> N
+    android.app.Notification mNotification -> L
+    java.util.ArrayList mPeople -> M
+    void <init>(android.content.Context,java.lang.String) -> <init>
+    void <init>(android.content.Context) -> <init>
+    android.support.v4.app.NotificationCompat$Builder setSmallIcon(int) -> a
+    android.support.v4.app.NotificationCompat$Builder setContentTitle(java.lang.CharSequence) -> a
+    android.support.v4.app.NotificationCompat$Builder setContentIntent(android.app.PendingIntent) -> a
+    android.support.v4.app.NotificationCompat$Builder setOngoing(boolean) -> a
+    void setFlag(int,boolean) -> a
+    android.support.v4.app.NotificationCompat$Builder setPriority(int) -> b
+    android.support.v4.app.NotificationCompat$Builder setChannelId(java.lang.String) -> a
+    android.app.Notification build() -> a
+    android.support.v4.app.NotificationCompat$BuilderExtender getExtender() -> b
+    java.lang.CharSequence limitCharSequenceLength(java.lang.CharSequence) -> b
+    int access$000(android.support.v4.app.NotificationCompat$Builder) -> a
+android.support.v4.app.NotificationCompat$BuilderExtender -> android.support.v4.a.d$c:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationBuilderWithBuilderAccessor) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatApi16Impl -> android.support.v4.a.d$d:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatApi19Impl -> android.support.v4.a.d$e:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatApi20Impl -> android.support.v4.a.d$f:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatApi21Impl -> android.support.v4.a.d$g:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatApi24Impl -> android.support.v4.a.d$h:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatApi26Impl -> android.support.v4.a.d$i:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatBaseImpl -> android.support.v4.a.d$j:
+    void <init>() -> <init>
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$NotificationCompatBaseImpl$BuilderBase -> android.support.v4.a.d$j$a:
+    android.app.Notification$Builder mBuilder -> a
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean) -> <init>
+    android.app.Notification build() -> a
+android.support.v4.app.NotificationCompat$NotificationCompatImpl -> android.support.v4.a.d$k:
+    android.app.Notification build(android.support.v4.app.NotificationCompat$Builder,android.support.v4.app.NotificationCompat$BuilderExtender) -> a
+android.support.v4.app.NotificationCompat$Style -> android.support.v4.a.d$l:
+    void apply(android.support.v4.app.NotificationBuilderWithBuilderAccessor) -> a
+    android.widget.RemoteViews makeContentView(android.support.v4.app.NotificationBuilderWithBuilderAccessor) -> b
+    android.widget.RemoteViews makeBigContentView(android.support.v4.app.NotificationBuilderWithBuilderAccessor) -> c
+    android.widget.RemoteViews makeHeadsUpContentView(android.support.v4.app.NotificationBuilderWithBuilderAccessor) -> d
+    void addCompatExtras(android.os.Bundle) -> a
+android.support.v4.app.NotificationCompatApi20 -> android.support.v4.a.e:
+    void addAction(android.app.Notification$Builder,android.support.v4.app.NotificationCompatBase$Action) -> a
+android.support.v4.app.NotificationCompatApi20$Builder -> android.support.v4.a.e$a:
+    android.app.Notification$Builder b -> a
+    android.os.Bundle mExtras -> b
+    android.widget.RemoteViews mContentView -> c
+    android.widget.RemoteViews mBigContentView -> d
+    int mGroupAlertBehavior -> e
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean,boolean,boolean,int,java.lang.CharSequence,boolean,java.util.ArrayList,android.os.Bundle,java.lang.String,boolean,java.lang.String,android.widget.RemoteViews,android.widget.RemoteViews,int) -> <init>
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+    android.app.Notification build() -> a
+    void removeSoundAndVibration(android.app.Notification) -> a
+android.support.v4.app.NotificationCompatApi21 -> android.support.v4.a.f:
+android.support.v4.app.NotificationCompatApi21$Builder -> android.support.v4.a.f$a:
+    android.app.Notification$Builder b -> a
+    android.os.Bundle mExtras -> b
+    android.widget.RemoteViews mContentView -> c
+    android.widget.RemoteViews mBigContentView -> d
+    android.widget.RemoteViews mHeadsUpContentView -> e
+    int mGroupAlertBehavior -> f
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean,boolean,boolean,int,java.lang.CharSequence,boolean,java.lang.String,java.util.ArrayList,android.os.Bundle,int,int,android.app.Notification,java.lang.String,boolean,java.lang.String,android.widget.RemoteViews,android.widget.RemoteViews,android.widget.RemoteViews,int) -> <init>
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+    android.app.Notification build() -> a
+    void removeSoundAndVibration(android.app.Notification) -> a
+android.support.v4.app.NotificationCompatApi24 -> android.support.v4.a.g:
+    void addAction(android.app.Notification$Builder,android.support.v4.app.NotificationCompatBase$Action) -> a
+android.support.v4.app.NotificationCompatApi24$Builder -> android.support.v4.a.g$a:
+    android.app.Notification$Builder b -> a
+    int mGroupAlertBehavior -> b
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean,boolean,boolean,int,java.lang.CharSequence,boolean,java.lang.String,java.util.ArrayList,android.os.Bundle,int,int,android.app.Notification,java.lang.String,boolean,java.lang.String,java.lang.CharSequence[],android.widget.RemoteViews,android.widget.RemoteViews,android.widget.RemoteViews,int) -> <init>
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+    android.app.Notification build() -> a
+    void removeSoundAndVibration(android.app.Notification) -> a
+android.support.v4.app.NotificationCompatApi26 -> android.support.v4.a.h:
+android.support.v4.app.NotificationCompatApi26$Builder -> android.support.v4.a.h$a:
+    android.app.Notification$Builder mB -> a
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean,boolean,boolean,int,java.lang.CharSequence,boolean,java.lang.String,java.util.ArrayList,android.os.Bundle,int,int,android.app.Notification,java.lang.String,boolean,java.lang.String,java.lang.CharSequence[],android.widget.RemoteViews,android.widget.RemoteViews,android.widget.RemoteViews,java.lang.String,int,java.lang.String,long,boolean,boolean,int) -> <init>
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+    android.app.Notification build() -> a
+android.support.v4.app.NotificationCompatBase -> android.support.v4.a.i:
+android.support.v4.app.NotificationCompatBase$Action -> android.support.v4.a.i$a:
+    int getIcon() -> a
+    java.lang.CharSequence getTitle() -> b
+    android.app.PendingIntent getActionIntent() -> c
+    android.os.Bundle getExtras() -> d
+    android.support.v4.app.RemoteInputCompatBase$RemoteInput[] getRemoteInputs() -> i
+    android.support.v4.app.RemoteInputCompatBase$RemoteInput[] getDataOnlyRemoteInputs() -> h
+    boolean getAllowGeneratedReplies() -> e
+android.support.v4.app.NotificationCompatBase$Action$Factory -> android.support.v4.a.i$a$a:
+android.support.v4.app.NotificationCompatJellybean -> android.support.v4.a.j:
+    java.lang.Object sExtrasLock -> a
+    java.lang.reflect.Field sExtrasField -> b
+    boolean sExtrasFieldAccessFailed -> c
+    java.lang.Object sActionsLock -> d
+    android.util.SparseArray buildActionExtrasMap(java.util.List) -> a
+    android.os.Bundle getExtras(android.app.Notification) -> a
+    android.os.Bundle writeActionAndGetExtras(android.app.Notification$Builder,android.support.v4.app.NotificationCompatBase$Action) -> a
+    void <clinit>() -> <clinit>
+android.support.v4.app.NotificationCompatJellybean$Builder -> android.support.v4.a.j$a:
+    android.app.Notification$Builder b -> a
+    android.os.Bundle mExtras -> b
+    java.util.List mActionExtrasList -> c
+    android.widget.RemoteViews mContentView -> d
+    android.widget.RemoteViews mBigContentView -> e
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean,boolean,int,java.lang.CharSequence,boolean,android.os.Bundle,java.lang.String,boolean,java.lang.String,android.widget.RemoteViews,android.widget.RemoteViews) -> <init>
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+    android.app.Notification build() -> a
+android.support.v4.app.NotificationCompatKitKat -> android.support.v4.a.k:
+android.support.v4.app.NotificationCompatKitKat$Builder -> android.support.v4.a.k$a:
+    android.app.Notification$Builder b -> a
+    android.os.Bundle mExtras -> b
+    java.util.List mActionExtrasList -> c
+    android.widget.RemoteViews mContentView -> d
+    android.widget.RemoteViews mBigContentView -> e
+    void <init>(android.content.Context,android.app.Notification,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.widget.RemoteViews,int,android.app.PendingIntent,android.app.PendingIntent,android.graphics.Bitmap,int,int,boolean,boolean,boolean,int,java.lang.CharSequence,boolean,java.util.ArrayList,android.os.Bundle,java.lang.String,boolean,java.lang.String,android.widget.RemoteViews,android.widget.RemoteViews) -> <init>
+    void addAction(android.support.v4.app.NotificationCompatBase$Action) -> a
+    android.app.Notification build() -> a
+android.support.v4.app.RemoteInput -> android.support.v4.a.l:
+    java.lang.String mResultKey -> b
+    java.lang.CharSequence mLabel -> c
+    java.lang.CharSequence[] mChoices -> d
+    boolean mAllowFreeFormTextInput -> e
+    android.os.Bundle mExtras -> f
+    java.util.Set mAllowedDataTypes -> g
+    android.support.v4.app.RemoteInput$Impl IMPL -> h
+    android.support.v4.app.RemoteInputCompatBase$RemoteInput$Factory FACTORY -> a
+    java.lang.String getResultKey() -> a
+    java.lang.CharSequence getLabel() -> b
+    java.lang.CharSequence[] getChoices() -> c
+    java.util.Set getAllowedDataTypes() -> d
+    boolean getAllowFreeFormInput() -> e
+    android.os.Bundle getExtras() -> f
+    void <clinit>() -> <clinit>
+android.support.v4.app.RemoteInput$1 -> android.support.v4.a.l$1:
+    void <init>() -> <init>
+android.support.v4.app.RemoteInput$Impl -> android.support.v4.a.l$a:
+android.support.v4.app.RemoteInput$ImplApi20 -> android.support.v4.a.l$b:
+    void <init>() -> <init>
+android.support.v4.app.RemoteInput$ImplBase -> android.support.v4.a.l$c:
+    void <init>() -> <init>
+android.support.v4.app.RemoteInput$ImplJellybean -> android.support.v4.a.l$d:
+    void <init>() -> <init>
+android.support.v4.app.RemoteInputCompatApi20 -> android.support.v4.a.m:
+    android.app.RemoteInput[] fromCompat(android.support.v4.app.RemoteInputCompatBase$RemoteInput[]) -> a
+android.support.v4.app.RemoteInputCompatBase -> android.support.v4.a.n:
+android.support.v4.app.RemoteInputCompatBase$RemoteInput -> android.support.v4.a.n$a:
+    java.lang.String getResultKey() -> a
+    java.lang.CharSequence getLabel() -> b
+    java.lang.CharSequence[] getChoices() -> c
+    boolean getAllowFreeFormInput() -> e
+    android.os.Bundle getExtras() -> f
+    java.util.Set getAllowedDataTypes() -> d
+android.support.v4.app.RemoteInputCompatBase$RemoteInput$Factory -> android.support.v4.a.n$a$a:
+android.support.v4.app.RemoteInputCompatJellybean -> android.support.v4.a.o:
+    android.os.Bundle toBundle(android.support.v4.app.RemoteInputCompatBase$RemoteInput) -> a
+    android.os.Bundle[] toBundleArray(android.support.v4.app.RemoteInputCompatBase$RemoteInput[]) -> a
+android.support.v4.media.MediaBrowserCompat -> android.support.v4.media.MediaBrowserCompat:
+    boolean DEBUG -> a
+    void <clinit>() -> <clinit>
+android.support.v4.media.MediaBrowserCompat$CustomActionCallback -> android.support.v4.media.MediaBrowserCompat$a:
+    void onProgressUpdate(java.lang.String,android.os.Bundle,android.os.Bundle) -> a
+    void onResult(java.lang.String,android.os.Bundle,android.os.Bundle) -> b
+    void onError(java.lang.String,android.os.Bundle,android.os.Bundle) -> c
+android.support.v4.media.MediaBrowserCompat$CustomActionResultReceiver -> android.support.v4.media.MediaBrowserCompat$CustomActionResultReceiver:
+    java.lang.String mAction -> d
+    android.os.Bundle mExtras -> e
+    android.support.v4.media.MediaBrowserCompat$CustomActionCallback mCallback -> f
+    void onReceiveResult(int,android.os.Bundle) -> a
+android.support.v4.media.MediaBrowserCompat$ItemCallback -> android.support.v4.media.MediaBrowserCompat$b:
+    void onItemLoaded(android.support.v4.media.MediaBrowserCompat$MediaItem) -> a
+    void onError(java.lang.String) -> a
+android.support.v4.media.MediaBrowserCompat$ItemReceiver -> android.support.v4.media.MediaBrowserCompat$ItemReceiver:
+    java.lang.String mMediaId -> d
+    android.support.v4.media.MediaBrowserCompat$ItemCallback mCallback -> e
+    void onReceiveResult(int,android.os.Bundle) -> a
+android.support.v4.media.MediaBrowserCompat$MediaItem -> android.support.v4.media.MediaBrowserCompat$MediaItem:
+    int mFlags -> a
+    android.support.v4.media.MediaDescriptionCompat mDescription -> b
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(android.os.Parcel) -> <init>
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    java.lang.String toString() -> toString
+    void <clinit>() -> <clinit>
+android.support.v4.media.MediaBrowserCompat$MediaItem$1 -> android.support.v4.media.MediaBrowserCompat$MediaItem$1:
+    void <init>() -> <init>
+    android.support.v4.media.MediaBrowserCompat$MediaItem createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.MediaBrowserCompat$MediaItem[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.MediaBrowserCompat$SearchCallback -> android.support.v4.media.MediaBrowserCompat$c:
+    void onSearchResult(java.lang.String,android.os.Bundle,java.util.List) -> a
+    void onError(java.lang.String,android.os.Bundle) -> a
+android.support.v4.media.MediaBrowserCompat$SearchResultReceiver -> android.support.v4.media.MediaBrowserCompat$SearchResultReceiver:
+    java.lang.String mQuery -> d
+    android.os.Bundle mExtras -> e
+    android.support.v4.media.MediaBrowserCompat$SearchCallback mCallback -> f
+    void onReceiveResult(int,android.os.Bundle) -> a
+android.support.v4.media.MediaDescriptionCompat -> android.support.v4.media.MediaDescriptionCompat:
+    java.lang.String mMediaId -> a
+    java.lang.CharSequence mTitle -> b
+    java.lang.CharSequence mSubtitle -> c
+    java.lang.CharSequence mDescription -> d
+    android.graphics.Bitmap mIcon -> e
+    android.net.Uri mIconUri -> f
+    android.os.Bundle mExtras -> g
+    android.net.Uri mMediaUri -> h
+    java.lang.Object mDescriptionObj -> i
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(java.lang.String,java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence,android.graphics.Bitmap,android.net.Uri,android.os.Bundle,android.net.Uri) -> <init>
+    void <init>(android.os.Parcel) -> <init>
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    java.lang.String toString() -> toString
+    java.lang.Object getMediaDescription() -> a
+    android.support.v4.media.MediaDescriptionCompat fromMediaDescription(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+android.support.v4.media.MediaDescriptionCompat$1 -> android.support.v4.media.MediaDescriptionCompat$1:
+    void <init>() -> <init>
+    android.support.v4.media.MediaDescriptionCompat createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.MediaDescriptionCompat[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.MediaDescriptionCompat$Builder -> android.support.v4.media.MediaDescriptionCompat$a:
+    java.lang.String mMediaId -> a
+    java.lang.CharSequence mTitle -> b
+    java.lang.CharSequence mSubtitle -> c
+    java.lang.CharSequence mDescription -> d
+    android.graphics.Bitmap mIcon -> e
+    android.net.Uri mIconUri -> f
+    android.os.Bundle mExtras -> g
+    android.net.Uri mMediaUri -> h
+    void <init>() -> <init>
+    android.support.v4.media.MediaDescriptionCompat$Builder setMediaId(java.lang.String) -> a
+    android.support.v4.media.MediaDescriptionCompat$Builder setTitle(java.lang.CharSequence) -> a
+    android.support.v4.media.MediaDescriptionCompat$Builder setSubtitle(java.lang.CharSequence) -> b
+    android.support.v4.media.MediaDescriptionCompat$Builder setDescription(java.lang.CharSequence) -> c
+    android.support.v4.media.MediaDescriptionCompat$Builder setIconBitmap(android.graphics.Bitmap) -> a
+    android.support.v4.media.MediaDescriptionCompat$Builder setIconUri(android.net.Uri) -> a
+    android.support.v4.media.MediaDescriptionCompat$Builder setExtras(android.os.Bundle) -> a
+    android.support.v4.media.MediaDescriptionCompat$Builder setMediaUri(android.net.Uri) -> b
+    android.support.v4.media.MediaDescriptionCompat build() -> a
+android.support.v4.media.MediaDescriptionCompatApi21 -> android.support.v4.media.a:
+    java.lang.String getMediaId(java.lang.Object) -> a
+    java.lang.CharSequence getTitle(java.lang.Object) -> b
+    java.lang.CharSequence getSubtitle(java.lang.Object) -> c
+    java.lang.CharSequence getDescription(java.lang.Object) -> d
+    android.graphics.Bitmap getIconBitmap(java.lang.Object) -> e
+    android.net.Uri getIconUri(java.lang.Object) -> f
+    android.os.Bundle getExtras(java.lang.Object) -> g
+    void writeToParcel(java.lang.Object,android.os.Parcel,int) -> a
+    java.lang.Object fromParcel(android.os.Parcel) -> a
+android.support.v4.media.MediaDescriptionCompatApi21$Builder -> android.support.v4.media.a$a:
+    java.lang.Object newInstance() -> a
+    void setMediaId(java.lang.Object,java.lang.String) -> a
+    void setTitle(java.lang.Object,java.lang.CharSequence) -> a
+    void setSubtitle(java.lang.Object,java.lang.CharSequence) -> b
+    void setDescription(java.lang.Object,java.lang.CharSequence) -> c
+    void setIconBitmap(java.lang.Object,android.graphics.Bitmap) -> a
+    void setIconUri(java.lang.Object,android.net.Uri) -> a
+    void setExtras(java.lang.Object,android.os.Bundle) -> a
+    java.lang.Object build(java.lang.Object) -> a
+android.support.v4.media.MediaDescriptionCompatApi23 -> android.support.v4.media.b:
+    android.net.Uri getMediaUri(java.lang.Object) -> h
+android.support.v4.media.MediaDescriptionCompatApi23$Builder -> android.support.v4.media.b$a:
+    void setMediaUri(java.lang.Object,android.net.Uri) -> b
+android.support.v4.media.MediaMetadataCompat -> android.support.v4.media.MediaMetadataCompat:
+    android.support.v4.util.ArrayMap METADATA_KEYS_TYPE -> a
+    java.lang.String[] PREFERRED_DESCRIPTION_ORDER -> c
+    java.lang.String[] PREFERRED_BITMAP_ORDER -> d
+    java.lang.String[] PREFERRED_URI_ORDER -> e
+    android.os.Bundle mBundle -> b
+    java.lang.Object mMetadataObj -> f
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(android.os.Parcel) -> <init>
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    android.support.v4.media.MediaMetadataCompat fromMediaMetadata(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+android.support.v4.media.MediaMetadataCompat$1 -> android.support.v4.media.MediaMetadataCompat$1:
+    void <init>() -> <init>
+    android.support.v4.media.MediaMetadataCompat createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.MediaMetadataCompat[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.MediaMetadataCompatApi21 -> android.support.v4.media.c:
+    void writeToParcel(java.lang.Object,android.os.Parcel,int) -> a
+android.support.v4.media.RatingCompat -> android.support.v4.media.RatingCompat:
+    int mRatingStyle -> a
+    float mRatingValue -> b
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(int,float) -> <init>
+    java.lang.String toString() -> toString
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    void <clinit>() -> <clinit>
+android.support.v4.media.RatingCompat$1 -> android.support.v4.media.RatingCompat$1:
+    void <init>() -> <init>
+    android.support.v4.media.RatingCompat createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.RatingCompat[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.IMediaControllerCallback -> android.support.v4.media.session.a:
+    void onEvent(java.lang.String,android.os.Bundle) -> a
+    void onSessionDestroyed() -> a
+    void onPlaybackStateChanged(android.support.v4.media.session.PlaybackStateCompat) -> a
+    void onMetadataChanged(android.support.v4.media.MediaMetadataCompat) -> a
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onVolumeInfoChanged(android.support.v4.media.session.ParcelableVolumeInfo) -> a
+    void onRepeatModeChanged(int) -> a
+    void onShuffleModeChangedDeprecated(boolean) -> a
+    void onCaptioningEnabledChanged(boolean) -> b
+    void onShuffleModeChanged(int) -> b
+android.support.v4.media.session.IMediaControllerCallback$Stub -> android.support.v4.media.session.a$a:
+    void <init>() -> <init>
+    android.support.v4.media.session.IMediaControllerCallback asInterface(android.os.IBinder) -> a
+    android.os.IBinder asBinder() -> asBinder
+    boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+android.support.v4.media.session.IMediaControllerCallback$Stub$Proxy -> android.support.v4.media.session.a$a$a:
+    android.os.IBinder mRemote -> a
+    void <init>(android.os.IBinder) -> <init>
+    android.os.IBinder asBinder() -> asBinder
+    void onEvent(java.lang.String,android.os.Bundle) -> a
+    void onSessionDestroyed() -> a
+    void onPlaybackStateChanged(android.support.v4.media.session.PlaybackStateCompat) -> a
+    void onMetadataChanged(android.support.v4.media.MediaMetadataCompat) -> a
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onVolumeInfoChanged(android.support.v4.media.session.ParcelableVolumeInfo) -> a
+    void onRepeatModeChanged(int) -> a
+    void onShuffleModeChangedDeprecated(boolean) -> a
+    void onCaptioningEnabledChanged(boolean) -> b
+    void onShuffleModeChanged(int) -> b
+android.support.v4.media.session.IMediaSession -> android.support.v4.media.session.b:
+    void sendCommand(java.lang.String,android.os.Bundle,android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper) -> a
+    boolean sendMediaButton(android.view.KeyEvent) -> a
+    void registerCallbackListener(android.support.v4.media.session.IMediaControllerCallback) -> a
+    void unregisterCallbackListener(android.support.v4.media.session.IMediaControllerCallback) -> b
+    boolean isTransportControlEnabled() -> a
+    java.lang.String getPackageName() -> b
+    java.lang.String getTag() -> c
+    android.app.PendingIntent getLaunchPendingIntent() -> d
+    long getFlags() -> e
+    android.support.v4.media.session.ParcelableVolumeInfo getVolumeAttributes() -> f
+    void adjustVolume(int,int,java.lang.String) -> a
+    void setVolumeTo(int,int,java.lang.String) -> b
+    android.support.v4.media.MediaMetadataCompat getMetadata() -> g
+    android.support.v4.media.session.PlaybackStateCompat getPlaybackState() -> h
+    java.util.List getQueue() -> i
+    java.lang.CharSequence getQueueTitle() -> j
+    android.os.Bundle getExtras() -> k
+    int getRatingType() -> l
+    boolean isCaptioningEnabled() -> m
+    int getRepeatMode() -> n
+    boolean isShuffleModeEnabledDeprecated() -> o
+    int getShuffleMode() -> p
+    void addQueueItem(android.support.v4.media.MediaDescriptionCompat) -> a
+    void addQueueItemAt(android.support.v4.media.MediaDescriptionCompat,int) -> a
+    void removeQueueItem(android.support.v4.media.MediaDescriptionCompat) -> b
+    void removeQueueItemAt(int) -> a
+    void prepare() -> q
+    void prepareFromMediaId(java.lang.String,android.os.Bundle) -> a
+    void prepareFromSearch(java.lang.String,android.os.Bundle) -> b
+    void prepareFromUri(android.net.Uri,android.os.Bundle) -> a
+    void play() -> r
+    void playFromMediaId(java.lang.String,android.os.Bundle) -> c
+    void playFromSearch(java.lang.String,android.os.Bundle) -> d
+    void playFromUri(android.net.Uri,android.os.Bundle) -> b
+    void skipToQueueItem(long) -> a
+    void pause() -> s
+    void stop() -> t
+    void next() -> u
+    void previous() -> v
+    void fastForward() -> w
+    void rewind() -> x
+    void seekTo(long) -> b
+    void rate(android.support.v4.media.RatingCompat) -> a
+    void rateWithExtras(android.support.v4.media.RatingCompat,android.os.Bundle) -> a
+    void setCaptioningEnabled(boolean) -> a
+    void setRepeatMode(int) -> b
+    void setShuffleModeEnabledDeprecated(boolean) -> b
+    void setShuffleMode(int) -> c
+    void sendCustomAction(java.lang.String,android.os.Bundle) -> e
+android.support.v4.media.session.IMediaSession$Stub -> android.support.v4.media.session.b$a:
+    android.support.v4.media.session.IMediaSession asInterface(android.os.IBinder) -> a
+    android.os.IBinder asBinder() -> asBinder
+    boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+android.support.v4.media.session.IMediaSession$Stub$Proxy -> android.support.v4.media.session.b$a$a:
+    android.os.IBinder mRemote -> a
+    void <init>(android.os.IBinder) -> <init>
+    android.os.IBinder asBinder() -> asBinder
+    void sendCommand(java.lang.String,android.os.Bundle,android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper) -> a
+    boolean sendMediaButton(android.view.KeyEvent) -> a
+    void registerCallbackListener(android.support.v4.media.session.IMediaControllerCallback) -> a
+    void unregisterCallbackListener(android.support.v4.media.session.IMediaControllerCallback) -> b
+    boolean isTransportControlEnabled() -> a
+    java.lang.String getPackageName() -> b
+    java.lang.String getTag() -> c
+    android.app.PendingIntent getLaunchPendingIntent() -> d
+    long getFlags() -> e
+    android.support.v4.media.session.ParcelableVolumeInfo getVolumeAttributes() -> f
+    void adjustVolume(int,int,java.lang.String) -> a
+    void setVolumeTo(int,int,java.lang.String) -> b
+    android.support.v4.media.MediaMetadataCompat getMetadata() -> g
+    android.support.v4.media.session.PlaybackStateCompat getPlaybackState() -> h
+    java.util.List getQueue() -> i
+    java.lang.CharSequence getQueueTitle() -> j
+    android.os.Bundle getExtras() -> k
+    int getRatingType() -> l
+    boolean isCaptioningEnabled() -> m
+    int getRepeatMode() -> n
+    boolean isShuffleModeEnabledDeprecated() -> o
+    int getShuffleMode() -> p
+    void addQueueItem(android.support.v4.media.MediaDescriptionCompat) -> a
+    void addQueueItemAt(android.support.v4.media.MediaDescriptionCompat,int) -> a
+    void removeQueueItem(android.support.v4.media.MediaDescriptionCompat) -> b
+    void removeQueueItemAt(int) -> a
+    void prepare() -> q
+    void prepareFromMediaId(java.lang.String,android.os.Bundle) -> a
+    void prepareFromSearch(java.lang.String,android.os.Bundle) -> b
+    void prepareFromUri(android.net.Uri,android.os.Bundle) -> a
+    void play() -> r
+    void playFromMediaId(java.lang.String,android.os.Bundle) -> c
+    void playFromSearch(java.lang.String,android.os.Bundle) -> d
+    void playFromUri(android.net.Uri,android.os.Bundle) -> b
+    void skipToQueueItem(long) -> a
+    void pause() -> s
+    void stop() -> t
+    void next() -> u
+    void previous() -> v
+    void fastForward() -> w
+    void rewind() -> x
+    void seekTo(long) -> b
+    void rate(android.support.v4.media.RatingCompat) -> a
+    void rateWithExtras(android.support.v4.media.RatingCompat,android.os.Bundle) -> a
+    void setCaptioningEnabled(boolean) -> a
+    void setRepeatMode(int) -> b
+    void setShuffleModeEnabledDeprecated(boolean) -> b
+    void setShuffleMode(int) -> c
+    void sendCustomAction(java.lang.String,android.os.Bundle) -> e
+android.support.v4.media.session.MediaControllerCompat -> android.support.v4.media.session.MediaControllerCompat:
+android.support.v4.media.session.MediaControllerCompat$Callback -> android.support.v4.media.session.MediaControllerCompat$a:
+    java.lang.Object mCallbackObj -> c
+    android.support.v4.media.session.MediaControllerCompat$Callback$MessageHandler mHandler -> a
+    boolean mHasExtraCallback -> b
+    void <init>() -> <init>
+    void onSessionDestroyed() -> a
+    void onSessionEvent(java.lang.String,android.os.Bundle) -> a
+    void onPlaybackStateChanged(android.support.v4.media.session.PlaybackStateCompat) -> a
+    void onMetadataChanged(android.support.v4.media.MediaMetadataCompat) -> a
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onAudioInfoChanged(android.support.v4.media.session.MediaControllerCompat$PlaybackInfo) -> a
+    void onCaptioningEnabledChanged(boolean) -> a
+    void onRepeatModeChanged(int) -> a
+    void onShuffleModeChanged(boolean) -> b
+    void onShuffleModeChanged(int) -> b
+    void postToHandler(int,java.lang.Object,android.os.Bundle) -> a
+android.support.v4.media.session.MediaControllerCompat$Callback$MessageHandler -> android.support.v4.media.session.MediaControllerCompat$a$a:
+    boolean mRegistered -> a
+    android.support.v4.media.session.MediaControllerCompat$Callback this$0 -> b
+    void handleMessage(android.os.Message) -> handleMessage
+android.support.v4.media.session.MediaControllerCompat$Callback$StubApi21 -> android.support.v4.media.session.MediaControllerCompat$a$b:
+    java.lang.ref.WeakReference mCallback -> a
+    void <init>(android.support.v4.media.session.MediaControllerCompat$Callback) -> <init>
+    void onSessionDestroyed() -> a
+    void onSessionEvent(java.lang.String,android.os.Bundle) -> a
+    void onPlaybackStateChanged(java.lang.Object) -> a
+    void onMetadataChanged(java.lang.Object) -> b
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onAudioInfoChanged(int,int,int,int,int) -> a
+android.support.v4.media.session.MediaControllerCompat$Callback$StubCompat -> android.support.v4.media.session.MediaControllerCompat$a$c:
+    java.lang.ref.WeakReference mCallback -> a
+    void <init>(android.support.v4.media.session.MediaControllerCompat$Callback) -> <init>
+    void onEvent(java.lang.String,android.os.Bundle) -> a
+    void onSessionDestroyed() -> a
+    void onPlaybackStateChanged(android.support.v4.media.session.PlaybackStateCompat) -> a
+    void onMetadataChanged(android.support.v4.media.MediaMetadataCompat) -> a
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onCaptioningEnabledChanged(boolean) -> b
+    void onRepeatModeChanged(int) -> a
+    void onShuffleModeChangedDeprecated(boolean) -> a
+    void onShuffleModeChanged(int) -> b
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onVolumeInfoChanged(android.support.v4.media.session.ParcelableVolumeInfo) -> a
+android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21 -> android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21:
+    java.util.List mPendingCallbacks -> a
+    android.support.v4.media.session.IMediaSession mExtraBinder -> b
+    java.util.HashMap mCallbackMap -> c
+    void processPendingCallbacks() -> a
+    android.support.v4.media.session.IMediaSession access$202(android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21,android.support.v4.media.session.IMediaSession) -> a
+    void access$300(android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21) -> a
+android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21$ExtraBinderRequestResultReceiver -> android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21$ExtraBinderRequestResultReceiver:
+    java.lang.ref.WeakReference mMediaControllerImpl -> a
+    void onReceiveResult(int,android.os.Bundle) -> onReceiveResult
+android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21$ExtraCallback -> android.support.v4.media.session.MediaControllerCompat$MediaControllerImplApi21$a:
+    void <init>(android.support.v4.media.session.MediaControllerCompat$Callback) -> <init>
+    void onSessionDestroyed() -> a
+    void onMetadataChanged(android.support.v4.media.MediaMetadataCompat) -> a
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onVolumeInfoChanged(android.support.v4.media.session.ParcelableVolumeInfo) -> a
+android.support.v4.media.session.MediaControllerCompat$PlaybackInfo -> android.support.v4.media.session.MediaControllerCompat$b:
+    int mPlaybackType -> a
+    int mAudioStream -> b
+    int mVolumeControl -> c
+    int mMaxVolume -> d
+    int mCurrentVolume -> e
+    void <init>(int,int,int,int,int) -> <init>
+android.support.v4.media.session.MediaControllerCompatApi21 -> android.support.v4.media.session.c:
+    java.lang.Object createCallback(android.support.v4.media.session.MediaControllerCompatApi21$Callback) -> a
+android.support.v4.media.session.MediaControllerCompatApi21$Callback -> android.support.v4.media.session.c$a:
+    void onSessionDestroyed() -> a
+    void onSessionEvent(java.lang.String,android.os.Bundle) -> a
+    void onPlaybackStateChanged(java.lang.Object) -> a
+    void onMetadataChanged(java.lang.Object) -> b
+    void onQueueChanged(java.util.List) -> a
+    void onQueueTitleChanged(java.lang.CharSequence) -> a
+    void onExtrasChanged(android.os.Bundle) -> a
+    void onAudioInfoChanged(int,int,int,int,int) -> a
+android.support.v4.media.session.MediaControllerCompatApi21$CallbackProxy -> android.support.v4.media.session.c$b:
+    android.support.v4.media.session.MediaControllerCompatApi21$Callback mCallback -> a
+    void <init>(android.support.v4.media.session.MediaControllerCompatApi21$Callback) -> <init>
+    void onSessionDestroyed() -> onSessionDestroyed
+    void onSessionEvent(java.lang.String,android.os.Bundle) -> onSessionEvent
+    void onPlaybackStateChanged(android.media.session.PlaybackState) -> onPlaybackStateChanged
+    void onMetadataChanged(android.media.MediaMetadata) -> onMetadataChanged
+    void onQueueChanged(java.util.List) -> onQueueChanged
+    void onQueueTitleChanged(java.lang.CharSequence) -> onQueueTitleChanged
+    void onExtrasChanged(android.os.Bundle) -> onExtrasChanged
+    void onAudioInfoChanged(android.media.session.MediaController$PlaybackInfo) -> onAudioInfoChanged
+android.support.v4.media.session.MediaControllerCompatApi21$PlaybackInfo -> android.support.v4.media.session.c$c:
+    android.media.AudioAttributes getAudioAttributes(java.lang.Object) -> a
+    int getLegacyAudioStream(java.lang.Object) -> b
+    int toLegacyStreamType(android.media.AudioAttributes) -> a
+android.support.v4.media.session.MediaSessionCompat -> android.support.v4.media.session.MediaSessionCompat:
+android.support.v4.media.session.MediaSessionCompat$QueueItem -> android.support.v4.media.session.MediaSessionCompat$QueueItem:
+    android.support.v4.media.MediaDescriptionCompat mDescription -> a
+    long mId -> b
+    java.lang.Object mItem -> c
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(java.lang.Object,android.support.v4.media.MediaDescriptionCompat,long) -> <init>
+    void <init>(android.os.Parcel) -> <init>
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    int describeContents() -> describeContents
+    android.support.v4.media.session.MediaSessionCompat$QueueItem fromQueueItem(java.lang.Object) -> a
+    java.util.List fromQueueItemList(java.util.List) -> a
+    java.lang.String toString() -> toString
+    void <clinit>() -> <clinit>
+android.support.v4.media.session.MediaSessionCompat$QueueItem$1 -> android.support.v4.media.session.MediaSessionCompat$QueueItem$1:
+    void <init>() -> <init>
+    android.support.v4.media.session.MediaSessionCompat$QueueItem createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.session.MediaSessionCompat$QueueItem[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper -> android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper:
+    android.os.ResultReceiver mResultReceiver -> a
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(android.os.Parcel) -> <init>
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    void <clinit>() -> <clinit>
+android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper$1 -> android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper$1:
+    void <init>() -> <init>
+    android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.session.MediaSessionCompat$ResultReceiverWrapper[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.MediaSessionCompat$Token -> android.support.v4.media.session.MediaSessionCompat$Token:
+    java.lang.Object mInner -> a
+    android.support.v4.media.session.IMediaSession mExtraBinder -> b
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(java.lang.Object) -> <init>
+    void <init>(java.lang.Object,android.support.v4.media.session.IMediaSession) -> <init>
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    int hashCode() -> hashCode
+    boolean equals(java.lang.Object) -> equals
+    void <clinit>() -> <clinit>
+android.support.v4.media.session.MediaSessionCompat$Token$1 -> android.support.v4.media.session.MediaSessionCompat$Token$1:
+    void <init>() -> <init>
+    android.support.v4.media.session.MediaSessionCompat$Token createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.session.MediaSessionCompat$Token[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.MediaSessionCompatApi21 -> android.support.v4.media.session.d:
+android.support.v4.media.session.MediaSessionCompatApi21$QueueItem -> android.support.v4.media.session.d$a:
+    java.lang.Object getDescription(java.lang.Object) -> a
+    long getQueueId(java.lang.Object) -> b
+android.support.v4.media.session.ParcelableVolumeInfo -> android.support.v4.media.session.ParcelableVolumeInfo:
+    int volumeType -> a
+    int audioStream -> b
+    int controlType -> c
+    int maxVolume -> d
+    int currentVolume -> e
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(android.os.Parcel) -> <init>
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    void <clinit>() -> <clinit>
+android.support.v4.media.session.ParcelableVolumeInfo$1 -> android.support.v4.media.session.ParcelableVolumeInfo$1:
+    void <init>() -> <init>
+    android.support.v4.media.session.ParcelableVolumeInfo createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.session.ParcelableVolumeInfo[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.PlaybackStateCompat -> android.support.v4.media.session.PlaybackStateCompat:
+    int mState -> a
+    long mPosition -> b
+    long mBufferedPosition -> c
+    float mSpeed -> d
+    long mActions -> e
+    int mErrorCode -> f
+    java.lang.CharSequence mErrorMessage -> g
+    long mUpdateTime -> h
+    java.util.List mCustomActions -> i
+    long mActiveItemId -> j
+    android.os.Bundle mExtras -> k
+    java.lang.Object mStateObj -> l
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(int,long,long,float,long,int,java.lang.CharSequence,long,java.util.List,long,android.os.Bundle) -> <init>
+    void <init>(android.os.Parcel) -> <init>
+    java.lang.String toString() -> toString
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    android.support.v4.media.session.PlaybackStateCompat fromPlaybackState(java.lang.Object) -> a
+    void <clinit>() -> <clinit>
+android.support.v4.media.session.PlaybackStateCompat$1 -> android.support.v4.media.session.PlaybackStateCompat$1:
+    void <init>() -> <init>
+    android.support.v4.media.session.PlaybackStateCompat createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.session.PlaybackStateCompat[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.PlaybackStateCompat$CustomAction -> android.support.v4.media.session.PlaybackStateCompat$CustomAction:
+    java.lang.String mAction -> a
+    java.lang.CharSequence mName -> b
+    int mIcon -> c
+    android.os.Bundle mExtras -> d
+    java.lang.Object mCustomActionObj -> e
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void <init>(java.lang.String,java.lang.CharSequence,int,android.os.Bundle) -> <init>
+    void <init>(android.os.Parcel) -> <init>
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    int describeContents() -> describeContents
+    android.support.v4.media.session.PlaybackStateCompat$CustomAction fromCustomAction(java.lang.Object) -> a
+    java.lang.String toString() -> toString
+    void <clinit>() -> <clinit>
+android.support.v4.media.session.PlaybackStateCompat$CustomAction$1 -> android.support.v4.media.session.PlaybackStateCompat$CustomAction$1:
+    void <init>() -> <init>
+    android.support.v4.media.session.PlaybackStateCompat$CustomAction createFromParcel(android.os.Parcel) -> a
+    android.support.v4.media.session.PlaybackStateCompat$CustomAction[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.media.session.PlaybackStateCompatApi21 -> android.support.v4.media.session.e:
+    int getState(java.lang.Object) -> a
+    long getPosition(java.lang.Object) -> b
+    long getBufferedPosition(java.lang.Object) -> c
+    float getPlaybackSpeed(java.lang.Object) -> d
+    long getActions(java.lang.Object) -> e
+    java.lang.CharSequence getErrorMessage(java.lang.Object) -> f
+    long getLastPositionUpdateTime(java.lang.Object) -> g
+    java.util.List getCustomActions(java.lang.Object) -> h
+    long getActiveQueueItemId(java.lang.Object) -> i
+android.support.v4.media.session.PlaybackStateCompatApi21$CustomAction -> android.support.v4.media.session.e$a:
+    java.lang.String getAction(java.lang.Object) -> a
+    java.lang.CharSequence getName(java.lang.Object) -> b
+    int getIcon(java.lang.Object) -> c
+    android.os.Bundle getExtras(java.lang.Object) -> d
+android.support.v4.media.session.PlaybackStateCompatApi22 -> android.support.v4.media.session.f:
+    android.os.Bundle getExtras(java.lang.Object) -> a
+android.support.v4.os.IResultReceiver -> android.support.v4.b.a:
+    void send(int,android.os.Bundle) -> a
+android.support.v4.os.IResultReceiver$Stub -> android.support.v4.b.a$a:
+    void <init>() -> <init>
+    android.support.v4.os.IResultReceiver asInterface(android.os.IBinder) -> a
+    android.os.IBinder asBinder() -> asBinder
+    boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
+android.support.v4.os.IResultReceiver$Stub$Proxy -> android.support.v4.b.a$a$a:
+    android.os.IBinder mRemote -> a
+    void <init>(android.os.IBinder) -> <init>
+    android.os.IBinder asBinder() -> asBinder
+    void send(int,android.os.Bundle) -> a
+android.support.v4.os.ResultReceiver -> android.support.v4.b.b:
+    boolean mLocal -> a
+    android.os.Handler mHandler -> b
+    android.support.v4.os.IResultReceiver mReceiver -> c
+    android.os.Parcelable$Creator CREATOR -> CREATOR
+    void onReceiveResult(int,android.os.Bundle) -> a
+    int describeContents() -> describeContents
+    void writeToParcel(android.os.Parcel,int) -> writeToParcel
+    void <init>(android.os.Parcel) -> <init>
+    void <clinit>() -> <clinit>
+android.support.v4.os.ResultReceiver$1 -> android.support.v4.b.b$1:
+    void <init>() -> <init>
+    android.support.v4.os.ResultReceiver createFromParcel(android.os.Parcel) -> a
+    android.support.v4.os.ResultReceiver[] newArray(int) -> a
+    java.lang.Object[] newArray(int) -> newArray
+    java.lang.Object createFromParcel(android.os.Parcel) -> createFromParcel
+android.support.v4.os.ResultReceiver$MyResultReceiver -> android.support.v4.b.b$a:
+    android.support.v4.os.ResultReceiver this$0 -> a
+    void <init>(android.support.v4.os.ResultReceiver) -> <init>
+    void send(int,android.os.Bundle) -> a
+android.support.v4.os.ResultReceiver$MyRunnable -> android.support.v4.b.b$b:
+    int mResultCode -> a
+    android.os.Bundle mResultData -> b
+    android.support.v4.os.ResultReceiver this$0 -> c
+    void <init>(android.support.v4.os.ResultReceiver,int,android.os.Bundle) -> <init>
+    void run() -> run
+android.support.v4.util.ArrayMap -> android.support.v4.c.a:
+    android.support.v4.util.MapCollections mCollections -> a
+    void <init>() -> <init>
+    android.support.v4.util.MapCollections getCollection() -> b
+    void putAll(java.util.Map) -> putAll
+    java.util.Set entrySet() -> entrySet
+    java.util.Set keySet() -> keySet
+    java.util.Collection values() -> values
+android.support.v4.util.ArrayMap$1 -> android.support.v4.c.a$1:
+    android.support.v4.util.ArrayMap this$0 -> a
+    void <init>(android.support.v4.util.ArrayMap) -> <init>
+    int colGetSize() -> a
+    java.lang.Object colGetEntry(int,int) -> a
+    int colIndexOfKey(java.lang.Object) -> a
+    int colIndexOfValue(java.lang.Object) -> b
+    java.util.Map colGetMap() -> b
+    void colPut(java.lang.Object,java.lang.Object) -> a
+    java.lang.Object colSetValue(int,java.lang.Object) -> a
+    void colRemoveAt(int) -> a
+    void colClear() -> c
+android.support.v4.util.ContainerHelpers -> android.support.v4.c.b:
+    int[] EMPTY_INTS -> a
+    long[] EMPTY_LONGS -> b
+    java.lang.Object[] EMPTY_OBJECTS -> c
+    boolean equal(java.lang.Object,java.lang.Object) -> a
+    int binarySearch(int[],int,int) -> a
+    void <clinit>() -> <clinit>
+android.support.v4.util.MapCollections -> android.support.v4.c.c:
+    android.support.v4.util.MapCollections$EntrySet mEntrySet -> b
+    android.support.v4.util.MapCollections$KeySet mKeySet -> c
+    android.support.v4.util.MapCollections$ValuesCollection mValues -> d
+    void <init>() -> <init>
+    boolean containsAllHelper(java.util.Map,java.util.Collection) -> a
+    boolean removeAllHelper(java.util.Map,java.util.Collection) -> b
+    boolean retainAllHelper(java.util.Map,java.util.Collection) -> c
+    java.lang.Object[] toArrayHelper(int) -> b
+    java.lang.Object[] toArrayHelper(java.lang.Object[],int) -> a
+    boolean equalsSetHelper(java.util.Set,java.lang.Object) -> a
+    java.util.Set getEntrySet() -> d
+    java.util.Set getKeySet() -> e
+    java.util.Collection getValues() -> f
+    int colGetSize() -> a
+    java.lang.Object colGetEntry(int,int) -> a
+    int colIndexOfKey(java.lang.Object) -> a
+    int colIndexOfValue(java.lang.Object) -> b
+    java.util.Map colGetMap() -> b
+    void colPut(java.lang.Object,java.lang.Object) -> a
+    java.lang.Object colSetValue(int,java.lang.Object) -> a
+    void colRemoveAt(int) -> a
+    void colClear() -> c
+android.support.v4.util.MapCollections$ArrayIterator -> android.support.v4.c.c$a:
+    int mOffset -> a
+    int mSize -> b
+    int mIndex -> c
+    boolean mCanRemove -> d
+    android.support.v4.util.MapCollections this$0 -> e
+    void <init>(android.support.v4.util.MapCollections,int) -> <init>
+    boolean hasNext() -> hasNext
+    java.lang.Object next() -> next
+    void remove() -> remove
+android.support.v4.util.MapCollections$EntrySet -> android.support.v4.c.c$b:
+    android.support.v4.util.MapCollections this$0 -> a
+    void <init>(android.support.v4.util.MapCollections) -> <init>
+    boolean add(java.util.Map$Entry) -> a
+    boolean addAll(java.util.Collection) -> addAll
+    void clear() -> clear
+    boolean contains(java.lang.Object) -> contains
+    boolean containsAll(java.util.Collection) -> containsAll
+    boolean isEmpty() -> isEmpty
+    java.util.Iterator iterator() -> iterator
+    boolean remove(java.lang.Object) -> remove
+    boolean removeAll(java.util.Collection) -> removeAll
+    boolean retainAll(java.util.Collection) -> retainAll
+    int size() -> size
+    java.lang.Object[] toArray() -> toArray
+    java.lang.Object[] toArray(java.lang.Object[]) -> toArray
+    boolean equals(java.lang.Object) -> equals
+    int hashCode() -> hashCode
+    boolean add(java.lang.Object) -> add
+android.support.v4.util.MapCollections$KeySet -> android.support.v4.c.c$c:
+    android.support.v4.util.MapCollections this$0 -> a
+    void <init>(android.support.v4.util.MapCollections) -> <init>
+    boolean add(java.lang.Object) -> add
+    boolean addAll(java.util.Collection) -> addAll
+    void clear() -> clear
+    boolean contains(java.lang.Object) -> contains
+    boolean containsAll(java.util.Collection) -> containsAll
+    boolean isEmpty() -> isEmpty
+    java.util.Iterator iterator() -> iterator
+    boolean remove(java.lang.Object) -> remove
+    boolean removeAll(java.util.Collection) -> removeAll
+    boolean retainAll(java.util.Collection) -> retainAll
+    int size() -> size
+    java.lang.Object[] toArray() -> toArray
+    java.lang.Object[] toArray(java.lang.Object[]) -> toArray
+    boolean equals(java.lang.Object) -> equals
+    int hashCode() -> hashCode
+android.support.v4.util.MapCollections$MapIterator -> android.support.v4.c.c$d:
+    int mEnd -> a
+    int mIndex -> b
+    boolean mEntryValid -> c
+    android.support.v4.util.MapCollections this$0 -> d
+    void <init>(android.support.v4.util.MapCollections) -> <init>
+    boolean hasNext() -> hasNext
+    java.util.Map$Entry next() -> a
+    void remove() -> remove
+    java.lang.Object getKey() -> getKey
+    java.lang.Object getValue() -> getValue
+    java.lang.Object setValue(java.lang.Object) -> setValue
+    boolean equals(java.lang.Object) -> equals
+    int hashCode() -> hashCode
+    java.lang.String toString() -> toString
+    java.lang.Object next() -> next
+android.support.v4.util.MapCollections$ValuesCollection -> android.support.v4.c.c$e:
+    android.support.v4.util.MapCollections this$0 -> a
+    void <init>(android.support.v4.util.MapCollections) -> <init>
+    boolean add(java.lang.Object) -> add
+    boolean addAll(java.util.Collection) -> addAll
+    void clear() -> clear
+    boolean contains(java.lang.Object) -> contains
+    boolean containsAll(java.util.Collection) -> containsAll
+    boolean isEmpty() -> isEmpty
+    java.util.Iterator iterator() -> iterator
+    boolean remove(java.lang.Object) -> remove
+    boolean removeAll(java.util.Collection) -> removeAll
+    boolean retainAll(java.util.Collection) -> retainAll
+    int size() -> size
+    java.lang.Object[] toArray() -> toArray
+    java.lang.Object[] toArray(java.lang.Object[]) -> toArray
+android.support.v4.util.SimpleArrayMap -> android.support.v4.c.d:
+    java.lang.Object[] mBaseCache -> b
+    int mBaseCacheSize -> c
+    java.lang.Object[] mTwiceBaseCache -> d
+    int mTwiceBaseCacheSize -> e
+    int[] mHashes -> f
+    java.lang.Object[] mArray -> g
+    int mSize -> h
+    int binarySearchHashes(int[],int,int) -> a
+    int indexOf(java.lang.Object,int) -> a
+    int indexOfNull() -> a
+    void allocArrays(int) -> e
+    void freeArrays(int[],java.lang.Object[],int) -> a
+    void <init>() -> <init>
+    void clear() -> clear
+    void ensureCapacity(int) -> a
+    boolean containsKey(java.lang.Object) -> containsKey
+    int indexOfKey(java.lang.Object) -> a
+    int indexOfValue(java.lang.Object) -> b
+    boolean containsValue(java.lang.Object) -> containsValue
+    java.lang.Object get(java.lang.Object) -> get
+    java.lang.Object keyAt(int) -> b
+    java.lang.Object valueAt(int) -> c
+    java.lang.Object setValueAt(int,java.lang.Object) -> a
+    boolean isEmpty() -> isEmpty
+    java.lang.Object put(java.lang.Object,java.lang.Object) -> put
+    java.lang.Object remove(java.lang.Object) -> remove
+    java.lang.Object removeAt(int) -> d
+    int size() -> size
+    boolean equals(java.lang.Object) -> equals
+    int hashCode() -> hashCode
+    java.lang.String toString() -> toString
 jp.takke.datastats.BootReceiver -> jp.takke.datastats.BootReceiver:
+    void <init>() -> <init>
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
 jp.takke.datastats.Config -> jp.takke.datastats.a:
     long highLimit -> a
@@ -11,17 +976,21 @@ jp.takke.datastats.Config -> jp.takke.datastats.a:
     boolean hideWhenInFullscreen -> h
     boolean interpolateMode -> i
     int textSizeSp -> j
+    boolean residentMode -> k
     void loadPreferences(android.content.Context) -> a
+    void <clinit>() -> <clinit>
 jp.takke.datastats.ILayerService -> jp.takke.datastats.b:
     void restart() -> a
     void stop() -> b
     void startSnapshot(long) -> a
-jp.takke.datastats.ILayerService$Stub -> jp.takke.datastats.c:
+jp.takke.datastats.ILayerService$Stub -> jp.takke.datastats.b$a:
+    void <init>() -> <init>
     jp.takke.datastats.ILayerService asInterface(android.os.IBinder) -> a
     android.os.IBinder asBinder() -> asBinder
     boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-jp.takke.datastats.ILayerService$Stub$Proxy -> jp.takke.datastats.d:
+jp.takke.datastats.ILayerService$Stub$Proxy -> jp.takke.datastats.b$a$a:
     android.os.IBinder mRemote -> a
+    void <init>(android.os.IBinder) -> <init>
     android.os.IBinder asBinder() -> asBinder
     void restart() -> a
     void stop() -> b
@@ -48,6 +1017,7 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     android.os.Handler mHandler -> s
     int mScreenOnOffSequence -> t
     android.content.BroadcastReceiver mReceiver -> u
+    void <init>() -> <init>
     void onScreenOn(int) -> a
     void onScreenOff(int,java.lang.String) -> a
     void setSleepingFlagToSurfaceView() -> a
@@ -55,55 +1025,66 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onRebind(android.content.Intent) -> onRebind
     void onCreate() -> onCreate
+    void showNotification() -> b
+    void hideNotification() -> c
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    void showTraffic() -> b
-    void updateWidgetSize() -> c
+    void showTraffic() -> d
+    void updateWidgetSize() -> e
     int convertBytesToPerThousand(long) -> a
-    void gatherTraffic() -> d
+    void gatherTraffic() -> f
     void scheduleNextTime(int) -> b
-    void stopAlarm() -> e
+    void stopAlarm() -> g
     void onDestroy() -> onDestroy
     void onViewAttachedToWindow(android.view.View) -> onViewAttachedToWindow
     void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
-    void startGatherThread() -> f
-    void stopGatherThread() -> g
+    void startGatherThread() -> h
+    void stopGatherThread() -> i
     boolean access$002(jp.takke.datastats.LayerService,boolean) -> a
     void access$100(jp.takke.datastats.LayerService) -> a
-    void access$200(jp.takke.datastats.LayerService,int) -> a
-    jp.takke.datastats.LayerService$GatherThread access$300(jp.takke.datastats.LayerService) -> b
-    void access$400(jp.takke.datastats.LayerService) -> c
-    void access$500(jp.takke.datastats.LayerService) -> d
-    long access$602(jp.takke.datastats.LayerService,long) -> a
-    long access$600(jp.takke.datastats.LayerService) -> e
-    int access$708(jp.takke.datastats.LayerService) -> f
-    int access$700(jp.takke.datastats.LayerService) -> g
-    void access$800(jp.takke.datastats.LayerService,int) -> b
-    void access$900(jp.takke.datastats.LayerService,int,java.lang.String) -> a
-    boolean access$1000(jp.takke.datastats.LayerService) -> h
-    void access$1100(jp.takke.datastats.LayerService) -> i
-    boolean access$1300(jp.takke.datastats.LayerService) -> j
-    void access$1400(jp.takke.datastats.LayerService) -> k
+    void access$200(jp.takke.datastats.LayerService) -> b
+    void access$300(jp.takke.datastats.LayerService) -> c
+    void access$400(jp.takke.datastats.LayerService,int) -> a
+    jp.takke.datastats.LayerService$GatherThread access$500(jp.takke.datastats.LayerService) -> d
+    void access$600(jp.takke.datastats.LayerService) -> e
+    void access$700(jp.takke.datastats.LayerService) -> f
+    long access$802(jp.takke.datastats.LayerService,long) -> a
+    long access$800(jp.takke.datastats.LayerService) -> g
+    int access$908(jp.takke.datastats.LayerService) -> h
+    int access$900(jp.takke.datastats.LayerService) -> i
+    void access$1000(jp.takke.datastats.LayerService,int) -> b
+    void access$1100(jp.takke.datastats.LayerService,int,java.lang.String) -> a
+    boolean access$1200(jp.takke.datastats.LayerService) -> j
+    void access$1300(jp.takke.datastats.LayerService) -> k
     boolean access$1500(jp.takke.datastats.LayerService) -> l
-    android.os.Handler access$1600(jp.takke.datastats.LayerService) -> m
-jp.takke.datastats.LayerService$1 -> jp.takke.datastats.e:
+    void access$1600(jp.takke.datastats.LayerService) -> m
+    boolean access$1700(jp.takke.datastats.LayerService) -> n
+    android.os.Handler access$1800(jp.takke.datastats.LayerService) -> o
+jp.takke.datastats.LayerService$1 -> jp.takke.datastats.LayerService$1:
     jp.takke.datastats.LayerService this$0 -> a
+    void <init>(jp.takke.datastats.LayerService) -> <init>
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-jp.takke.datastats.LayerService$2 -> jp.takke.datastats.f:
+jp.takke.datastats.LayerService$2 -> jp.takke.datastats.LayerService$2:
     int val$screenOnOffSequence -> a
     jp.takke.datastats.LayerService this$0 -> b
+    void <init>(jp.takke.datastats.LayerService,int) -> <init>
     void run() -> run
-jp.takke.datastats.LayerService$3 -> jp.takke.datastats.g:
+jp.takke.datastats.LayerService$3 -> jp.takke.datastats.LayerService$3:
     int val$screenOnOffSequence -> a
     jp.takke.datastats.LayerService this$0 -> b
+    void <init>(jp.takke.datastats.LayerService,int) -> <init>
     void run() -> run
-jp.takke.datastats.LayerService$GatherThread -> jp.takke.datastats.h:
+jp.takke.datastats.LayerService$GatherThread -> jp.takke.datastats.LayerService$a:
     jp.takke.datastats.LayerService this$0 -> a
+    void <init>(jp.takke.datastats.LayerService) -> <init>
     void run() -> run
-jp.takke.datastats.LayerService$GatherThread$1 -> jp.takke.datastats.i:
+    void <init>(jp.takke.datastats.LayerService,jp.takke.datastats.LayerService$1) -> <init>
+jp.takke.datastats.LayerService$GatherThread$1 -> jp.takke.datastats.LayerService$a$1:
     jp.takke.datastats.LayerService$GatherThread this$1 -> a
+    void <init>(jp.takke.datastats.LayerService$GatherThread) -> <init>
     void run() -> run
-jp.takke.datastats.LayerService$LocalBinder -> jp.takke.datastats.j:
+jp.takke.datastats.LayerService$LocalBinder -> jp.takke.datastats.LayerService$b:
     jp.takke.datastats.LayerService this$0 -> a
+    void <init>(jp.takke.datastats.LayerService) -> <init>
     void restart() -> a
     void stop() -> b
     void startSnapshot(long) -> a
@@ -111,15 +1092,19 @@ jp.takke.datastats.MainActivity -> jp.takke.datastats.MainActivity:
     boolean mPreparingConfigArea -> a
     jp.takke.datastats.ILayerService mServiceIF -> b
     android.content.ServiceConnection mServiceConnection -> c
+    void <init>() -> <init>
     void onCreate(android.os.Bundle) -> onCreate
+    void doBindService() -> a
+    void requestOverlayPermission() -> b
+    void onActivityResult(int,int,android.content.Intent) -> onActivityResult
     void onPause() -> onPause
     void onDestroy() -> onDestroy
     boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
-    void doStopService() -> a
-    void doRestartService() -> b
-    void prepareConfigArea() -> c
+    void doStopService() -> c
+    void doRestartService() -> d
+    void prepareConfigArea() -> e
     void updateTextSize(boolean) -> a
-    void preparePreviewArea() -> d
+    void preparePreviewArea() -> f
     void restartWithPreview(long,long) -> a
     void startSnapshot(long) -> a
     jp.takke.datastats.ILayerService access$002(jp.takke.datastats.MainActivity,jp.takke.datastats.ILayerService) -> a
@@ -129,70 +1114,92 @@ jp.takke.datastats.MainActivity -> jp.takke.datastats.MainActivity:
     boolean access$400(jp.takke.datastats.MainActivity) -> c
     void access$500(jp.takke.datastats.MainActivity,long) -> a
     void access$600(jp.takke.datastats.MainActivity,long,long) -> a
-jp.takke.datastats.MainActivity$1 -> jp.takke.datastats.k:
+jp.takke.datastats.MainActivity$1 -> jp.takke.datastats.MainActivity$1:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
     void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
-jp.takke.datastats.MainActivity$10 -> jp.takke.datastats.l:
+jp.takke.datastats.MainActivity$10 -> jp.takke.datastats.MainActivity$2:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
+    void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MainActivity$11 -> jp.takke.datastats.MainActivity$3:
+    jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$11 -> jp.takke.datastats.m:
+jp.takke.datastats.MainActivity$12 -> jp.takke.datastats.MainActivity$4:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$12 -> jp.takke.datastats.n:
+jp.takke.datastats.MainActivity$13 -> jp.takke.datastats.MainActivity$5:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
     void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
     void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$13 -> jp.takke.datastats.o:
+jp.takke.datastats.MainActivity$14 -> jp.takke.datastats.MainActivity$6:
     int[] val$intervals -> a
     jp.takke.datastats.MainActivity this$0 -> b
+    void <init>(jp.takke.datastats.MainActivity,int[]) -> <init>
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-jp.takke.datastats.MainActivity$14 -> jp.takke.datastats.p:
+jp.takke.datastats.MainActivity$15 -> jp.takke.datastats.MainActivity$7:
     int[] val$speeds -> a
     jp.takke.datastats.MainActivity this$0 -> b
+    void <init>(jp.takke.datastats.MainActivity,int[]) -> <init>
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-jp.takke.datastats.MainActivity$15 -> jp.takke.datastats.q:
+jp.takke.datastats.MainActivity$16 -> jp.takke.datastats.MainActivity$8:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onItemSelected(android.widget.AdapterView,android.view.View,int,long) -> onItemSelected
     void onNothingSelected(android.widget.AdapterView) -> onNothingSelected
-jp.takke.datastats.MainActivity$16 -> jp.takke.datastats.r:
+jp.takke.datastats.MainActivity$17 -> jp.takke.datastats.MainActivity$9:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void run() -> run
-jp.takke.datastats.MainActivity$17 -> jp.takke.datastats.s:
+jp.takke.datastats.MainActivity$18 -> jp.takke.datastats.MainActivity$10:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onProgressChanged(android.widget.SeekBar,int,boolean) -> onProgressChanged
     void onStartTrackingTouch(android.widget.SeekBar) -> onStartTrackingTouch
     void onStopTrackingTouch(android.widget.SeekBar) -> onStopTrackingTouch
-jp.takke.datastats.MainActivity$18 -> jp.takke.datastats.t:
+jp.takke.datastats.MainActivity$19 -> jp.takke.datastats.MainActivity$11:
     int val$kb -> a
     jp.takke.datastats.MainActivity this$0 -> b
+    void <init>(jp.takke.datastats.MainActivity,int) -> <init>
     void onClick(android.view.View) -> onClick
-jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.u:
+jp.takke.datastats.MainActivity$2 -> jp.takke.datastats.MainActivity$12:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     boolean onMenuItemClick(android.view.MenuItem) -> onMenuItemClick
-jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.v:
+jp.takke.datastats.MainActivity$3 -> jp.takke.datastats.MainActivity$13:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     boolean onMenuItemClick(android.view.MenuItem) -> onMenuItemClick
-jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.w:
+jp.takke.datastats.MainActivity$4 -> jp.takke.datastats.MainActivity$14:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     boolean onMenuItemClick(android.view.MenuItem) -> onMenuItemClick
-jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.x:
+jp.takke.datastats.MainActivity$5 -> jp.takke.datastats.MainActivity$15:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     boolean onMenuItemClick(android.view.MenuItem) -> onMenuItemClick
-jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.y:
+jp.takke.datastats.MainActivity$6 -> jp.takke.datastats.MainActivity$16:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.z:
+jp.takke.datastats.MainActivity$7 -> jp.takke.datastats.MainActivity$17:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.aa:
+jp.takke.datastats.MainActivity$8 -> jp.takke.datastats.MainActivity$18:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
-jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.ab:
+jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.MainActivity$19:
     jp.takke.datastats.MainActivity this$0 -> a
+    void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
 jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     android.view.SurfaceHolder mSurfaceHolder -> b
@@ -210,6 +1217,8 @@ jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     long mLastTx -> n
     long mLastRx -> o
     boolean sForceRedraw -> a
+    void <init>(android.content.Context) -> <init>
+    void <init>(android.content.Context,android.util.AttributeSet) -> <init>
     void init() -> c
     void setSleeping(boolean) -> setSleeping
     void drawBlank() -> a
@@ -226,14 +1235,16 @@ jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     void surfaceDestroyed(android.view.SurfaceHolder) -> surfaceDestroyed
     void startThread() -> d
     void stopThread() -> e
-jp.takke.datastats.MySurfaceView$Traffic -> jp.takke.datastats.ac:
+    void <clinit>() -> <clinit>
+jp.takke.datastats.MySurfaceView$Traffic -> jp.takke.datastats.MySurfaceView$a:
     long time -> a
     long tx -> b
     int pTx -> c
     long rx -> d
     int pRx -> e
     jp.takke.datastats.MySurfaceView this$0 -> f
-jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.ad:
+    void <init>(jp.takke.datastats.MySurfaceView,long,long,int,long,int) -> <init>
+jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.c:
     long convertByteToKb(long) -> a
     long convertByteToD1Kb(long) -> b
     int getTextShadowColorByBytes(android.content.res.Resources,long) -> a
@@ -241,17 +1252,22 @@ jp.takke.datastats.MyTrafficUtil -> jp.takke.datastats.ad:
     long getLoopbackRxBytes() -> a
     long getLoopbackTxBytes() -> b
     long readLongValueFromFile(java.lang.String) -> a
+jp.takke.datastats.OverlayUtil -> jp.takke.datastats.d:
+    boolean checkOverlayPermission(android.content.Context) -> a
 jp.takke.util.IOUtil -> jp.takke.a.a:
     java.io.File getExternalStorageFile(java.lang.String,android.content.Context) -> a
 jp.takke.util.MyLog -> jp.takke.a.b:
     void d(java.lang.String) -> a
     void i(java.lang.String) -> b
+    void w(java.lang.String) -> c
     void e(java.lang.Throwable) -> a
     void dumpToExternalLogFile(int,java.lang.String) -> a
     void deleteBigExternalLogFile() -> a
 jp.takke.util.TkConfig -> jp.takke.a.c:
     boolean debugMode -> a
+    void <clinit>() -> <clinit>
 jp.takke.util.TkUtil -> jp.takke.a.d:
     boolean isEmulatorChecked -> a
     boolean isEmulatorCache -> b
     boolean isEmulator() -> a
+    void <clinit>() -> <clinit>

@@ -1,3 +1,12 @@
+v2.4.0 (2017.09.05)
+- Support O
+- Support M new permission model (Overlay)
+- Fix "service stop" problem
+- targetSdkVersion 16 -> 26
+
+v2.3.0 (2016.05.10)
+- Add resident mode
+
 v2.2.3 (2015.09.18)
 - Fix to exclude loopback traffics (Android 4.3 or later)
 
