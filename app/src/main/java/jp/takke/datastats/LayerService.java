@@ -398,7 +398,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        final int result = super.onStartCommand(intent, flags, startId);
+        super.onStartCommand(intent, flags, startId);
 
         MyLog.d("LayerService.onStartCommand[" + flags + "][" + startId + "]");
 
@@ -415,7 +415,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // Alarmループ続行
         scheduleNextTime(C.ALARM_INTERVAL_MSEC);
 
-        return result;
+        return START_STICKY;
     }
 
 
