@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
 import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Handler;
@@ -20,6 +19,7 @@ import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,7 +89,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private LocalBinder mBinder = new LocalBinder();
 
-    private View mView;
+    private MyRelativeLayout mView;
     private WindowManager mWindowManager;
     private boolean mAttached = false;
 
@@ -317,12 +317,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // 重ね合わせするViewの設定を行う
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                        ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                        : Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                            ? WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
-                            : WindowManager.LayoutParams.TYPE_TOAST,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                getMyLayerType(),
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
@@ -334,7 +330,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         // レイアウトファイルから重ね合わせするViewを作成する
-        mView = layoutInflater.inflate(R.layout.overlay, null);
+        mView = (MyRelativeLayout) layoutInflater.inflate(R.layout.overlay, null);
 
         // Viewを画面上に重ね合わせする
         mWindowManager.addView(mView, params);
@@ -348,11 +344,21 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mView.setVisibility(View.GONE);
         mView.addOnAttachStateChangeListener(this);
 
-
         Config.loadPreferences(this);
 
         // 定期処理開始
 //        scheduleNextTime(intervalMs);
+    }
+
+
+    private int getMyLayerType() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+        } else {
+            return WindowManager.LayoutParams.TYPE_TOAST;
+        }
     }
 
 
@@ -421,6 +427,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private void showTraffic() {
 
+//        MyLog.d("LayerService.showTraffic, attached[" + mAttached + "]");
+
         if (!mAttached) {
             return;
         }
@@ -460,26 +468,29 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
     private void updateWidgetSize() {
 
+        final Resources resources = getResources();
+        final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+
         //--------------------------------------------------
         // hide when in fullscreen
         //--------------------------------------------------
-        boolean inFullScreen;
+        boolean inFullScreen = mView.isFullScreen();
         {
-            final Rect dim = new Rect();
-            mView.getWindowVisibleDisplayFrame(dim);
-//            MyLog.d("LayerService.showTraffic: top[" + dim.top + "]");
 
-            inFullScreen = dim.top == 0;
+//            MyLog.d("LayerService.showTraffic: hide[" + Config.hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "], " +
+//                    "[" + dim.left + "," + dim.top + "], view[" + dim.width() + "x" + dim.height() + "], " +
+//                    "system[" + displayMetrics.widthPixels + "x" + displayMetrics.heightPixels + "]"
+//            );
 
-//            MyLog.d("LayerService.showTraffic: hide[" + hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "]");
+            final View mySurfaceView = mView.findViewById(R.id.mySurfaceView);
             if (Config.hideWhenInFullscreen) {
                 if (inFullScreen) {
-                    mView.setVisibility(View.GONE);
+                    mySurfaceView.setVisibility(View.GONE);
                 } else {
-                    mView.setVisibility(View.VISIBLE);
+                    mySurfaceView.setVisibility(View.VISIBLE);
                 }
             } else {
-                mView.setVisibility(View.VISIBLE);
+                mySurfaceView.setVisibility(View.VISIBLE);
             }
         }
         
@@ -487,9 +498,8 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         //--------------------------------------------------
         // set widget width
         //--------------------------------------------------
-        final Resources resources = getResources();
 
-        final float scaledDensity = resources.getDisplayMetrics().scaledDensity;
+        final float scaledDensity = displayMetrics.scaledDensity;
         final int textSizeSp = Config.textSizeSp;
 
         final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
