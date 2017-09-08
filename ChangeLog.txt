@@ -1,3 +1,7 @@
+v2.4.1 (2017.09.08)
+- Auto restart when killed by system
+- Fix detecting full screen
+
 v2.4.0 (2017.09.05)
 - Support O
 - Support M new permission model (Overlay)

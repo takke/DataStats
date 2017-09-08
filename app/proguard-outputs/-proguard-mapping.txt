@@ -997,7 +997,7 @@ jp.takke.datastats.ILayerService$Stub$Proxy -> jp.takke.datastats.b$a$a:
     void startSnapshot(long) -> a
 jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     jp.takke.datastats.LayerService$LocalBinder mBinder -> a
-    android.view.View mView -> b
+    jp.takke.datastats.MyRelativeLayout mView -> b
     android.view.WindowManager mWindowManager -> c
     boolean mAttached -> d
     boolean mSleeping -> e
@@ -1025,20 +1025,21 @@ jp.takke.datastats.LayerService -> jp.takke.datastats.LayerService:
     boolean onUnbind(android.content.Intent) -> onUnbind
     void onRebind(android.content.Intent) -> onRebind
     void onCreate() -> onCreate
-    void showNotification() -> b
-    void hideNotification() -> c
+    int getMyLayerType() -> b
+    void showNotification() -> c
+    void hideNotification() -> d
     int onStartCommand(android.content.Intent,int,int) -> onStartCommand
-    void showTraffic() -> d
-    void updateWidgetSize() -> e
+    void showTraffic() -> e
+    void updateWidgetSize() -> f
     int convertBytesToPerThousand(long) -> a
-    void gatherTraffic() -> f
+    void gatherTraffic() -> g
     void scheduleNextTime(int) -> b
-    void stopAlarm() -> g
+    void stopAlarm() -> h
     void onDestroy() -> onDestroy
     void onViewAttachedToWindow(android.view.View) -> onViewAttachedToWindow
     void onViewDetachedFromWindow(android.view.View) -> onViewDetachedFromWindow
-    void startGatherThread() -> h
-    void stopGatherThread() -> i
+    void startGatherThread() -> i
+    void stopGatherThread() -> j
     boolean access$002(jp.takke.datastats.LayerService,boolean) -> a
     void access$100(jp.takke.datastats.LayerService) -> a
     void access$200(jp.takke.datastats.LayerService) -> b
@@ -1201,6 +1202,13 @@ jp.takke.datastats.MainActivity$9 -> jp.takke.datastats.MainActivity$19:
     jp.takke.datastats.MainActivity this$0 -> a
     void <init>(jp.takke.datastats.MainActivity) -> <init>
     void onCheckedChanged(android.widget.CompoundButton,boolean) -> onCheckedChanged
+jp.takke.datastats.MyRelativeLayout -> jp.takke.datastats.MyRelativeLayout:
+    boolean mFullScreen -> a
+    void <init>(android.content.Context) -> <init>
+    void <init>(android.content.Context,android.util.AttributeSet) -> <init>
+    boolean isFullScreen() -> a
+    void onSizeChanged(int,int,int,int) -> onSizeChanged
+    android.graphics.Point getRealSize() -> getRealSize
 jp.takke.datastats.MySurfaceView -> jp.takke.datastats.MySurfaceView:
     android.view.SurfaceHolder mSurfaceHolder -> b
     java.lang.Thread mThread -> c
