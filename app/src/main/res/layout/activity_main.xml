@@ -29,14 +29,6 @@
             android:text="@string/config_auto_start_on_boot"
             />
 
-        <!-- resident -->
-        <CheckBox
-            android:id="@+id/residentMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/config_resident"
-            />
-
         <!-- hide when in fullscreen -->
         <CheckBox
             android:id="@+id/hideWhenInFullscreen"

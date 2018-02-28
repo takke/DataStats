@@ -42,9 +42,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             // 通知(常駐)
             mNotificationPresenter.hideNotification();
-            if (Config.residentMode) {
-                mNotificationPresenter.showNotification();
-            }
+            mNotificationPresenter.showNotification();
 
             // Alarmループ開始
             stopAlarm();
@@ -131,15 +129,19 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             mScreenOnOffSequence ++;
 
             final String action = intent.getAction();
-            if (action.equals(Intent.ACTION_SCREEN_ON)) {
-
+            if (action == null) {
+                return;
+            }
+            switch (action) {
+            case Intent.ACTION_SCREEN_ON:
                 onScreenOn(mScreenOnOffSequence);
+                break;
 
-            } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-
+            case Intent.ACTION_SCREEN_OFF:
                 // たいていは GatherThread で検出したほうが早いんだけど設定値によっては
                 // 遅い場合もあるので Receiver での検出時も呼び出しておく
                 onScreenOff(mScreenOnOffSequence, "Intent");
+                break;
             }
         }
     };
@@ -186,9 +188,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 startGatherThread();
 
                 // 通知(常駐)
-                if (Config.residentMode) {
-                    mNotificationPresenter.showNotification();
-                }
+                mNotificationPresenter.showNotification();
 
                 // Alarmループ開始
                 scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
@@ -360,9 +360,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
 
         // 通知(常駐)
-        if (Config.residentMode) {
-            mNotificationPresenter.showNotification();
-        }
+        mNotificationPresenter.showNotification();
 
         // Alarmループ続行
         scheduleNextTime(C.ALARM_INTERVAL_MSEC);

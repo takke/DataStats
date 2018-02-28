@@ -295,22 +295,6 @@ public class MainActivity extends Activity {
         final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
         autoStartOnBoot.setChecked(startOnBoot);
 
-        // resident
-        final CheckBox residentMode = (CheckBox) findViewById(R.id.residentMode);
-        residentMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean(C.PREF_KEY_RESIDENT_MODE, isChecked);
-                editor.apply();
-
-                doRestartService();
-            }
-        });
-        final boolean resident = pref.getBoolean(C.PREF_KEY_RESIDENT_MODE, true);
-        residentMode.setChecked(resident);
-
         // hide when in fullscreen
         final CheckBox hideCheckbox = (CheckBox) findViewById(R.id.hideWhenInFullscreen);
         hideCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
