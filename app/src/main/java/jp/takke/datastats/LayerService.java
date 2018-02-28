@@ -1,5 +1,6 @@
 package jp.takke.datastats;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -158,7 +159,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         setSleepingFlagToSurfaceView();
 
         // 表示初期化
-        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        final MySurfaceView mySurfaceView = mView.findViewById(R.id.mySurfaceView);
         if (mySurfaceView != null) {
             mySurfaceView.drawBlank();
         }
@@ -166,34 +167,31 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         // スレッド開始は少し遅延させる
         // ※スレッド開始処理は重いので端末をロックさせてしまう。一時的なスリープ解除で端末がロックしてしまうのを回避するため。
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        mHandler.postDelayed(() -> {
 
-                // スリープ状態に戻っていたら開始しない
-                if (mSleeping) {
-                    MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: skip to start threads (sleeping)");
-                    return;
-                }
-
-                // 既にスレッドが開始していたら処理しない
-                if (mThread != null) {
-                    MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: skip to start threads (already started)");
-                    return;
-                }
-
-                MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: starting threads");
-
-                // 通信量取得スレッド開始
-                startGatherThread();
-
-                // 通知(常駐)
-                mNotificationPresenter.showNotification();
-
-                // Alarmループ開始
-                scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
-
+            // スリープ状態に戻っていたら開始しない
+            if (mSleeping) {
+                MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: skip to start threads (sleeping)");
+                return;
             }
+
+            // 既にスレッドが開始していたら処理しない
+            if (mThread != null) {
+                MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: skip to start threads (already started)");
+                return;
+            }
+
+            MyLog.d("LayerService: screen on[" + screenOnOffSequence + "]: starting threads");
+
+            // 通信量取得スレッド開始
+            startGatherThread();
+
+            // 通知(常駐)
+            mNotificationPresenter.showNotification();
+
+            // Alarmループ開始
+            scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
+
         }, C.SCREEN_ON_LOGIC_DELAY_MSEC);
     }
 
@@ -214,34 +212,31 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         // スレッド停止は少し遅延させる
         // ※スレッド開始と同様
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        mHandler.postDelayed(() -> {
 
-                // スリープ復帰済みなら停止しない
-                if (!mSleeping) {
-                    MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: skip to stop threads (not sleeping)");
-                    return;
-                }
-
-                // 既にスレッドが停止していたら処理しない
-                if (mThread == null) {
-                    MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: skip to stop threads (already stopped)");
-                    return;
-                }
-
-                MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: stopping threads");
-
-                // 通信量取得スレッド停止
-                stopGatherThread();
-
-                // 通知終了(常駐解除)
-                mNotificationPresenter.hideNotification();
-
-                // アラーム停止
-                stopAlarm();
-
+            // スリープ復帰済みなら停止しない
+            if (!mSleeping) {
+                MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: skip to stop threads (not sleeping)");
+                return;
             }
+
+            // 既にスレッドが停止していたら処理しない
+            if (mThread == null) {
+                MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: skip to stop threads (already stopped)");
+                return;
+            }
+
+            MyLog.d("LayerService: screen off[" + screenOnOffSequence + "]: stopping threads");
+
+            // 通信量取得スレッド停止
+            stopGatherThread();
+
+            // 通知終了(常駐解除)
+            mNotificationPresenter.hideNotification();
+
+            // アラーム停止
+            stopAlarm();
+
         }, C.SCREEN_OFF_LOGIC_DELAY_MSEC);
     }
 
@@ -250,7 +245,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         if (mView == null) {
             return;
         }
-        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        final MySurfaceView mySurfaceView = mView.findViewById(R.id.mySurfaceView);
         if (mySurfaceView == null) {
             return;
         }
@@ -287,6 +282,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         super.onRebind(intent);
     }
 
+    @SuppressLint("RtlHardcoded")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -404,7 +400,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 //      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]");
 //      MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]");
 
-        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        final MySurfaceView mySurfaceView = mView.findViewById(R.id.mySurfaceView);
         mySurfaceView.setTraffic(tx, pTx, rx, pRx);
     }
 
@@ -444,7 +440,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final float scaledDensity = displayMetrics.scaledDensity;
         final int textSizeSp = Config.textSizeSp;
 
-        final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
+        final MySurfaceView mySurfaceView = mView.findViewById(R.id.mySurfaceView);
 
         // width = (iconSize + textAreaWidth) * 2
         // iconSize = textSize+4
@@ -572,7 +568,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // ※onStartCommandが呼ばれるように設定する
 
         final AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
+        assert am != null;
         am.set(AlarmManager.RTC, now + intervalMs, alarmSender);
 
 //        MyLog.d(" scheduled[" + intervalMs + "]");
@@ -592,6 +588,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         );
 
         final AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        assert am != null;
         am.cancel(pendingIntent);
         // @see "http://creadorgranoeste.blogspot.com/2011/06/alarmmanager.html"
     }
@@ -679,8 +676,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             MyLog.d("LayerService$GatherThread: start");
 
-            final PowerManager powermanager;
-            powermanager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            final PowerManager powerManager;
+            powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            assert powerManager != null;
 
             while (mThread != null && mThreadActive) {
 
@@ -689,18 +687,15 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 gatherTraffic();
 
                 if (mAttached && !mSleeping) {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
+                    mHandler.post(() -> {
 
-                            if (mThreadActive && mAttached) {
-                                showTraffic();
-                            }
+                        if (mThreadActive && mAttached) {
+                            showTraffic();
                         }
                     });
 
                     //noinspection deprecation
-                    if (!powermanager.isScreenOn()) {
+                    if (!powerManager.isScreenOn()) {
                         MyLog.d("LayerService$GatherThread: not interactive");
                         onScreenOff(mScreenOnOffSequence, "GatherThread");
                     }

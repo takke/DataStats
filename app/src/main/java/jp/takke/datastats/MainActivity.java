@@ -1,5 +1,6 @@
 package jp.takke.datastats;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -160,13 +160,10 @@ public class MainActivity extends Activity {
             final MenuItem item = menu.add(R.string.config_start);
 //            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
+            item.setOnMenuItemClickListener(item1 -> {
 
-                    doRestartService();
-                    return true;
-                }
+                doRestartService();
+                return true;
             });
         }
 
@@ -175,13 +172,10 @@ public class MainActivity extends Activity {
             final MenuItem item = menu.add(R.string.config_stop);
 //            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
+            item.setOnMenuItemClickListener(item1 -> {
 
-                    doStopService();
-                    return true;
-                }
+                doStopService();
+                return true;
             });
         }
 
@@ -190,14 +184,11 @@ public class MainActivity extends Activity {
             final MenuItem item = menu.add(R.string.config_restart);
 //            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
+            item.setOnMenuItemClickListener(item1 -> {
 
-                    doStopService();
-                    doRestartService();
-                    return true;
-                }
+                doStopService();
+                doRestartService();
+                return true;
             });
         }
 
@@ -206,21 +197,18 @@ public class MainActivity extends Activity {
             final MenuItem item = menu.add(R.string.config_debug_mode);
 //            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
+            item.setOnMenuItemClickListener(item1 -> {
 
-                    TkConfig.debugMode = !TkConfig.debugMode;
-                    item.setChecked(TkConfig.debugMode);
+                TkConfig.debugMode = !TkConfig.debugMode;
+                item1.setChecked(TkConfig.debugMode);
 
-                    // save
-                    final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    final SharedPreferences.Editor edit = pref.edit();
-                    edit.putBoolean(C.PREF_KEY_DEBUG_MODE, TkConfig.debugMode);
-                    edit.apply();
+                // save
+                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final SharedPreferences.Editor edit = pref.edit();
+                edit.putBoolean(C.PREF_KEY_DEBUG_MODE, TkConfig.debugMode);
+                edit.apply();
 
-                    return true;
-                }
+                return true;
             });
 
             item.setCheckable(true);
@@ -269,11 +257,12 @@ public class MainActivity extends Activity {
             doBindService();
         }
 
-        final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+        final TextView kbText = findViewById(R.id.preview_kb_text);
         kbText.setText("-");
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void prepareConfigArea() {
 
         mPreparingConfigArea = true;
@@ -281,98 +270,76 @@ public class MainActivity extends Activity {
         Config.loadPreferences(this);
 
         // auto start
-        final CheckBox autoStartOnBoot = (CheckBox) findViewById(R.id.autoStartOnBoot);
-        autoStartOnBoot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean(C.PREF_KEY_START_ON_BOOT, isChecked);
-                editor.apply();
-            }
+        final CheckBox autoStartOnBoot = findViewById(R.id.autoStartOnBoot);
+        autoStartOnBoot.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            final SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean(C.PREF_KEY_START_ON_BOOT, isChecked);
+            editor.apply();
         });
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
         autoStartOnBoot.setChecked(startOnBoot);
 
         // hide when in fullscreen
-        final CheckBox hideCheckbox = (CheckBox) findViewById(R.id.hideWhenInFullscreen);
-        hideCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, isChecked);
-                editor.apply();
-            }
+        final CheckBox hideCheckbox = findViewById(R.id.hideWhenInFullscreen);
+        hideCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final SharedPreferences pref1 = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            final SharedPreferences.Editor editor = pref1.edit();
+            editor.putBoolean(C.PREF_KEY_HIDE_WHEN_IN_FULLSCREEN, isChecked);
+            editor.apply();
         });
         hideCheckbox.setChecked(Config.hideWhenInFullscreen);
 
         // Logarithm bar
-        final CheckBox logCheckbox = (CheckBox) findViewById(R.id.logarithmCheckbox);
-        logCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean(C.PREF_KEY_LOGARITHM_BAR, isChecked);
-                editor.apply();
+        final CheckBox logCheckbox = findViewById(R.id.logarithmCheckbox);
+        logCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final SharedPreferences pref12 = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            final SharedPreferences.Editor editor = pref12.edit();
+            editor.putBoolean(C.PREF_KEY_LOGARITHM_BAR, isChecked);
+            editor.apply();
 
-                // restart
-                doRestartService();
+            // restart
+            doRestartService();
 
-                // 補間モードは logMode on の場合のみ有効
-                final CheckBox interpolateCheckBox = (CheckBox) findViewById(R.id.interpolateCheckBox);
-                interpolateCheckBox.setEnabled(isChecked);
+            // 補間モードは logMode on の場合のみ有効
+            final CheckBox interpolateCheckBox = findViewById(R.id.interpolateCheckBox);
+            interpolateCheckBox.setEnabled(isChecked);
 
-            }
         });
         logCheckbox.setChecked(Config.logBar);
 
         // Interpolate mode
-        final CheckBox interpolateCheckBox = (CheckBox) findViewById(R.id.interpolateCheckBox);
-        interpolateCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                final SharedPreferences.Editor editor = pref.edit();
-                editor.putBoolean(C.PREF_KEY_INTERPOLATE_MODE, isChecked);
-                editor.apply();
+        final CheckBox interpolateCheckBox = findViewById(R.id.interpolateCheckBox);
+        interpolateCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final SharedPreferences pref13 = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+            final SharedPreferences.Editor editor = pref13.edit();
+            editor.putBoolean(C.PREF_KEY_INTERPOLATE_MODE, isChecked);
+            editor.apply();
 
-                // kill surface
-                doStopService();
-                
-                // restart
-                doRestartService();
-            }
+            // kill surface
+            doStopService();
+
+            // restart
+            doRestartService();
         });
         interpolateCheckBox.setChecked(Config.interpolateMode);
         // 補間モードは logMode on の場合のみ有効
         interpolateCheckBox.setEnabled(Config.logBar);
 
         // text size
-        final ZoomControls textSizeZoom = (ZoomControls) findViewById(R.id.text_size_zoom);
-        textSizeZoom.setOnZoomOutClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateTextSize(false);
-            }
-        });
-        textSizeZoom.setOnZoomInClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateTextSize(true);
-            }
-        });
-        final TextView textSizeValue = (TextView) findViewById(R.id.text_size_value);
+        final ZoomControls textSizeZoom = findViewById(R.id.text_size_zoom);
+        textSizeZoom.setOnZoomOutClickListener(v -> updateTextSize(false));
+        textSizeZoom.setOnZoomInClickListener(v -> updateTextSize(true));
+        final TextView textSizeValue = findViewById(R.id.text_size_value);
         textSizeValue.setText(Config.textSizeSp + "sp");
 
         // pos
-        final SeekBar seekBar = (SeekBar) findViewById(R.id.posSeekBar);
+        final SeekBar seekBar = findViewById(R.id.posSeekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                final TextView textView = (TextView) findViewById(R.id.pos_text);
+                final TextView textView = findViewById(R.id.pos_text);
                 textView.setText("" + progress + "%");
 
                 final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -404,7 +371,7 @@ public class MainActivity extends Activity {
             }
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            final Spinner spinner = (Spinner) findViewById(R.id.intervalSpinner);
+            final Spinner spinner = findViewById(R.id.intervalSpinner);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -456,7 +423,7 @@ public class MainActivity extends Activity {
             }
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            final Spinner spinner = (Spinner) findViewById(R.id.maxSpeedSpinner);
+            final Spinner spinner = findViewById(R.id.maxSpeedSpinner);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -503,7 +470,7 @@ public class MainActivity extends Activity {
 
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-            final Spinner spinner = (Spinner) findViewById(R.id.unitTypeSpinner);
+            final Spinner spinner = findViewById(R.id.unitTypeSpinner);
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -539,6 +506,7 @@ public class MainActivity extends Activity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void updateTextSize(boolean isZoomIn) {
         
         if (isZoomIn) {
@@ -553,7 +521,7 @@ public class MainActivity extends Activity {
             Config.textSizeSp --;
         }
 
-        final TextView textSizeValue = (TextView) findViewById(R.id.text_size_value);
+        final TextView textSizeValue = findViewById(R.id.text_size_value);
         textSizeValue.setText(Config.textSizeSp + "sp");
         
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -568,27 +536,25 @@ public class MainActivity extends Activity {
         startSnapshot(1);
         MySurfaceView.sForceRedraw = false;
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(() -> {
 
-                MySurfaceView.sForceRedraw = true;
-                startSnapshot(1);
-                MySurfaceView.sForceRedraw = false;
+            MySurfaceView.sForceRedraw = true;
+            startSnapshot(1);
+            MySurfaceView.sForceRedraw = false;
 
-                doRestartService();
-            }
+            doRestartService();
         }, 1);
     }
 
 
     private void preparePreviewArea() {
 
-        final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        final SeekBar seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+                final TextView kbText = findViewById(R.id.preview_kb_text);
                 kbText.setText("" + (progress/10) + "." + (progress%10) + "KB");
 
                 restartWithPreview(progress/10, progress%10);
@@ -613,29 +579,24 @@ public class MainActivity extends Activity {
 
         for (int i = 0; i < sampleButtonIds.length; i++) {
 
-            final Button button = (Button) findViewById(sampleButtonIds[i]);
+            final Button button = findViewById(sampleButtonIds[i]);
             final int kb = samples[i];
 
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    restartWithPreview(kb, 0);
-                }
-            });
+            button.setOnClickListener(v -> restartWithPreview(kb, 0));
         }
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void restartWithPreview(long kb, long kbd1) {
 
         startSnapshot(kb * 1024 + kbd1 * 100);
 
 
-        final SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
+        final SeekBar seekBar = findViewById(R.id.seekBar);
         seekBar.setProgress((int) (kb*10+kbd1));
 
-        final TextView kbText = (TextView) findViewById(R.id.preview_kb_text);
+        final TextView kbText = findViewById(R.id.preview_kb_text);
         kbText.setText(kb + "." + kbd1 + "KB");
     }
 
