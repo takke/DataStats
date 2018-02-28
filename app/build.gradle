@@ -35,17 +35,11 @@ android {
         if (variant.buildType.name.equals("release")) {
 
             variant.outputs.each { output ->
-                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
-//                    System.println("* output filename update : [${variant.buildType.name}]" +
-//                            "[${variant.productFlavors[0].name}]" +
-//                            "[${variant.productFlavors[0].applicationId}]"
-//                    )
-
-                    def file = output.outputFile
-                    def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
+                if (output.outputFileName.endsWith('.apk')) {
                     def shortVersionName = defaultConfig.versionName.replaceAll('\\.', '')
+                    def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
                     def newName = "DataStats_${shortVersionName}_${d}.apk"
-                    output.outputFile = new File(file.parent, newName)
+                    output.outputFileName = newName
                 }
             }
         }
