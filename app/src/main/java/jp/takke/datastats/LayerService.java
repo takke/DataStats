@@ -1,8 +1,6 @@
 package jp.takke.datastats;
 
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -18,7 +16,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,10 +27,7 @@ import jp.takke.util.MyLog;
 
 public class LayerService extends Service implements View.OnAttachStateChangeListener {
 
-    private static final int MY_NOTIFICATION_ID = 1;
-
-    private final static String CHANNEL_ID = "resident";
-
+    private final NotificationPresenter mNotificationPresenter = new NotificationPresenter(this);
 
     public class LocalBinder extends ILayerService.Stub {
 
@@ -47,9 +41,9 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             Config.loadPreferences(LayerService.this);
 
             // 通知(常駐)
-            hideNotification();
+            mNotificationPresenter.hideNotification();
             if (Config.residentMode) {
-                showNotification();
+                mNotificationPresenter.showNotification();
             }
 
             // Alarmループ開始
@@ -193,7 +187,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
                 // 通知(常駐)
                 if (Config.residentMode) {
-                    showNotification();
+                    mNotificationPresenter.showNotification();
                 }
 
                 // Alarmループ開始
@@ -202,7 +196,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             }
         }, C.SCREEN_ON_LOGIC_DELAY_MSEC);
     }
-
 
     private void onScreenOff(final int screenOnOffSequence, String cause) {
 
@@ -243,7 +236,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
                 stopGatherThread();
 
                 // 通知終了(常駐解除)
-                hideNotification();
+                mNotificationPresenter.hideNotification();
 
                 // アラーム停止
                 stopAlarm();
@@ -251,7 +244,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             }
         }, C.SCREEN_OFF_LOGIC_DELAY_MSEC);
     }
-
 
     private void setSleepingFlagToSurfaceView() {
 
@@ -266,7 +258,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mySurfaceView.setSleeping(mSleeping);
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
 
@@ -280,7 +271,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         return mBinder;
     }
 
-
     @Override
     public boolean onUnbind(Intent intent) {
 
@@ -289,7 +279,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         return super.onUnbind(intent);
     }
 
-
     @Override
     public void onRebind(Intent intent) {
 
@@ -297,7 +286,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         super.onRebind(intent);
     }
-
 
     @Override
     public void onCreate() {
@@ -350,7 +338,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 //        scheduleNextTime(intervalMs);
     }
 
-
     private int getMyLayerType() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -360,47 +347,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             return WindowManager.LayoutParams.TYPE_TOAST;
         }
     }
-
-
-    private void showNotification() {
-
-        MyLog.d("showNotification");
-
-        final NotificationManager nm = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
-
-        // 通知ウインドウをクリックした際に起動するインテント
-        final Intent intent = new Intent(this, MainActivity.class);
-        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-
-        builder.setSmallIcon(R.drawable.ic_launcher);
-        builder.setOngoing(true);
-        builder.setPriority(NotificationCompat.PRIORITY_MIN);
-
-        builder.setContentTitle(getString(R.string.resident_service_running));
-//        builder.setContentText("表示・非表示を切り替える");
-        builder.setContentIntent(pendingIntent);
-
-        // channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "常駐通知", NotificationManager.IMPORTANCE_LOW);
-            nm.createNotificationChannel(channel);
-            builder.setChannelId(CHANNEL_ID);
-        }
-
-        startForeground(MY_NOTIFICATION_ID, builder.build());
-    }
-
-
-    private void hideNotification() {
-
-        MyLog.d("hideNotification");
-
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(MY_NOTIFICATION_ID);
-    }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -415,7 +361,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         // 通知(常駐)
         if (Config.residentMode) {
-            showNotification();
+            mNotificationPresenter.showNotification();
         }
 
         // Alarmループ続行
@@ -423,7 +369,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         return START_STICKY;
     }
-
 
     private void showTraffic() {
 
@@ -464,7 +409,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         final MySurfaceView mySurfaceView = (MySurfaceView) mView.findViewById(R.id.mySurfaceView);
         mySurfaceView.setTraffic(tx, pTx, rx, pRx);
     }
-
 
     private void updateWidgetSize() {
 
@@ -545,7 +489,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
     }
 
-
     private int convertBytesToPerThousand(long bytes) {
         
         if (!Config.logBar) {
@@ -567,7 +510,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             }
         }
     }
-
 
     private void gatherTraffic() {
 
@@ -609,7 +551,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mLastTxBytes = totalTxBytes;
     }
 
-
     private void scheduleNextTime(int intervalMs) {
 
         // サービス終了の指示が出ていたら，次回の予約はしない。
@@ -639,7 +580,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 //        MyLog.d(" scheduled[" + intervalMs + "]");
     }
 
-
     private void stopAlarm() {
 
         // サービス名を指定
@@ -658,7 +598,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         // @see "http://creadorgranoeste.blogspot.com/2011/06/alarmmanager.html"
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -669,7 +608,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
         stopAlarm();
 
-        hideNotification();
+        mNotificationPresenter.hideNotification();
 
         // 通信量取得スレッド停止
         stopGatherThread();
@@ -685,7 +624,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
     }
 
-
     @Override
     public void onViewAttachedToWindow(View v) {
 
@@ -695,13 +633,11 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         mView.setVisibility(View.VISIBLE);
     }
 
-
     @Override
     public void onViewDetachedFromWindow(View v) {
 
         mAttached = false;
     }
-
 
     private void startGatherThread() {
 
@@ -714,7 +650,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             MyLog.d("LayerService.startGatherThread: already running");
         }
     }
-
 
     private void stopGatherThread() {
 
@@ -735,7 +670,6 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             MyLog.d("LayerService.stopGatherThread: no thread");
         }
     }
-
 
     /**
      * 通信量取得スレッド
