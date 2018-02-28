@@ -1,62 +1,85 @@
+Change Log
+==========
+
+v2.5.0 (2018.03.xx)
+-------------------
+- Update build tools
+
 v2.4.1 (2017.09.08)
+-------------------
 - Auto restart when killed by system
 - Fix detecting full screen
 
 v2.4.0 (2017.09.05)
+-------------------
 - Support O
 - Support M new permission model (Overlay)
 - Fix "service stop" problem
 - targetSdkVersion 16 -> 26
 
 v2.3.0 (2016.05.10)
+-------------------
 - Add resident mode
 
 v2.2.3 (2015.09.18)
+-------------------
 - Fix to exclude loopback traffics (Android 4.3 or later)
 
 v2.2.2 (2015.05.13)
+-------------------
 - Improve sleep on/off behavior
 - Add restart menu
 - Add debug feature (dump logs to internal storage, add WRITE_EXTERNAL_STORAGE permission)
 
 v2.2.1 (2015.05.04)
+-------------------
 - Fix delay to detect screen off
 
 v2.2.0 (2015.04.15)
+-------------------
 - Add "Kbps" option
 - Fix delaying interval on Android 5.1 devices
 - Disable Interpolate Mode when log-bar disabled
 - Move "start" and "stop" buttons to ActionBar
 
 v2.1.0 (2015.03.26)
+-------------------
 - Add text size config
 
 v2.0.1 (2015.03.22)
+-------------------
 - Save battery life (on interpolation mode)
 - Fix some bugs
 
 v2.0.0 (2015.03.20)
+-------------------
 - Add interpolation mode (Notice decreasing your battery life)
 - Improve performance
 
 v1.2.4 (2015.03.03)
+-------------------
 - Fix screen rotation problem
 
 v1.2.3 (2015.02.19)
+-------------------
 - Add config to hide bar when in fullscreen
 
 v1.2.2 (2015.02.19)
+-------------------
 - Hide bar when in fullscreen
 
 v1.2.1 (2015.02.16)
+-------------------
 - Fix layer problem (ex, unable to touch the install button of APK installer)
 - Fix scrolling problem
 
 v1.2.0 (2015.02.14)
+-------------------
 - Change text color limits
 - Others
 
 v1.1.0 (2015.02.12)
+-------------------
 - Add logarithm bar config
 - Add max speed config
 - Add auto start on boot feature
@@ -64,4 +87,5 @@ v1.1.0 (2015.02.12)
 - Add ja resource
 
 v1.0.0 (2015.02.10)
+-------------------
 - Initial release
