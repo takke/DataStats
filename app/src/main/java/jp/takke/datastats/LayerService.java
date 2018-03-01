@@ -282,7 +282,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         super.onRebind(intent);
     }
 
-    @SuppressLint("RtlHardcoded")
+    @SuppressLint({"RtlHardcoded", "InflateParams"})
     @Override
     public void onCreate() {
         super.onCreate();
@@ -338,8 +338,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //noinspection deprecation
             return WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         } else {
+            //noinspection deprecation
             return WindowManager.LayoutParams.TYPE_TOAST;
         }
     }
