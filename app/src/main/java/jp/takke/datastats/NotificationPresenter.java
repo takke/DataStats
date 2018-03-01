@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
+import android.widget.RemoteViews;
 
 import java.lang.ref.WeakReference;
 
@@ -27,7 +29,7 @@ class NotificationPresenter {
         mServiceRef = new WeakReference<>(service);
     }
 
-    /*package*/ void showNotification() {
+    /*package*/ void showNotification(boolean visibleOverlayView) {
 
         MyLog.d("showNotification");
 
@@ -42,6 +44,37 @@ class NotificationPresenter {
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service.getApplicationContext(), CHANNEL_ID);
+
+        // カスタムレイアウト生成
+        {
+            final RemoteViews remoteViews = new RemoteViews(service.getPackageName(), R.layout.custom_notification);
+
+            // show button
+            if (!visibleOverlayView) {
+                final Intent switchIntent = new Intent(service, SwitchButtonReceiver.class);
+                switchIntent.setAction("show");
+                final PendingIntent switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0);
+                remoteViews.setOnClickPendingIntent(R.id.show_button, switchPendingIntent);
+                remoteViews.setViewVisibility(R.id.show_button, View.VISIBLE);
+            } else {
+                remoteViews.setViewVisibility(R.id.show_button, View.GONE);
+            }
+
+            // hide button
+            if (visibleOverlayView) {
+                final Intent switchIntent = new Intent(service, SwitchButtonReceiver.class);
+                switchIntent.setAction("hide");
+                final PendingIntent switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0);
+                remoteViews.setOnClickPendingIntent(R.id.hide_button, switchPendingIntent);
+                remoteViews.setViewVisibility(R.id.hide_button, View.VISIBLE);
+            } else {
+                remoteViews.setViewVisibility(R.id.hide_button, View.GONE);
+            }
+
+            builder.setContentIntent(null);
+            builder.setContent(remoteViews);
+        }
+
 
         builder.setSmallIcon(R.drawable.ic_launcher);
         builder.setOngoing(true);

@@ -43,7 +43,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
 
             // 通知(常駐)
             mNotificationPresenter.hideNotification();
-            mNotificationPresenter.showNotification();
+            showNotification();
 
             // Alarmループ開始
             stopAlarm();
@@ -187,7 +187,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
             startGatherThread();
 
             // 通知(常駐)
-            mNotificationPresenter.showNotification();
+            showNotification();
 
             // Alarmループ開始
             scheduleNextTime(C.ALARM_STARTUP_DELAY_MSEC);
@@ -296,10 +296,10 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
 
         // Viewからインフレータを作成する
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        final LayoutInflater layoutInflater = LayoutInflater.from(this);
 
         // 重ね合わせするViewの設定を行う
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 getMyLayerType(),
@@ -348,20 +348,48 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        MyLog.d("LayerService.onStartCommand[" + flags + "][" + startId + "]");
+        final String action = intent == null ? null : intent.getAction();
+        MyLog.d("LayerService.onStartCommand flags[" + flags + "] startId[" + startId + "] intent.action[" + action + "]");
 
         // 通信量取得スレッド開始
         if (mThread == null) {
             startGatherThread();
         }
 
+        //--------------------------------------------------
+        // SwitchButtonReceiver からの処理
+        //--------------------------------------------------
+        if (action != null) {
+            switch (action) {
+            case "show":
+                // OverlayView表示
+                mView.setVisibility(View.VISIBLE);
+                break;
+
+            case "hide":
+                // OverlayView非表示
+                mView.setVisibility(View.GONE);
+                break;
+            }
+
+            // 通知(ボタン変更)
+            showNotification();
+
+            return START_STICKY;
+        }
+
         // 通知(常駐)
-        mNotificationPresenter.showNotification();
+//        mNotificationPresenter.createNotificationChannel();
+        showNotification();
 
         // Alarmループ続行
         scheduleNextTime(C.ALARM_INTERVAL_MSEC);
 
         return START_STICKY;
+    }
+
+    private void showNotification() {
+        mNotificationPresenter.showNotification(mView==null || mView.getVisibility()==View.VISIBLE);
     }
 
     private void showTraffic() {

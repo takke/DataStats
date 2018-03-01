@@ -21,4 +21,7 @@
     <string name="preview">プレビュー</string>
     <string name="resident_service_running">DataStatsサービスを実行中</string>
 
+    <string name="hide">非表示</string>
+    <string name="show">表示</string>
+
 </resources>

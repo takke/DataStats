@@ -10,4 +10,7 @@
     <dimen name="overlay_padding_left">3dp</dimen>
     <dimen name="overlay_padding_right">3dp</dimen>
     <dimen name="updown_bar_right_border_size">0.1dp</dimen>
+
+    <dimen name="custom_notification_margin">8dp</dimen>
+    <dimen name="custom_notification_text_size">14sp</dimen>
 </resources>

@@ -19,6 +19,9 @@
     <string name="config_interpolate">Interpolate(notice battery life)</string>
 
     <string name="preview">Preview</string>
-    <string name="resident_service_running">Running DataStats service</string>
+    <string name="resident_service_running">DataStats service running</string>
+
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
 
 </resources>

@@ -30,6 +30,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".SwitchButtonReceiver" />
+
     </application>
 
 </manifest>
