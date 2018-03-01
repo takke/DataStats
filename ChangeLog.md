@@ -1,8 +1,12 @@
 Change Log
 ==========
 
-v2.5.0 (2018.03.xx)
+v2.5.0 (2018.03.01)
 -------------------
+- Add show/hide button on the notification bar
+- Remove resident setting (always resident)
+- Remove notification icon (transparent icon)
+- targetSdkVersion 26 -> 27
 - Update build tools
 
 v2.4.1 (2017.09.08)
