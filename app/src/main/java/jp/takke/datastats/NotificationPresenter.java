@@ -76,7 +76,8 @@ class NotificationPresenter {
         }
 
 
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        // 端末の通知エリア(上部のアイコンが並ぶ部分)に本アプリのアイコンを表示しないようにemptyなdrawableを指定する
+        builder.setSmallIcon(R.drawable.transparent_image);
         builder.setOngoing(true);
         builder.setPriority(NotificationCompat.PRIORITY_MIN);
 
