@@ -379,7 +379,7 @@ public class LayerService extends Service implements View.OnAttachStateChangeLis
         }
 
         // 通知(常駐)
-//        mNotificationPresenter.createNotificationChannel();
+        mNotificationPresenter.createNotificationChannel();
         showNotification();
 
         // Alarmループ続行

@@ -85,18 +85,24 @@ class NotificationPresenter {
 //        builder.setContentText("表示・非表示を切り替える");
         builder.setContentIntent(pendingIntent);
 
-        // channel
-        // TODO 通知チャンネルは別途作成すること
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "常駐通知", NotificationManager.IMPORTANCE_LOW);
-            final NotificationManager nm = ((NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE));
-            assert nm != null;
-            nm.createNotificationChannel(channel);
-        }
-
         service.startForeground(MY_NOTIFICATION_ID, builder.build());
     }
 
+    /*package*/ void createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final Service service = mServiceRef.get();
+            if (service == null) {
+                return;
+            }
+
+            final NotificationChannel channel = new NotificationChannel(CHANNEL_ID, service.getString(R.string.resident_notification),
+                    NotificationManager.IMPORTANCE_LOW);
+            final NotificationManager nm = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
+            assert nm != null;
+            nm.createNotificationChannel(channel);
+        }
+    }
 
     /*package*/ void hideNotification() {
 

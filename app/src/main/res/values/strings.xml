@@ -23,5 +23,6 @@
 
     <string name="hide">Hide</string>
     <string name="show">Show</string>
+    <string name="resident_notification">Resident</string>
 
 </resources>
