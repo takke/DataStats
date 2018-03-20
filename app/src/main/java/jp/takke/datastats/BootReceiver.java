@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import jp.takke.util.MyLog;
@@ -27,7 +28,11 @@ public class BootReceiver extends BroadcastReceiver {
             if (startOnBoot) {
                 // サービス起動
                 final Intent serviceIntent = new Intent(context, LayerService.class);
-                context.startService(serviceIntent);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    context.startForegroundService(serviceIntent);
+                } else {
+                    context.startService(serviceIntent);
+                }
             }
         }
         
