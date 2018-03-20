@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+v2.5.1 (2018.03.20)
+-------------------
+- Fix crash on boot (Android 8.0 or later)
+
 v2.5.0 (2018.03.01)
 -------------------
 - Add show/hide button on the notification bar
