@@ -21,6 +21,12 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion as Integer
         versionCode rootProject.ext.versionCode as Integer
         versionName rootProject.ext.versionName as String
+
+        // Rename APK/AAB filename
+        def shortVersionName = versionName.replaceAll('\\.', '')
+        //noinspection UnnecessaryQualifiedReference
+        def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
+        setProperty("archivesBaseName", "DataStats_${shortVersionName}_${d}")
     }
     buildTypes {
         release {
@@ -31,24 +37,11 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        if (variant.buildType.name.equals("release")) {
-
-            variant.outputs.each { output ->
-                if (output.outputFileName.endsWith('.apk')) {
-                    def shortVersionName = defaultConfig.versionName.replaceAll('\\.', '')
-                    def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
-                    def newName = "DataStats_${shortVersionName}_${d}.apk"
-                    output.outputFileName = newName
-                }
-            }
-        }
-    }
-
+    // publish task
     def publish = project.tasks.create("publishAll")
     android.applicationVariants.all { variant ->
 
-        if (variant.buildType.name.equals("release")) {
+        if (variant.buildType.name == "release") {
 
             variant.outputs.each { output ->
                 if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
@@ -69,7 +62,7 @@ android {
                         // from: "build/outputs/proguard/free/release/mapping.txt"
                         // into: "proguard-outputs/free-release-mapping.txt"
 
-                        def flavorName = "";//variant.productFlavors[0].name
+                        def flavorName = ""
                         def buildTypeName = variant.buildType.name
 
                         copyTask.from(variant.getMappingFile())
@@ -83,6 +76,20 @@ android {
                     }
                 }
             }
+        }
+    }
+
+    // bundlePublishRelease task
+    android.applicationVariants.all { variant ->
+
+        if (variant.buildType.name == "release") {
+            def task = project.tasks.create("bundlePublish${variant.name.capitalize()}", Copy)
+
+            def path = "${buildDir}/outputs/bundle/release/${archivesBaseName}.aab"
+
+            task.from(path)
+            task.into(deployTo)
+            task.dependsOn bundleRelease
         }
     }
 

@@ -2,6 +2,6 @@
 
 ::: clean, APK
 call gradlew clean ^
- :app:publishAll
+ publishRelease bundlePublishRelease
 
 pause
