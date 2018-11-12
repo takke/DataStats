@@ -278,7 +278,7 @@ public class MainActivity extends Activity {
             editor.apply();
         });
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
+        final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, true);
         autoStartOnBoot.setChecked(startOnBoot);
 
         // hide when in fullscreen

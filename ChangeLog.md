@@ -3,6 +3,7 @@ Change Log
 
 v2.5.2 (2018.11.12)
 -------------------
+- Make "auto start" as ON by default
 - Distribute with App Bundle
 - Update library
   - Gradle 4.1 -> 4.10.1

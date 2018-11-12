@@ -21,7 +21,7 @@ public class BootReceiver extends BroadcastReceiver {
             
             // 自動起動の確認
             final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-            final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, false);
+            final boolean startOnBoot = pref.getBoolean(C.PREF_KEY_START_ON_BOOT, true);
             
             MyLog.i("start on boot[" + (startOnBoot ? "YES" : "NO") + "]");
             
