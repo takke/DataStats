@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+v2.5.2 (2018.11.12)
+-------------------
+- Distribute with App Bundle
+- Update library
+  - Gradle 4.1 -> 4.10.1
+  - AGP 3.0.1 -> 3.4.0-alpha02
+  - BuildTools 27.0.3 -> 28.0.3
+
 v2.5.1 (2018.03.20)
 -------------------
 - Fix crash on boot (Android 8.0 or later)
