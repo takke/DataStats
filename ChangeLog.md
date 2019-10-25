@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+v2.6.0 (2019.10.25)
+-------------------
+- Fix not start the meter automatically after installation
+- Update library
+  - Gradle 4.10.1 -> 5.4.1
+  - AGP 3.4.0-alpha02 -> 3.5.1
+- compileSdkVersion 27 -> 28
+- targetSdkVersion 27 -> 28
+- Migrate to AndroidX
+
 v2.5.2 (2018.11.12)
 -------------------
 - Make "auto start" as ON by default

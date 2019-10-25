@@ -24,8 +24,8 @@ allprojects {
 
 ext {
     apkNamePrefix = 'DataStats'
-    versionCode = 23
-    versionName = "2.5.2"
+    versionCode = 24
+    versionName = "2.6.0"
 
     compileSdkVersion = 28
     buildToolsVersion = '28.0.3'
