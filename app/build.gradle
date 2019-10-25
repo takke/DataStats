@@ -85,9 +85,11 @@ android {
     android.applicationVariants.all { variant ->
 
         if (variant.buildType.name == "release") {
+            def buildTypeName = variant.buildType.name
             def task = project.tasks.create("bundlePublish${variant.name.capitalize()}", Copy)
 
-            def path = "${buildDir}/outputs/bundle/release/${archivesBaseName}.aab"
+            def path = "${buildDir}/outputs/bundle/release/${archivesBaseName}-${buildTypeName}.aab"
+//            System.println("*** aab path = $path ($task) [$buildTypeName]")
 
             task.from(path)
             task.into(deployTo)
