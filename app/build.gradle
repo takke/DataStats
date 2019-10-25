@@ -15,6 +15,7 @@ android {
             keyPassword "android"
         }
     }
+
     defaultConfig {
         applicationId "jp.takke.datastats"
         targetSdkVersion rootProject.ext.targetSdkVersion as Integer
@@ -28,12 +29,18 @@ android {
         def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
         setProperty("archivesBaseName", "${apkNamePrefix}_${shortVersionName}_${d}")
     }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.myConfig
+        }
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix 'd'
+            minifyEnabled false
         }
     }
 
