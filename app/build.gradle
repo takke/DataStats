@@ -113,7 +113,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.legacy:legacy-support-v4:${legacySupportV4Version}"
+    implementation "androidx.core:core:${androidXCoreVersion}"
 }
 
 // load signing settings from gradle.properties
