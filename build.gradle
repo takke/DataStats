@@ -34,5 +34,5 @@ ext {
     minSdkVersion = 14
 
     // library
-    supportLibraryVersion = '26.0.0'
+    legacySupportV4Version = '1.0.0'
 }
