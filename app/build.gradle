@@ -44,14 +44,16 @@ android {
         if (variant.buildType.name == "release") {
 
             variant.outputs.each { output ->
-                if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                if (output.outputFileName.endsWith('.apk')) {
 
                     // publishXxxApk
                     def task = project.tasks.create("publish${variant.name.capitalize()}Apk", Copy)
 
-                    task.from(output.outputFile)
+                    def srcDir = variant.packageApplicationProvider.get().outputDirectory
+                    def srcPath = new File(srcDir, output.outputFileName)
+                    task.from(srcPath)
                     task.into(deployTo)
-                    task.dependsOn variant.assemble
+                    task.dependsOn variant.assembleProvider.get()
                     publish.dependsOn task
 
                     // copyXxxMappingTxt
@@ -67,11 +69,11 @@ android {
 
                         copyTask.from(variant.getMappingFile())
                         copyTask.rename('(.*)', "${flavorName}-proguard-\$1")
-                        copyTask.into(output.outputFile.parent + "/../../../proguard-outputs")
+                        copyTask.into(srcPath.parent + "/../../../proguard-outputs")
 
                         System.println("* copy mapping txt : [${flavorName}][${buildTypeName}]")
 
-                        copyTask.dependsOn variant.assemble
+                        copyTask.dependsOn variant.assembleProvider.get()
                         task.dependsOn copyTask
                     }
                 }
