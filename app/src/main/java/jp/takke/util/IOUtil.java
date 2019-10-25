@@ -1,33 +1,32 @@
 package jp.takke.util;
 
 import android.content.Context;
-import android.os.Environment;
+
+import androidx.annotation.Nullable;
 
 import java.io.File;
 
 public class IOUtil {
 
-    /**
-	 * 指定されたディレクトリへのファイルオブジェクトを取得する
+	/**
+	 * 内部ストレージのアプリ領域のディレクトリを取得する
 	 *
-	 * @param directory ディレクトリ
-	 * @return File オブジェクト
+	 * 例) /storage/sdcard0/Android/data/XXX/files
 	 */
-	public static File getExternalStorageFile(String directory, Context context) {
+	public static File getInternalStorageAppFilesDirectoryAsFile(@Nullable Context context) {
 
-		final String status = Environment.getExternalStorageState();
-		File fout;
-		if (!status.equals(Environment.MEDIA_MOUNTED)) {
-			// 未マウントなのでデータディレクトリを返す
-			if (context == null) {
-				return null;
-			}
-			fout = new File(context.getApplicationInfo().dataDir + "/files/");
-		} else {
-			fout = new File(Environment.getExternalStorageDirectory() + "/" + directory + "/");
+		if (context == null) {
+			return null;
 		}
-        //noinspection ResultOfMethodCallIgnored
-        fout.mkdirs();
-		return fout;
+
+		File externalFilesDir = context.getExternalFilesDir(null);
+		if (externalFilesDir == null) {
+			return null;
+		}
+
+		// 初回は存在していないので作成しておく
+		externalFilesDir.mkdirs();
+
+		return externalFilesDir;
 	}
 }

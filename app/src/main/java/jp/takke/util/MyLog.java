@@ -1,16 +1,20 @@
 package jp.takke.util;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MyLog {
-	
+
+	private static WeakReference<Context> sContextRef = null;
+
 //	public static void v(String msg) {
 //		if (TkUtil.isEmulator()) {
 //			Log.v(TkConsts.LOG_NAME, msg);
@@ -137,7 +141,7 @@ public class MyLog {
 
 		try {
 			// 保存先の決定
-			final File fout = IOUtil.getExternalStorageFile(TkConsts.EXTERNAL_FILE_DIRNAME, null);
+			final File fout = IOUtil.getInternalStorageAppFilesDirectoryAsFile(sContextRef.get());
 			if (fout == null) {
 				// メディア非マウントなど
 				return;
@@ -190,7 +194,7 @@ public class MyLog {
 
 		try {
 			// 保存先の決定
-			final File fout = IOUtil.getExternalStorageFile(TkConsts.EXTERNAL_FILE_DIRNAME, null);
+			final File fout = IOUtil.getInternalStorageAppFilesDirectoryAsFile(sContextRef.get());
 			if (fout == null) {
 				// メディア非マウントなど
 				return;
@@ -214,4 +218,11 @@ public class MyLog {
 		}
 	}
 
+	public static void setContext(Context context) {
+
+		sContextRef = new WeakReference<>(context);
+	}
+
+	public static void close() {
+	}
 }
