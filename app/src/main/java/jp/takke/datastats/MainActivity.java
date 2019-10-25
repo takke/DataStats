@@ -57,7 +57,6 @@ public class MainActivity extends Activity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,6 @@ public class MainActivity extends Activity {
         MyLog.deleteBigExternalLogFile();
     }
 
-
     private void doBindService() {
 
         final Intent serviceIntent = new Intent(this, LayerService.class);
@@ -98,14 +96,12 @@ public class MainActivity extends Activity {
         bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
-
     private void requestOverlayPermission() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, REQUEST_SYSTEM_OVERLAY);
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -123,7 +119,6 @@ public class MainActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     @Override
     protected void onPause() {
 
@@ -140,7 +135,6 @@ public class MainActivity extends Activity {
         super.onPause();
     }
 
-
     @Override
     protected void onDestroy() {
 
@@ -150,7 +144,6 @@ public class MainActivity extends Activity {
 
         super.onDestroy();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -219,7 +212,6 @@ public class MainActivity extends Activity {
         return true;
     }
 
-
     private void doStopService() {
         
         if (mServiceIF != null) {
@@ -235,7 +227,6 @@ public class MainActivity extends Activity {
             mServiceIF = null;
         }
     }
-
 
     private void doRestartService() {
 
@@ -260,7 +251,6 @@ public class MainActivity extends Activity {
         final TextView kbText = findViewById(R.id.preview_kb_text);
         kbText.setText("-");
     }
-
 
     @SuppressLint("SetTextI18n")
     private void prepareConfigArea() {
@@ -505,7 +495,6 @@ public class MainActivity extends Activity {
         mPreparingConfigArea = false;
     }
 
-
     @SuppressLint("SetTextI18n")
     private void updateTextSize(boolean isZoomIn) {
         
@@ -546,7 +535,6 @@ public class MainActivity extends Activity {
         }, 1);
     }
 
-
     private void preparePreviewArea() {
 
         final SeekBar seekBar = findViewById(R.id.seekBar);
@@ -586,7 +574,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
     @SuppressLint("SetTextI18n")
     private void restartWithPreview(long kb, long kbd1) {
 
@@ -599,7 +586,6 @@ public class MainActivity extends Activity {
         final TextView kbText = findViewById(R.id.preview_kb_text);
         kbText.setText(kb + "." + kbd1 + "KB");
     }
-
 
     private void startSnapshot(long previewBytes) {
         if (mServiceIF != null) {
