@@ -23,6 +23,7 @@ allprojects {
 }
 
 ext {
+    apkNamePrefix = 'DataStats'
     versionCode = 23
     versionName = "2.5.2"
 

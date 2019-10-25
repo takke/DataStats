@@ -26,7 +26,7 @@ android {
         def shortVersionName = versionName.replaceAll('\\.', '')
         //noinspection UnnecessaryQualifiedReference
         def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
-        setProperty("archivesBaseName", "DataStats_${shortVersionName}_${d}")
+        setProperty("archivesBaseName", "${apkNamePrefix}_${shortVersionName}_${d}")
     }
     buildTypes {
         release {
@@ -79,7 +79,7 @@ android {
         }
     }
 
-    // bundlePublishRelease task
+    // bundlePublishXxxRelease task
     android.applicationVariants.all { variant ->
 
         if (variant.buildType.name == "release") {
