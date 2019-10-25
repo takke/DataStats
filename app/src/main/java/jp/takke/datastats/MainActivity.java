@@ -109,7 +109,10 @@ public class MainActivity extends Activity {
         if (requestCode == REQUEST_SYSTEM_OVERLAY) {
             if (OverlayUtil.checkOverlayPermission(this)) {
                 MyLog.i("MainActivity: overlay permission OK");
-                doBindService();
+
+                // restart service
+                doStopService();
+                doRestartService();
             } else {
                 MyLog.i("MainActivity: overlay permission NG");
                 finish();
