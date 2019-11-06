@@ -4,6 +4,7 @@ import android.app.Application
 
 import jp.takke.util.MyLog
 
+@Suppress("unused")
 class App : Application() {
 
     override fun onCreate() {
