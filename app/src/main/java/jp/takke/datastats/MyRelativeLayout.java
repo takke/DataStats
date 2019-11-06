@@ -46,16 +46,17 @@ public class MyRelativeLayout extends RelativeLayout {
 
     // code from "http://blog.sfapps.jp/2015/12/28/android_fullscreen_monitoring/"
     @SuppressLint("NewApi")
-    @SuppressWarnings("deprecation")
     private Point getRealSize() {
         Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         Point point = new Point(0, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             display.getRealSize(point);
             return point;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+        } else {
             try {
+                //noinspection JavaReflectionMemberAccess
                 Method getRawWidth = Display.class.getMethod("getRawWidth");
+                //noinspection JavaReflectionMemberAccess
                 Method getRawHeight = Display.class.getMethod("getRawHeight");
                 int width = (Integer) getRawWidth.invoke(display);
                 int height = (Integer) getRawHeight.invoke(display);
@@ -63,8 +64,6 @@ public class MyRelativeLayout extends RelativeLayout {
                 return point;
             } catch (Exception ignored) {
             }
-        } else {
-            point.set(display.getWidth(), display.getHeight());
         }
         return point;
     }
