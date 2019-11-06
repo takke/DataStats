@@ -32,34 +32,9 @@ internal class NotificationPresenter(service: Service) {
         val builder = NotificationCompat.Builder(service.applicationContext, CHANNEL_ID)
 
         // カスタムレイアウト生成
-        run {
-            val remoteViews = RemoteViews(service.packageName, R.layout.custom_notification)
-
-            // show button
-            if (!visibleOverlayView) {
-                val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
-                switchIntent.action = "show"
-                val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
-                remoteViews.setOnClickPendingIntent(R.id.show_button, switchPendingIntent)
-                remoteViews.setViewVisibility(R.id.show_button, View.VISIBLE)
-            } else {
-                remoteViews.setViewVisibility(R.id.show_button, View.GONE)
-            }
-
-            // hide button
-            if (visibleOverlayView) {
-                val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
-                switchIntent.action = "hide"
-                val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
-                remoteViews.setOnClickPendingIntent(R.id.hide_button, switchPendingIntent)
-                remoteViews.setViewVisibility(R.id.hide_button, View.VISIBLE)
-            } else {
-                remoteViews.setViewVisibility(R.id.hide_button, View.GONE)
-            }
-
-            builder.setContentIntent(null)
-            builder.setContent(remoteViews)
-        }
+        val notificationLayout = createCustomLayout(service, visibleOverlayView)
+        builder.setContentIntent(null)
+        builder.setCustomContentView(notificationLayout)
 
 
         // 端末の通知エリア(上部のアイコンが並ぶ部分)に本アプリのアイコンを表示しないようにemptyなdrawableを指定する
@@ -72,6 +47,35 @@ internal class NotificationPresenter(service: Service) {
         builder.setContentIntent(pendingIntent)
 
         service.startForeground(MY_NOTIFICATION_ID, builder.build())
+    }
+
+    private fun createCustomLayout(service: Service, visibleOverlayView: Boolean): RemoteViews {
+
+        val notificationLayout = RemoteViews(service.packageName, R.layout.custom_notification)
+
+        // show button
+        if (!visibleOverlayView) {
+            val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
+            switchIntent.action = "show"
+            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+            notificationLayout.setOnClickPendingIntent(R.id.show_button, switchPendingIntent)
+            notificationLayout.setViewVisibility(R.id.show_button, View.VISIBLE)
+        } else {
+            notificationLayout.setViewVisibility(R.id.show_button, View.GONE)
+        }
+
+        // hide button
+        if (visibleOverlayView) {
+            val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
+            switchIntent.action = "hide"
+            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+            notificationLayout.setOnClickPendingIntent(R.id.hide_button, switchPendingIntent)
+            notificationLayout.setViewVisibility(R.id.hide_button, View.VISIBLE)
+        } else {
+            notificationLayout.setViewVisibility(R.id.hide_button, View.GONE)
+        }
+
+        return notificationLayout
     }
 
     fun createNotificationChannel() {
