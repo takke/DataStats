@@ -157,7 +157,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         setSleepingFlagToSurfaceView()
 
         // 表示初期化
-        val mySurfaceView = mView!!.findViewById<MySurfaceView>(R.id.mySurfaceView)
+        val mySurfaceView = mView?.findViewById<MySurfaceView>(R.id.mySurfaceView)
         mySurfaceView?.drawBlank()
 
 
@@ -241,7 +241,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         if (mView == null) {
             return
         }
-        val mySurfaceView = mView!!.findViewById<MySurfaceView>(R.id.mySurfaceView) ?: return
+        val mySurfaceView = mView?.findViewById<MySurfaceView>(R.id.mySurfaceView) ?: return
 
         mySurfaceView.setSleeping(mSleeping)
     }
@@ -306,7 +306,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         mView = layoutInflater.inflate(R.layout.overlay, null) as MyRelativeLayout
 
         // Viewを画面上に重ね合わせする
-        mWindowManager!!.addView(mView, params)
+        mWindowManager?.addView(mView, params)
 
         // スリープ状態のレシーバ登録
         applicationContext.registerReceiver(mReceiver, IntentFilter(Intent.ACTION_SCREEN_ON))
@@ -314,8 +314,8 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 
 
         // attach されるまでサイズ不明
-        mView!!.visibility = View.GONE
-        mView!!.addOnAttachStateChangeListener(this)
+        mView?.visibility = View.GONE
+        mView?.addOnAttachStateChangeListener(this)
 
         Config.loadPreferences(this)
 
@@ -377,7 +377,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
     }
 
     private fun showNotification() {
-        mNotificationPresenter.showNotification(mView == null || mView!!.visibility == View.VISIBLE)
+        mNotificationPresenter.showNotification(mView == null || mView?.visibility == View.VISIBLE)
     }
 
     private fun showTraffic() {
@@ -417,19 +417,20 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 //      MyLog.d("tx[" + tx + "byes] -> [" + pTx + "]")
 //      MyLog.d("rx[" + rx + "byes] -> [" + pRx + "]")
 
-        val mySurfaceView = mView!!.findViewById<MySurfaceView>(R.id.mySurfaceView)
-        mySurfaceView.setTraffic(tx, pTx, rx, pRx)
+        val mySurfaceView = mView?.findViewById<MySurfaceView>(R.id.mySurfaceView)
+        mySurfaceView?.setTraffic(tx, pTx, rx, pRx)
     }
 
     private fun updateWidgetSize() {
 
         val resources = resources
         val displayMetrics = resources.displayMetrics
+        val view = mView ?: return
 
         //--------------------------------------------------
         // hide when in fullscreen
         //--------------------------------------------------
-        val inFullScreen = mView!!.isFullScreen
+        val inFullScreen = view.isFullScreen
         run {
 
 //            MyLog.d("LayerService.showTraffic: hide[" + Config.hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "], " +
@@ -437,7 +438,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 //                    "system[" + displayMetrics.widthPixels + "x" + displayMetrics.heightPixels + "]"
 //            )
 
-            val mySurfaceView = mView!!.findViewById<View>(R.id.mySurfaceView)
+            val mySurfaceView = view.findViewById<View>(R.id.mySurfaceView) ?: return
             if (Config.hideWhenInFullscreen) {
                 if (inFullScreen) {
                     mySurfaceView.visibility = View.GONE
@@ -457,7 +458,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         val scaledDensity = displayMetrics.scaledDensity
         val textSizeSp = Config.textSizeSp
 
-        val mySurfaceView = mView!!.findViewById<MySurfaceView>(R.id.mySurfaceView)
+        val mySurfaceView = view.findViewById<MySurfaceView>(R.id.mySurfaceView) ?: return
 
         // width = (iconSize + textAreaWidth) * 2
         // iconSize = textSize+4
@@ -484,7 +485,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         // set padding (x pos)
         //--------------------------------------------------
         run {
-            val screenWidth = mView!!.width
+            val screenWidth = view.width
 
             var statusBarHeight = 0
             if (!inFullScreen) {
@@ -496,7 +497,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 
             val right = (screenWidth - widgetWidth) * (100 - Config.xPos) / 100
 //            MyLog.d("LayerService.showTraffic: right-padding[" + right + "]")
-            mView!!.setPadding(0, statusBarHeight, right, 0)
+            view.setPadding(0, statusBarHeight, right, 0)
         }
     }
 
@@ -625,10 +626,10 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
             // スリープ状態のレシーバ解除
             applicationContext.unregisterReceiver(mReceiver)
 
-            mView!!.removeOnAttachStateChangeListener(this)
+            mView?.removeOnAttachStateChangeListener(this)
 
             // サービスが破棄されるときには重ね合わせしていたViewを削除する
-            mWindowManager!!.removeView(mView)
+            mWindowManager?.removeView(mView)
         }
     }
 
@@ -637,7 +638,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         mAttached = true
 
         MyLog.d("LayerService.onViewAttachedToWindow")
-        mView!!.visibility = View.VISIBLE
+        mView?.visibility = View.VISIBLE
     }
 
     override fun onViewDetachedFromWindow(v: View) {
@@ -650,7 +651,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         if (mThread == null) {
             mThread = GatherThread()
             mThreadActive = true
-            mThread!!.start()
+            mThread?.start()
             MyLog.d("LayerService.startGatherThread: thread start")
         } else {
             MyLog.d("LayerService.startGatherThread: already running")
@@ -665,7 +666,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
             mThreadActive = false
             while (true) {
                 try {
-                    mThread!!.join()
+                    mThread?.join()
                     break
                 } catch (ignored: InterruptedException) {
                     MyLog.e(ignored)
