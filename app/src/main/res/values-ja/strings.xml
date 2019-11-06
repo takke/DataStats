@@ -23,6 +23,7 @@
 
     <string name="hide">非表示</string>
     <string name="show">表示</string>
+    <string name="close_temporarily_resume_after_10_seconds">10秒後に再表示します</string>
     <string name="resident_notification">常駐通知</string>
 
 </resources>

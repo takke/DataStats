@@ -20,6 +20,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.os.postDelayed
 import jp.takke.util.MyLog
 import kotlin.math.log10
 
@@ -339,11 +341,23 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
             when (action) {
                 "show" ->
                     // OverlayView表示
-                    mView!!.visibility = View.VISIBLE
+                    mView?.visibility = View.VISIBLE
 
                 "hide" ->
                     // OverlayView非表示
-                    mView!!.visibility = View.GONE
+                    mView?.visibility = View.GONE
+
+                "hide_and_resume" -> {
+                    // OverlayView非表示 -> 10秒後に復帰
+                    mView?.visibility = View.GONE
+                    mHandler.postDelayed(10000L) {
+                        mView?.visibility = View.VISIBLE
+
+                        // 通知(ボタン変更)
+                        showNotification()
+                    }
+                    Toast.makeText(this, getString(R.string.close_temporarily_resume_after_10_seconds), Toast.LENGTH_SHORT).show()
+                }
             }
 
             // 通知(ボタン変更)
@@ -368,7 +382,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 
     private fun showTraffic() {
 
-        //        MyLog.d("LayerService.showTraffic, attached[" + mAttached + "]");
+//        MyLog.d("LayerService.showTraffic, attached[" + mAttached + "]");
 
         if (!mAttached) {
             return

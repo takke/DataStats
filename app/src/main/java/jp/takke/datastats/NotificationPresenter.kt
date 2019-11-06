@@ -75,6 +75,17 @@ internal class NotificationPresenter(service: Service) {
             notificationLayout.setViewVisibility(R.id.hide_button, View.GONE)
         }
 
+        // timer (hide and resume) button
+        if (visibleOverlayView) {
+            val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
+            switchIntent.action = "hide_and_resume"
+            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+            notificationLayout.setOnClickPendingIntent(R.id.hide_and_resume_button, switchPendingIntent)
+            notificationLayout.setViewVisibility(R.id.hide_and_resume_button, View.VISIBLE)
+        } else {
+            notificationLayout.setViewVisibility(R.id.hide_and_resume_button, View.INVISIBLE)
+        }
+
         return notificationLayout
     }
 
