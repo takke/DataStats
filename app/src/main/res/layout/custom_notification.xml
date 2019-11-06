@@ -26,24 +26,24 @@
         style="@style/TextAppearance.Compat.Notification"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/show_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_weight="0"
         android:layout_gravity="center_vertical"
-        android:textSize="@dimen/custom_notification_text_size"
-        android:text="@string/show"
+        android:src="@drawable/ic_visibility_black_24dp"
+        android:contentDescription="@string/show"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/hide_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_weight="0"
         android:layout_gravity="center_vertical"
-        android:textSize="@dimen/custom_notification_text_size"
-        android:text="@string/hide"
+        android:src="@drawable/ic_visibility_off_black_24dp"
+        android:contentDescription="@string/hide"
         />
 
 </LinearLayout>
