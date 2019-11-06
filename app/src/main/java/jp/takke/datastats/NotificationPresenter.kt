@@ -1,0 +1,106 @@
+package jp.takke.datastats
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.view.View
+import android.widget.RemoteViews
+import androidx.core.app.NotificationCompat
+import jp.takke.util.MyLog
+import java.lang.ref.WeakReference
+
+internal class NotificationPresenter(service: Service) {
+
+    private val mServiceRef: WeakReference<Service> = WeakReference(service)
+
+
+    fun showNotification(visibleOverlayView: Boolean) {
+
+        MyLog.d("showNotification")
+
+        val service = mServiceRef.get() ?: return
+
+        // 通知ウインドウをクリックした際に起動するインテント
+        val intent = Intent(service, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(service, 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT)
+
+        val builder = NotificationCompat.Builder(service.applicationContext, CHANNEL_ID)
+
+        // カスタムレイアウト生成
+        run {
+            val remoteViews = RemoteViews(service.packageName, R.layout.custom_notification)
+
+            // show button
+            if (!visibleOverlayView) {
+                val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
+                switchIntent.action = "show"
+                val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+                remoteViews.setOnClickPendingIntent(R.id.show_button, switchPendingIntent)
+                remoteViews.setViewVisibility(R.id.show_button, View.VISIBLE)
+            } else {
+                remoteViews.setViewVisibility(R.id.show_button, View.GONE)
+            }
+
+            // hide button
+            if (visibleOverlayView) {
+                val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
+                switchIntent.action = "hide"
+                val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+                remoteViews.setOnClickPendingIntent(R.id.hide_button, switchPendingIntent)
+                remoteViews.setViewVisibility(R.id.hide_button, View.VISIBLE)
+            } else {
+                remoteViews.setViewVisibility(R.id.hide_button, View.GONE)
+            }
+
+            builder.setContentIntent(null)
+            builder.setContent(remoteViews)
+        }
+
+
+        // 端末の通知エリア(上部のアイコンが並ぶ部分)に本アプリのアイコンを表示しないようにemptyなdrawableを指定する
+        builder.setSmallIcon(R.drawable.transparent_image)
+        builder.setOngoing(true)
+        builder.priority = NotificationCompat.PRIORITY_MIN
+
+        builder.setContentTitle(service.getString(R.string.resident_service_running))
+//        builder.setContentText("表示・非表示を切り替える");
+        builder.setContentIntent(pendingIntent)
+
+        service.startForeground(MY_NOTIFICATION_ID, builder.build())
+    }
+
+    fun createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val service = mServiceRef.get() ?: return
+
+            val channel = NotificationChannel(CHANNEL_ID, service.getString(R.string.resident_notification),
+                    NotificationManager.IMPORTANCE_LOW)
+            val nm = service.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.createNotificationChannel(channel)
+        }
+    }
+
+    fun hideNotification() {
+
+        MyLog.d("hideNotification")
+
+        val service = mServiceRef.get() ?: return
+
+        val nm = service.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nm.cancel(MY_NOTIFICATION_ID)
+    }
+
+    companion object {
+
+        private const val MY_NOTIFICATION_ID = 1
+
+        private const val CHANNEL_ID = "resident"
+    }
+
+}
