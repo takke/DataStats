@@ -23,6 +23,7 @@
         android:layout_gravity="center_vertical"
         android:textSize="@dimen/custom_notification_text_size"
         android:text="@string/resident_service_running"
+        style="@style/TextAppearance.Compat.Notification"
         />
 
     <Button
