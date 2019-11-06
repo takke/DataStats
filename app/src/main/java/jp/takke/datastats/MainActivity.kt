@@ -351,7 +351,7 @@ class MainActivity : Activity() {
             val spinner = findViewById<Spinner>(R.id.intervalSpinner)
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                     if (mPreparingConfigArea) {
                         return
@@ -400,7 +400,7 @@ class MainActivity : Activity() {
             val spinner = findViewById<Spinner>(R.id.maxSpeedSpinner)
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                     if (mPreparingConfigArea) {
                         return
@@ -444,7 +444,7 @@ class MainActivity : Activity() {
             val spinner = findViewById<Spinner>(R.id.unitTypeSpinner)
             spinner.adapter = adapter
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
 
                     if (mPreparingConfigArea) {
                         return
