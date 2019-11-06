@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+v2.7.0 (2019.11.06)
+-------------------
+- Add timer (hide and resume) button on the notification
+- Change notification button text to image
+- Fix style of the notification text
+- Update library
+  - AGP 3.5.1 -> 3.5.2
+- Introduce Kotlin
+
 v2.6.0 (2019.10.25)
 -------------------
 - Fix not start the meter automatically after installation
