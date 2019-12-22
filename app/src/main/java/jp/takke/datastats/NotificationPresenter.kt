@@ -1,5 +1,6 @@
 package jp.takke.datastats
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -96,6 +97,10 @@ internal class NotificationPresenter(service: Service) {
 
             val channel = NotificationChannel(CHANNEL_ID, service.getString(R.string.resident_notification),
                     NotificationManager.IMPORTANCE_LOW)
+
+            // invisible on lockscreen
+            channel.lockscreenVisibility = Notification.VISIBILITY_SECRET
+
             val nm = service.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             nm.createNotificationChannel(channel)
         }
