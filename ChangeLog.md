@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+v2.7.1 (2019.12.22)
+-------------------
+- Hide notification on lockscreen
+
 v2.7.0 (2019.11.06)
 -------------------
 - Add timer (hide and resume) button on the notification
