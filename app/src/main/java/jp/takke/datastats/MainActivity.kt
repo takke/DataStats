@@ -19,10 +19,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.ZoomControls
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import jp.takke.util.MyLog
@@ -308,12 +308,13 @@ class MainActivity : AppCompatActivity() {
         interpolateCheckBox.isEnabled = Config.logBar
 
         // text size
-        val textSizeZoom = findViewById<ZoomControls>(R.id.text_size_zoom)
-        textSizeZoom.setOnZoomOutClickListener {
-            updateTextSize(false)
-        }
-        textSizeZoom.setOnZoomInClickListener {
+        val plusButton = findViewById<ImageButton>(R.id.plusButton)
+        plusButton.setOnClickListener {
             updateTextSize(true)
+        }
+        val minusButton = findViewById<ImageButton>(R.id.minusButton)
+        minusButton.setOnClickListener {
+            updateTextSize(false)
         }
         val textSizeValue = findViewById<TextView>(R.id.text_size_value)
         textSizeValue.text = Config.textSizeSp.toString() + "sp"

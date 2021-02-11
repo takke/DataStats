@@ -49,18 +49,29 @@
                 android:gravity="center_vertical|start"
                 android:text="@string/config_text_size" />
 
-            <ZoomControls
-                android:id="@+id/text_size_zoom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
             <TextView
                 android:id="@+id/text_size_value"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:layout_gravity="center_vertical"
-                android:gravity="center_vertical|end" />
+                android:gravity="center"
+                tools:text="10sp"
+                />
+
+            <ImageButton
+                android:id="@+id/minusButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_remove_24"
+                />
+
+            <ImageButton
+                android:id="@+id/plusButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_add_24"
+                />
 
         </LinearLayout>
 
