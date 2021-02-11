@@ -3,6 +3,8 @@ Change Log
 
 v2.8.0 (2021.02.xx)
 -------------------
+- compileSdkVersion 28 -> 29
+- targetSdkVersion 28 -> 29
 - Update library
   - Gradle 5.4.1 -> 6.8.2
   - AGP 3.5.2 -> 4.2.0-beta04
