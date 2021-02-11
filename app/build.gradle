@@ -127,13 +127,7 @@ dependencies {
 // load signing settings from gradle.properties
 if (project.hasProperty('storeFile')) {
     android.signingConfigs.myConfig.storeFile = file(storeFile)
-}
-if (project.hasProperty('storePassword')) {
     android.signingConfigs.myConfig.storePassword = storePassword
-}
-if (project.hasProperty('keyAlias')) {
     android.signingConfigs.myConfig.keyAlias = keyAlias
-}
-if (project.hasProperty('keyPassword')) {
     android.signingConfigs.myConfig.keyPassword = keyPassword
 }
