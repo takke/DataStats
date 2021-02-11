@@ -31,10 +31,10 @@ ext {
     versionCode = 26
     versionName = "2.7.1"
 
-    compileSdkVersion = 28
+    compileSdkVersion = 29
     buildToolsVersion = '30.0.2'
 
-    targetSdkVersion = 28
+    targetSdkVersion = 29
     minSdkVersion = 14
 
     // library
