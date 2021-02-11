@@ -48,6 +48,7 @@ ext {
     minSdkVersion = 14
 
     // library
+    appcompatVersion = '1.3.0-beta01'
     androidXCoreVersion = '1.3.2'
-    preference_version = '1.1.1'
+    preferenceVersion = '1.1.1'
 }

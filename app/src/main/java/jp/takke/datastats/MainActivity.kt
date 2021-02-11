@@ -1,7 +1,6 @@
 package jp.takke.datastats
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -24,12 +23,13 @@ import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.ZoomControls
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import jp.takke.util.MyLog
 import jp.takke.util.TkConfig
 
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     private var mPreparingConfigArea = false
 
@@ -96,7 +96,7 @@ class MainActivity : Activity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (requestCode == REQUEST_SYSTEM_OVERLAY) {
             if (OverlayUtil.checkOverlayPermission(this)) {
