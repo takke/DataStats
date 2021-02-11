@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-v2.8.0 (2021.02.xx)
+v2.8.0 (2021.02.11)
 -------------------
 - Change app icon
 - Support dark theme
