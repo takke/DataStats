@@ -1,0 +1,1 @@
+https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=import_export&foreground.space.trim=1&foreground.space.pad=0.15&foreColor=rgb(139%2C%20195%2C%2074)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=circle&effects=elevate&name=ic_launcher
