@@ -23,6 +23,7 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import jp.takke.util.MyLog
@@ -48,6 +49,19 @@ class MainActivity : AppCompatActivity() {
             MyLog.d("onServiceDisconnected[$name]")
 
             mServiceIF = null
+        }
+    }
+
+    private val overlayPermissionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (OverlayUtil.checkOverlayPermission(this)) {
+            MyLog.i("MainActivity: overlay permission OK")
+
+            // restart service
+            doStopService()
+            doRestartService()
+        } else {
+            MyLog.i("MainActivity: overlay permission NG")
+            finish()
         }
     }
 
@@ -92,26 +106,8 @@ class MainActivity : AppCompatActivity() {
     private fun requestOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
-            startActivityForResult(intent, REQUEST_SYSTEM_OVERLAY)
+            overlayPermissionLauncher.launch(intent)
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if (requestCode == REQUEST_SYSTEM_OVERLAY) {
-            if (OverlayUtil.checkOverlayPermission(this)) {
-                MyLog.i("MainActivity: overlay permission OK")
-
-                // restart service
-                doStopService()
-                doRestartService()
-            } else {
-                MyLog.i("MainActivity: overlay permission NG")
-                finish()
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onPause() {
@@ -571,8 +567,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-
-        private const val REQUEST_SYSTEM_OVERLAY = 1
-    }
 }
