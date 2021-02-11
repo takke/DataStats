@@ -289,15 +289,18 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         val layoutInflater = LayoutInflater.from(this)
 
         // 重ね合わせするViewの設定を行う
+        @Suppress("DEPRECATION")
+        // API 30 で FLAG_LAYOUT_INSET_DECOR が deprecated だがこれを外すと Y 座標がツールバーの下くらいになってしまう
         val params = WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                myLayerType,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
-                        or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-                PixelFormat.TRANSLUCENT)
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
+            myLayerType,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                    or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                    or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR,
+            PixelFormat.TRANSLUCENT
+        )
         params.gravity = Gravity.TOP or Gravity.LEFT
 
         // WindowManagerを取得する
