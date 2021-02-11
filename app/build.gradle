@@ -57,7 +57,7 @@ android {
                     // publishXxxApk
                     def task = project.tasks.create("publish${variant.name.capitalize()}Apk", Copy)
 
-                    def srcDir = variant.packageApplicationProvider.get().outputDirectory
+                    def srcDir = variant.packageApplicationProvider.get().outputDirectory.getAsFile().get()
                     def srcPath = new File(srcDir, output.outputFileName)
                     task.from(srcPath)
                     task.into(deployTo)
@@ -65,25 +65,25 @@ android {
                     publish.dependsOn task
 
                     // copyXxxMappingTxt
-                    if (variant.buildType.minifyEnabled) {
-                        def copyTask = project.tasks.create("copy${variant.name.capitalize()}MappingTxt", Copy)
-
-                        // variant.outputFile = "build/outputs/apk/xxx.apk"
-                        // from: "build/outputs/proguard/free/release/mapping.txt"
-                        // into: "proguard-outputs/free-release-mapping.txt"
-
-                        def flavorName = ""
-                        def buildTypeName = variant.buildType.name
-
-                        copyTask.from(variant.getMappingFile())
-                        copyTask.rename('(.*)', "${flavorName}-proguard-\$1")
-                        copyTask.into(srcPath.parent + "/../../../proguard-outputs")
-
-                        System.println("* copy mapping txt : [${flavorName}][${buildTypeName}]")
-
-                        copyTask.dependsOn variant.assembleProvider.get()
-                        task.dependsOn copyTask
-                    }
+//                    if (variant.buildType.minifyEnabled) {
+//                        def copyTask = project.tasks.create("copy${variant.name.capitalize()}MappingTxt", Copy)
+//
+//                        // variant.outputFile = "build/outputs/apk/xxx.apk"
+//                        // from: "build/outputs/proguard/free/release/mapping.txt"
+//                        // into: "proguard-outputs/free-release-mapping.txt"
+//
+//                        def flavorName = ""
+//                        def buildTypeName = variant.buildType.name
+//
+//                        copyTask.from(variant.getMappingFile())
+//                        copyTask.rename('(.*)', "${flavorName}-proguard-\$1")
+//                        copyTask.into(srcPath.parent + "/../../../proguard-outputs")
+//
+//                        System.println("* copy mapping txt : [${flavorName}][${buildTypeName}]")
+//
+//                        copyTask.dependsOn variant.assembleProvider.get()
+//                        task.dependsOn copyTask
+//                    }
                 }
             }
         }
