@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.os.RemoteException
-import android.preference.PreferenceManager
 import android.provider.Settings
 import android.view.Menu
 import android.view.View
@@ -24,6 +23,7 @@ import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.ZoomControls
+import androidx.preference.PreferenceManager
 import jp.takke.util.MyLog
 import jp.takke.util.TkConfig
 
