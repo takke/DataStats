@@ -38,12 +38,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/captionMarginTop">
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/leftCaptionWidth"
+                android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical|start"
                 android:text="@string/config_text_size" />
 
@@ -55,8 +57,9 @@
             <TextView
                 android:id="@+id/text_size_value"
                 android:layout_width="50dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_gravity="center_vertical"
                 android:gravity="center_vertical|end" />
 
         </LinearLayout>
@@ -65,11 +68,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/captionMarginTop">
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/leftCaptionWidth"
+                android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:gravity="center_vertical|start"
                 android:text="@string/config_pos" />
@@ -79,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
                 android:max="100" />
 
             <TextView
@@ -94,18 +99,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/captionMarginTop">
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/leftCaptionWidth"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical|start"
                 android:text="@string/config_interval" />
 
             <Spinner
                 android:id="@+id/intervalSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                />
 
         </LinearLayout>
 
@@ -113,18 +121,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/captionMarginTop">
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/leftCaptionWidth"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical|start"
                 android:text="@string/config_bar_max_kb" />
 
             <Spinner
                 android:id="@+id/maxSpeedSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                />
 
         </LinearLayout>
 
@@ -132,18 +143,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/captionMarginTop">
 
             <TextView
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/leftCaptionWidth"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical|start"
                 android:text="@string/config_unit_type" />
 
             <Spinner
                 android:id="@+id/unitTypeSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                />
 
         </LinearLayout>
 
@@ -152,14 +166,16 @@
             android:id="@+id/logarithmCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/config_logarithm_bar" />
+            android:text="@string/config_logarithm_bar"
+            android:layout_marginTop="@dimen/captionMarginTop" />
 
         <!-- interpolate -->
         <CheckBox
             android:id="@+id/interpolateCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/config_interpolate" />
+            android:text="@string/config_interpolate"
+            android:layout_marginTop="@dimen/captionMarginTop" />
 
 
         <!-- Preview -->

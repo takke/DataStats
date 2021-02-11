@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="sampleButtonTextSize">12sp</dimen>
+    <dimen name="leftCaptionWidth">120dp</dimen>
+    <dimen name="captionMarginTop">8dp</dimen>
 
     <dimen name="initialWidgetWidth">144sp</dimen><!-- (12 + 60) * 2 -->
     <dimen name="initialWidgetHeight">10sp</dimen><!-- textSize * 1.25 -->
