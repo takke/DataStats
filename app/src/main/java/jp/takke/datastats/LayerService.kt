@@ -247,7 +247,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         mySurfaceView.setSleeping(mSleeping)
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
 
         MyLog.d("LayerService.onBind")
 
