@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.RemoteException
 import android.provider.Settings
 import android.view.Menu
@@ -503,7 +504,7 @@ class MainActivity : Activity() {
         startSnapshot(1)
         MySurfaceView.sForceRedraw = false
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
 
             MySurfaceView.sForceRedraw = true
             startSnapshot(1)

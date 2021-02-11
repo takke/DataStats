@@ -13,6 +13,7 @@ import android.net.TrafficStats
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
 import android.os.RemoteException
 import android.os.SystemClock
@@ -62,7 +63,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
     // 通信量取得スレッド管理
     private var mThread: GatherThread? = null
     private var mThreadActive = false
-    private val mHandler = Handler()
+    private val mHandler = Handler(Looper.getMainLooper())
 
 
     private var mScreenOnOffSequence = 0
