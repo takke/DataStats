@@ -3,6 +3,8 @@ Change Log
 
 v2.8.0 (2021.02.xx)
 -------------------
+- Change app icon
+- Support dark theme
 - compileSdkVersion 28 -> 30
 - targetSdkVersion 28 -> 30
 - Update library
