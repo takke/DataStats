@@ -120,6 +120,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "androidx.core:core-ktx:${androidXCoreVersion}"
+    implementation "androidx.preference:preference-ktx:${preference_version}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
