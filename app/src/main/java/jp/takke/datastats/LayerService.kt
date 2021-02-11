@@ -432,6 +432,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
         // hide when in fullscreen
         //--------------------------------------------------
         val inFullScreen = view.isFullScreen
+        val mySurfaceView = view.findViewById<View>(R.id.mySurfaceView) ?: return
         run {
 
 //            MyLog.d("LayerService.showTraffic: hide[" + Config.hideWhenInFullscreen + "], fullscreen[" + inFullScreen + "], " +
@@ -439,7 +440,6 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 //                    "system[" + displayMetrics.widthPixels + "x" + displayMetrics.heightPixels + "]"
 //            )
 
-            val mySurfaceView = view.findViewById<View>(R.id.mySurfaceView) ?: return
             if (Config.hideWhenInFullscreen) {
                 if (inFullScreen) {
                     mySurfaceView.visibility = View.GONE
@@ -458,8 +458,6 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 
         val scaledDensity = displayMetrics.scaledDensity
         val textSizeSp = Config.textSizeSp
-
-        val mySurfaceView = view.findViewById<MySurfaceView>(R.id.mySurfaceView) ?: return
 
         // width = (iconSize + textAreaWidth) * 2
         // iconSize = textSize+4
