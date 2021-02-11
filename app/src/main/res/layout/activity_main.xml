@@ -1,6 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -8,34 +8,30 @@
         android:orientation="vertical"
 
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        >
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
         <!-- Config -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/config_config"
-            />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <!-- auto start on boot -->
         <CheckBox
             android:id="@+id/autoStartOnBoot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/config_auto_start_on_boot"
-            />
+            android:text="@string/config_auto_start_on_boot" />
 
         <!-- hide when in fullscreen -->
         <CheckBox
             android:id="@+id/hideWhenInFullscreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/config_hide_when_in_fullscreen"
-            />
+            android:text="@string/config_hide_when_in_fullscreen" />
 
         <!-- TextSize -->
         <LinearLayout
@@ -47,9 +43,8 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:text="@string/config_text_size"
-                android:gravity="center_vertical|left"
-                />
+                android:gravity="center_vertical|start"
+                android:text="@string/config_text_size" />
 
             <ZoomControls
                 android:id="@+id/text_size_zoom"
@@ -61,8 +56,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center_vertical|right"
-                />
+                android:gravity="center_vertical|right" />
 
         </LinearLayout>
 
@@ -76,25 +70,22 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:text="@string/config_pos"
                 android:gravity="center_vertical|left"
-                />
+                android:text="@string/config_pos" />
 
             <SeekBar
                 android:id="@+id/posSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="100"
                 android:layout_weight="1"
-                />
+                android:max="100" />
 
             <TextView
                 android:id="@+id/pos_text"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center_vertical|right"
-                />
+                android:gravity="center_vertical|right" />
 
         </LinearLayout>
 
@@ -107,14 +98,13 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="@string/config_interval"
                 android:gravity="center_vertical|left"
-                />
+                android:text="@string/config_interval" />
 
             <Spinner
+                android:id="@+id/intervalSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/intervalSpinner" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -127,14 +117,13 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="@string/config_bar_max_kb"
                 android:gravity="center_vertical|left"
-                />
+                android:text="@string/config_bar_max_kb" />
 
             <Spinner
+                android:id="@+id/maxSpeedSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/maxSpeedSpinner" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -147,14 +136,13 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="@string/config_unit_type"
                 android:gravity="center_vertical|left"
-                />
+                android:text="@string/config_unit_type" />
 
             <Spinner
+                android:id="@+id/unitTypeSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/unitTypeSpinner" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -163,33 +151,29 @@
             android:id="@+id/logarithmCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/config_logarithm_bar"
-            />
+            android:text="@string/config_logarithm_bar" />
 
         <!-- interpolate -->
         <CheckBox
             android:id="@+id/interpolateCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/config_interpolate"
-            />
+            android:text="@string/config_interpolate" />
 
 
         <!-- Preview -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/preview"
             android:layout_marginTop="20dp"
-            />
+            android:text="@string/preview"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <LinearLayout
             android:id="@+id/preset_button_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
 
             <Button
@@ -197,40 +181,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1KB"
-                android:textSize="@dimen/sampleButtonTextSize"
-                />
+                android:textSize="@dimen/sampleButtonTextSize" />
 
             <Button
                 android:id="@+id/sample_20kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20KB"
-                android:textSize="@dimen/sampleButtonTextSize"
-                />
+                android:textSize="@dimen/sampleButtonTextSize" />
 
             <Button
                 android:id="@+id/sample_50kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50KB"
-                android:textSize="@dimen/sampleButtonTextSize"
-                />
+                android:textSize="@dimen/sampleButtonTextSize" />
 
             <Button
                 android:id="@+id/sample_80kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="80KB"
-                android:textSize="@dimen/sampleButtonTextSize"
-                />
+                android:textSize="@dimen/sampleButtonTextSize" />
 
             <Button
                 android:id="@+id/sample_100kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100KB"
-                android:textSize="@dimen/sampleButtonTextSize"
-                />
+                android:textSize="@dimen/sampleButtonTextSize" />
 
         </LinearLayout>
 
@@ -243,18 +222,16 @@
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="1200"
                 android:layout_weight="1"
-                />
+                android:max="1200" />
 
             <TextView
                 android:id="@+id/preview_kb_text"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:text=""
                 android:gravity="center_vertical|left"
-                />
+                android:text="" />
 
         </LinearLayout>
 
