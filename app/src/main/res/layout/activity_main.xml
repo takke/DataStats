@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -56,7 +57,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center_vertical|right" />
+                android:gravity="center_vertical|end" />
 
         </LinearLayout>
 
@@ -70,7 +71,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="@string/config_pos" />
 
             <SeekBar
@@ -85,7 +86,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center_vertical|right" />
+                android:gravity="center_vertical|end" />
 
         </LinearLayout>
 
@@ -98,7 +99,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="@string/config_interval" />
 
             <Spinner
@@ -117,7 +118,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="@string/config_bar_max_kb" />
 
             <Spinner
@@ -136,7 +137,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="@string/config_unit_type" />
 
             <Spinner
@@ -180,36 +181,46 @@
                 android:id="@+id/sample_1kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="1KB"
-                android:textSize="@dimen/sampleButtonTextSize" />
+                android:textSize="@dimen/sampleButtonTextSize"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/sample_20kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="20KB"
-                android:textSize="@dimen/sampleButtonTextSize" />
+                android:textSize="@dimen/sampleButtonTextSize"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/sample_50kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="50KB"
-                android:textSize="@dimen/sampleButtonTextSize" />
+                android:textSize="@dimen/sampleButtonTextSize"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/sample_80kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="80KB"
-                android:textSize="@dimen/sampleButtonTextSize" />
+                android:textSize="@dimen/sampleButtonTextSize"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/sample_100kb_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="100KB"
-                android:textSize="@dimen/sampleButtonTextSize" />
+                android:textSize="@dimen/sampleButtonTextSize"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
@@ -230,7 +241,7 @@
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="" />
 
         </LinearLayout>
