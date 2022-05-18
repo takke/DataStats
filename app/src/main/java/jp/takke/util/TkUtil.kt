@@ -1,5 +1,6 @@
 package jp.takke.util
 
+import android.app.PendingIntent
 import android.os.Build
 
 object TkUtil {
@@ -25,4 +26,15 @@ object TkUtil {
             }
             return isEmulatorCache
         }
+
+    /**
+     * M 以降なら PendingIntent.FLAG_IMMUTABLE を返す
+     */
+    fun getPendingIntentImmutableFlagIfOverM(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE
+        } else {
+            0
+        }
+    }
 }

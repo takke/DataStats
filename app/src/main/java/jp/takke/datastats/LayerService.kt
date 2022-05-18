@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.PixelFormat
+import android.hardware.input.InputManager
 import android.net.TrafficStats
 import android.os.Build
 import android.os.Handler
@@ -24,6 +25,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.os.postDelayed
 import jp.takke.util.MyLog
+import jp.takke.util.TkUtil
 import kotlin.math.log10
 
 class LayerService : Service(), View.OnAttachStateChangeListener {
@@ -301,6 +303,11 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
                     or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR,
             PixelFormat.TRANSLUCENT
         )
+        // Android 12+ 対応のため透明度を設定する
+        // ※Android 12 からは透明度を 80% にしないと動作しなくなってしまう
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            params.alpha = (getSystemService(Context.INPUT_SERVICE) as InputManager).maximumObscuringOpacityForTouch
+        }
         params.gravity = Gravity.TOP or Gravity.LEFT
 
         // WindowManagerを取得する
@@ -582,7 +589,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
                 this,
                 0,
                 intent,
-                0
+                TkUtil.getPendingIntentImmutableFlagIfOverM()
         )
         // ※onStartCommandが呼ばれるように設定する
 
@@ -602,7 +609,7 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
                 this,
                 0, // ここを-1にすると解除に成功しない
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT or TkUtil.getPendingIntentImmutableFlagIfOverM()
         )
 
         val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager

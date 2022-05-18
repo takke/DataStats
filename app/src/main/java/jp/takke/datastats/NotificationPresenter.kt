@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import jp.takke.util.MyLog
+import jp.takke.util.TkUtil
 import java.lang.ref.WeakReference
 
 internal class NotificationPresenter(service: Service) {
@@ -28,7 +29,7 @@ internal class NotificationPresenter(service: Service) {
         // 通知ウインドウをクリックした際に起動するインテント
         val intent = Intent(service, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(service, 0, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT)
+                PendingIntent.FLAG_CANCEL_CURRENT or TkUtil.getPendingIntentImmutableFlagIfOverM())
 
         val builder = NotificationCompat.Builder(service.applicationContext, CHANNEL_ID)
 
@@ -58,7 +59,7 @@ internal class NotificationPresenter(service: Service) {
         if (!visibleOverlayView) {
             val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
             switchIntent.action = "show"
-            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, TkUtil.getPendingIntentImmutableFlagIfOverM())
             notificationLayout.setOnClickPendingIntent(R.id.show_button, switchPendingIntent)
             notificationLayout.setViewVisibility(R.id.show_button, View.VISIBLE)
         } else {
@@ -69,7 +70,7 @@ internal class NotificationPresenter(service: Service) {
         if (visibleOverlayView) {
             val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
             switchIntent.action = "hide"
-            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, TkUtil.getPendingIntentImmutableFlagIfOverM())
             notificationLayout.setOnClickPendingIntent(R.id.hide_button, switchPendingIntent)
             notificationLayout.setViewVisibility(R.id.hide_button, View.VISIBLE)
         } else {
@@ -80,7 +81,7 @@ internal class NotificationPresenter(service: Service) {
         if (visibleOverlayView) {
             val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
             switchIntent.action = "hide_and_resume"
-            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, 0)
+            val switchPendingIntent = PendingIntent.getBroadcast(service, 0, switchIntent, TkUtil.getPendingIntentImmutableFlagIfOverM())
             notificationLayout.setOnClickPendingIntent(R.id.hide_and_resume_button, switchPendingIntent)
             notificationLayout.setViewVisibility(R.id.hide_and_resume_button, View.VISIBLE)
         } else {
