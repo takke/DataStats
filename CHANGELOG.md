@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+v2.8.2 (2022.05.18)
+- compileSdkVersion 30 -> 31
+- targetSdkVersion 30 -> 31
+
 v2.8.1 (2022.05.18)
 -------------------
 - maxSdkVersion=30 (Android 11)
