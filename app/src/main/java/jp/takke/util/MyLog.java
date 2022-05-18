@@ -29,7 +29,7 @@ public class MyLog {
 
 	
 	public static void d(String msg) {
-		if (TkConfig.debugMode || TkUtil.isEmulator()) {
+		if (TkConfig.debugMode || TkUtil.INSTANCE.isEmulator()) {
 			Log.d(TkConsts.LOG_NAME, msg);
 		}
 
@@ -50,7 +50,7 @@ public class MyLog {
 //	}
 	
 	public static void d(String msg, Throwable th) {
-		if (TkConfig.debugMode || TkUtil.isEmulator()) {
+		if (TkConfig.debugMode || TkUtil.INSTANCE.isEmulator()) {
 			Log.d(TkConsts.LOG_NAME, msg, th);
 		}
 		
