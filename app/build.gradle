@@ -21,6 +21,7 @@ android {
         applicationId "jp.takke.datastats"
         targetSdkVersion rootProject.ext.targetSdkVersion as Integer
         minSdkVersion rootProject.ext.minSdkVersion as Integer
+        maxSdkVersion 30
         versionCode rootProject.ext.versionCode as Integer
         versionName rootProject.ext.versionName as String
 

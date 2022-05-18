@@ -3,6 +3,7 @@ Change Log
 
 v2.8.1 (2022.05.xx)
 -------------------
+- maxSdkVersion=30 (Android 11)
 - Update library
   - AGP 4.2.0-beta04 -> 7.2.0
   - Gradle 6.8.2 -> 7.4.2
