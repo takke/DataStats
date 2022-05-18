@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-v2.8.1 (2022.05.xx)
+v2.8.1 (2022.05.18)
 -------------------
 - maxSdkVersion=30 (Android 11)
 - Update library
