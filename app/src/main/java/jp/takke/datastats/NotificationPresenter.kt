@@ -55,6 +55,11 @@ internal class NotificationPresenter(service: Service) {
 
         val notificationLayout = RemoteViews(service.packageName, R.layout.custom_notification)
 
+        // Android 12+ ならアイコンは不要(通知エリアが狭いので)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            notificationLayout.setViewVisibility(R.id.app_icon, View.GONE)
+        }
+
         // show button
         if (!visibleOverlayView) {
             val switchIntent = Intent(service, SwitchButtonReceiver::class.java)
