@@ -1,7 +1,8 @@
 Change Log
 ==========
 
-v2.8.2 (2022.05.18)
+v2.8.2 (2022.05.19)
+-------------------
 - Support Android 12
 - compileSdkVersion 30 -> 31
 - targetSdkVersion 30 -> 31
