@@ -39,7 +39,9 @@ internal class NotificationPresenter(service: Service) {
         builder.setCustomContentView(notificationLayout)
 
         // Android 12 からは「展開させたくなくても展開できてしまう」ので同じものを設定しておく
-        builder.setCustomBigContentView(notificationLayout)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setCustomBigContentView(notificationLayout)
+        }
 
         // 端末の通知エリア(上部のアイコンが並ぶ部分)に本アプリのアイコンを表示しないようにemptyなdrawableを指定する
         builder.setSmallIcon(R.drawable.transparent_image)
