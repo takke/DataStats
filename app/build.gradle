@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion as Integer
-    buildToolsVersion rootProject.ext.buildToolsVersion as String
+    compileSdk rootProject.ext.compileSdkVersion as Integer
+    buildToolsVersion = rootProject.ext.buildToolsVersion as String
 
     //noinspection GroovyAssignabilityCheck
     signingConfigs {
