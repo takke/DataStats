@@ -1,8 +1,8 @@
 [versions]
 kotlinStdlibJdk7Version = "1.9.10"
-androidXCoreVersion = "1.3.2"
-appcompatVersion = "1.3.0-beta01"
-preferenceVersion = "1.1.1"
+androidXCoreVersion = "1.12.0"
+appcompatVersion = "1.6.1"
+preferenceVersion = "1.2.1"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
