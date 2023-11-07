@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+v2.8.3 (2023.11.07)
+-------------------
+- Support Android 13
+- targetSdkVersion 31 -> 33
+- compileSdkVersion 31 -> 34
+- minSdkVersion 14 -> 23
+- Update library
+  - Gradle 7.4.2 -> 8.4
+  - AGP 7.2.0 -> 8.1.2
+  - Kotlin 1.6.21 -> 1.9.10
+  - BuildTools 30.0.3 -> 33.0.1
+  - Android X Core 1.3.2 -> 1.12.0
+  - AppCompat 1.3.0-beta01 -> 1.6.1
+  - Preference 1.1.1 -> 1.2.1
+
 v2.8.2 (2022.05.19)
 -------------------
 - Support Android 12
