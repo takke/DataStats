@@ -34,3 +34,6 @@ proguard/
 #/.idea/libraries
 .DS_Store
 #/build
+/FILES/device-2015-04-03-174347.mp4
+/auto_fix_mv.sh
+/fix_mv.sh
