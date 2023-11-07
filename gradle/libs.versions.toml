@@ -1,6 +1,12 @@
 [versions]
+androidXCoreVersion = "1.3.2"
+appcompatVersion = "1.3.0-beta01"
+preferenceVersion = "1.1.1"
 
 [libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidXCoreVersion" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preferenceVersion" }
 
 [plugins]
 

@@ -123,9 +123,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "androidx.appcompat:appcompat:${appcompatVersion}"
-    implementation "androidx.core:core-ktx:${androidXCoreVersion}"
-    implementation "androidx.preference:preference-ktx:${preferenceVersion}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.preference.ktx
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

@@ -36,9 +36,4 @@ ext {
 
     targetSdkVersion = 33
     minSdkVersion = 23
-
-    // library
-    appcompatVersion = '1.3.0-beta01'
-    androidXCoreVersion = '1.3.2'
-    preferenceVersion = '1.1.1'
 }
