@@ -25,5 +25,6 @@
     <string name="show">Show</string>
     <string name="close_temporarily_resume_after_10_seconds">Close temporarily. Resume after 10 seconds.</string>
     <string name="resident_notification">Resident</string>
+    <string name="require_notification_permission">Require notification permission</string>
 
 </resources>
