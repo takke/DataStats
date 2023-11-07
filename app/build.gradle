@@ -127,7 +127,7 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation libs.androidx.preference.ktx
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation libs.kotlin.stdlib.jdk7
 }
 
 // load signing settings from gradle.properties
