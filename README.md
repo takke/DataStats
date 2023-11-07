@@ -17,4 +17,4 @@ Simple Traffic Speed Meter for Android
 
 Copyright 2014 Hiroaki TAKEUCHI and other contributors
 
-Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+Licensed under the Apache License, Version 2.0: https://www.apache.org/licenses/LICENSE-2.0
