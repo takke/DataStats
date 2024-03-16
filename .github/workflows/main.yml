@@ -36,7 +36,3 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
-
-    # Generates a debug APK
-    - name: Build debug version with Gradle
-      run: ./gradlew assembleDebug
