@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+v2.8.4 (2024.xx.xx)
+-------------------
+- Update library
+  - AGP from 8.1.2 to 8.3.0
+  - Kotlin from 1.9.10 to 1.9.23
+
 v2.8.3 (2023.11.07)
 -------------------
 - Support Android 13
