@@ -5,7 +5,7 @@ v2.8.4 (2024.xx.xx)
 -------------------
 - Update library
   - AGP from 8.1.2 to 8.3.0
-  - Kotlin from 1.9.10 to 1.9.23
+  - Kotlin from 1.9.10 to 2.0.0
 
 v2.8.3 (2023.11.07)
 -------------------
