@@ -28,7 +28,7 @@ android {
         def shortVersionName = versionName.replaceAll('\\.', '')
         //noinspection UnnecessaryQualifiedReference
         def d = new java.text.SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
-        setProperty("archivesBaseName", "${apkNamePrefix}_${shortVersionName}_${d}")
+        base.archivesName = "${apkNamePrefix}_${shortVersionName}_${d}"
     }
 
     buildTypes {
@@ -96,7 +96,7 @@ android {
             def buildTypeName = variant.buildType.name
             def task = project.tasks.create("bundlePublish${variant.name.capitalize()}", Copy)
 
-            def path = "${buildDir}/outputs/bundle/release/${archivesBaseName}-${buildTypeName}.aab"
+            def path = "${buildDir}/outputs/bundle/release/${base.archivesName}-${buildTypeName}.aab"
 //            System.println("*** aab path = $path ($task) [$buildTypeName]")
 
             task.from(path)
