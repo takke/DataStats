@@ -1,11 +1,14 @@
 Change Log
 ==========
 
-v2.8.4 (2024.xx.xx)
+v2.8.4 (2024.05.29)
 -------------------
 - Update library
+  - Gradle 8.4 -> 8.7
+  - BuildTools 33.0.1 -> 34.0.0
   - AGP from 8.1.2 to 8.3.0
   - Kotlin from 1.9.10 to 2.0.0
+  - core-ktx from 1.12.0 to 1.13.1
 
 v2.8.3 (2023.11.07)
 -------------------
