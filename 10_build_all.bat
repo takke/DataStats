@@ -1,7 +1,6 @@
 @echo off
 
 ::: clean, APK
-call gradlew clean ^
- publishRelease bundlePublishRelease
+call gradlew clean publishRelease bundlePublishRelease
 
 pause
