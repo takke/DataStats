@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+v2.8.5 (2024.07.16)
+-------------------
+- targetSdkVersion 33 -> 34
+- Update library
+  - Gradle from 8.7 to 8.8
+  - AGP from 8.4.1 to 8.5.1
+  - AppCompat from 1.6.1 to 1.7.0
+ 
 v2.8.4 (2024.05.29)
 -------------------
 - Update library
