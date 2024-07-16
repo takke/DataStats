@@ -3,9 +3,10 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:name="jp.takke.datastats.App"
@@ -24,7 +25,11 @@
             </intent-filter>
         </activity>
 
-        <service android:enabled="true" android:exported="false" android:name="jp.takke.datastats.LayerService"/>
+        <service
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync"
+            android:name="jp.takke.datastats.LayerService" />
 
         <receiver android:name=".BootReceiver" android:exported="true">
             <intent-filter>
