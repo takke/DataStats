@@ -1,6 +1,6 @@
 [versions]
 kotlinVersion = "2.0.0"
-androidXCoreVersion = "1.13.1"
+androidXCoreVersion = "1.15.0"
 appcompatVersion = "1.7.0"
 preferenceVersion = "1.2.1"
 
