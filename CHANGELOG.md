@@ -7,6 +7,7 @@ v2.8.6 (2025.04.30)
 - Update library
     - Gradle from 8.8 to 8.14
     - Kotlin 2.0.0 -> 2.1.20
+    - AndroidX Core from 1.13.1 to 1.16.0
 
 v2.8.5 (2024.07.16)
 -------------------
