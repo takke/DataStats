@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.gradleToolsVersion = '8.5.1'
+    ext.gradleToolsVersion = '8.9.2'
 
     repositories {
         mavenCentral()
@@ -30,8 +30,8 @@ ext {
     versionName = "2.8.5"
     versionCode = 32
 
-    compileSdkVersion = 34
-    buildToolsVersion = '34.0.0'
+    compileSdkVersion = 35
+    buildToolsVersion = '35.0.0'
 
     targetSdkVersion = 34
     minSdkVersion = 23
