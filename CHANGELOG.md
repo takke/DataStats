@@ -4,6 +4,7 @@ Change Log
 v2.8.6 (2025.04.30)
 -------------------
 
+- Support Android 15 (targetSdkVersion 34 -> 35)
 - Update library
     - Gradle from 8.8 to 8.14
     - Kotlin 2.0.0 -> 2.1.20
@@ -14,7 +15,7 @@ v2.8.6 (2025.04.30)
 v2.8.5 (2024.07.16)
 -------------------
 
-- targetSdkVersion 33 -> 34
+- Support Android 14 (targetSdkVersion 33 -> 34)
 - Update library
     - Gradle from 8.7 to 8.8
     - AGP from 8.4.1 to 8.5.1
