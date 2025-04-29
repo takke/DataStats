@@ -555,9 +555,9 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
     // Android4.3未満はTrafficStats.getTotalRx/TxBytes()に
     // loopback通信量を含んでいないのでこの処理はしない
     // ※Android 8.0以降は denied となるので除外する
-    if (Build.VERSION_CODES.JELLY_BEAN_MR2 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
-      val loopbackRxBytes = MyTrafficUtil.getLoopbackRxBytes()
-      val loopbackTxBytes = MyTrafficUtil.getLoopbackTxBytes()
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N_MR1) {
+      val loopbackRxBytes = MyTrafficUtil.loopbackRxBytes
+      val loopbackTxBytes = MyTrafficUtil.loopbackTxBytes
       val diffLoopbackRxBytes = loopbackRxBytes - mLastLoopbackRxBytes
       val diffLoopbackTxBytes = loopbackTxBytes - mLastLoopbackTxBytes
       mDiffRxBytes -= diffLoopbackRxBytes
