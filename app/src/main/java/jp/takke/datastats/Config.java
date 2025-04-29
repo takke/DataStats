@@ -8,7 +8,7 @@ import jp.takke.util.MyLog;
 import jp.takke.util.TkConfig;
 
 public class Config {
-    
+
     // 文字色変更基準[Bytes]
     public static long highLimit;
     public static long middleLimit;
@@ -20,9 +20,9 @@ public class Config {
     public static boolean logBar = true;
     public static int intervalMs = 1000;
     public static boolean hideWhenInFullscreen = true;
-    
+
     public static boolean interpolateMode = false;
-    
+
     public static int textSizeSp = C.DEFAULT_TEXT_SIZE_SP;
 
 

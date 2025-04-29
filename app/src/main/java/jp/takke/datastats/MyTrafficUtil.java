@@ -16,11 +16,11 @@ public class MyTrafficUtil {
     public static long convertByteToD1Kb(long bytes) {
 
         final long b1023 = bytes % 1024; // [0, 1023]
-        
+
         // to [0, 9]
         if (b1023 >= 900)
             return 9;
-        
+
         if (b1023 == 0)
             return 0;
 

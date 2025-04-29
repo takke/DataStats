@@ -11,15 +11,15 @@ import jp.takke.util.MyLog
  */
 class SwitchButtonReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context, intent: Intent?) {
+  override fun onReceive(context: Context, intent: Intent?) {
 
-        val action = intent?.action
-        MyLog.d("SwitchButtonReceiver.onReceive [$action]")
+    val action = intent?.action
+    MyLog.d("SwitchButtonReceiver.onReceive [$action]")
 
 
-        // action を引き継いで LayerService.onStartCommand に投げる
-        val serviceIntent = Intent(context, LayerService::class.java)
-        serviceIntent.action = action
-        context.startService(serviceIntent)
-    }
+    // action を引き継いで LayerService.onStartCommand に投げる
+    val serviceIntent = Intent(context, LayerService::class.java)
+    serviceIntent.action = action
+    context.startService(serviceIntent)
+  }
 }

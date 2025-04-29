@@ -6,9 +6,9 @@ import android.provider.Settings
 
 object OverlayUtil {
 
-    fun checkOverlayPermission(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT < 23) {
-            true
-        } else Settings.canDrawOverlays(context)
-    }
+  fun checkOverlayPermission(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT < 23) {
+      true
+    } else Settings.canDrawOverlays(context)
+  }
 }

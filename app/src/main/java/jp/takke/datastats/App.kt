@@ -7,18 +7,18 @@ import jp.takke.util.MyLog
 @Suppress("unused")
 class App : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
+  override fun onCreate() {
+    super.onCreate()
 
-        // ログの設定
-        MyLog.setContext(this)
+    // ログの設定
+    MyLog.setContext(this)
 
-        MyLog.i("start")
-    }
+    MyLog.i("start")
+  }
 
-    override fun onTerminate() {
-        super.onTerminate()
+  override fun onTerminate() {
+    super.onTerminate()
 
-        MyLog.close()
-    }
+    MyLog.close()
+  }
 }
