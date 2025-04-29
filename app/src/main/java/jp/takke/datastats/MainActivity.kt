@@ -31,6 +31,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
+import jp.takke.util.EdgeToEdgeUtil
 import jp.takke.util.MyLog
 import jp.takke.util.TkConfig
 
@@ -141,6 +142,9 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+
+    // Edge to Edge 対応
+    EdgeToEdgeUtil.optimizeEdgeToEdge(findViewById(R.id.root))
 
     // 通知権限の要求(Android 13 以上)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
