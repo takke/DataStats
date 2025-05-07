@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+v2.8.7 (2025.05.07)
+-------------------
+
+- Avoid crash when the app is killed by the system on Android 15 or later
+
 v2.8.6 (2025.04.30)
 -------------------
 
