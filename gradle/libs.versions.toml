@@ -1,5 +1,5 @@
 [versions]
-kotlinVersion = "2.1.20"
+kotlinVersion = "2.1.21"
 # AndroidX Core
 androidXCoreVersion = "1.16.0"
 appcompatVersion = "1.7.0"
