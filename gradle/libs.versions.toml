@@ -1,14 +1,14 @@
 [versions]
-kotlinVersion = "2.4.0"
+kotlinVersion = "2.4.21"
 # AndroidX Core
-androidXCoreVersion = "1.19.0"
-appcompatVersion = "1.7.1"
+androidXCoreVersion = "1.19.1"
+appcompatVersion = "1.8.0"
 preferenceVersion = "1.2.1"
 materialVersion = "1.14.0"
 junitVersion = "4.13.2"
 # Compose
 activityComposeVersion = "1.13.0"
-composeBomVersion = "2026.06.01"
+composeBomVersion = "2026.09.00"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }

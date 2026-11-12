@@ -9,6 +9,13 @@ v4.1.0 (2026.11.12)
 - Feature: restart the service automatically after the app is updated (when "start on boot" is enabled)
 - UI: show a warning card with a shortcut to the settings on the main screen while battery optimization is still enabled
 - UI: onboarding now marks "Ignore battery optimizations" as recommended (was optional) and explains how to turn it off
+- Update library
+    - Gradle 9.6.1 -> 9.9.1
+    - AGP 9.3.1 -> 9.5.1
+    - Kotlin 2.4.0 -> 2.4.21
+    - AndroidX Core 1.19.0 -> 1.19.1
+    - AppCompat 1.7.1 -> 1.8.0
+    - Compose BOM 2026.06.01 -> 2026.09.00
 
 v4.0.1 (2026.08.03)
 -------------------
