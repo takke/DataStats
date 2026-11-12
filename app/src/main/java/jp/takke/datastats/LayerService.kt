@@ -23,6 +23,7 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.WindowInsetsCompat
 import androidx.preference.PreferenceManager
@@ -66,6 +67,13 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 
   // hide_and_resume の復帰処理(show/hide 操作やサービス破棄でキャンセルできるよう保持する)
   private var mResumeRunnable: Runnable? = null
+
+  // startForeground がバックグラウンド開始制限で拒否され、再試行待ちかどうか。
+  // Android 15+(targetSdk 35+)では SYSTEM_ALERT_WINDOW 権限だけでは許可されず
+  // 「オーバーレイが実際に表示中」である必要があるため、表示後に再試行する。
+  private var mForegroundPending = false
+  private var mForegroundRetryCount = 0
+  private val mForegroundRetryRunnable = Runnable { retryStartForeground() }
 
   @Volatile
   private var mAttached = false
@@ -543,7 +551,8 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
     // 何もせず自身を停止する。FGS の 5 秒ルールを満たすため一度だけ startForeground してから終了する。
     if (!mHasOverlayPermission) {
       MyLog.w("LayerService.onStartCommand: no overlay permission -> stopSelf")
-      showNotification()
+      // ※すぐ停止するので、拒否された場合の再試行(showNotification())は行わない
+      mNotificationPresenter.showNotification(false)
       mNotificationPresenter.hideNotification()
       stopSelf()
       return START_NOT_STICKY
@@ -612,7 +621,51 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
 
   private fun showNotification() {
     // 通知のボタン(Show/Hide)はユーザ意図と一時非表示状態に従う。全画面による自動非表示は反映しない。
-    mNotificationPresenter.showNotification(mUserWantsVisible && !mTemporarilyHidden)
+    val succeeded =
+      mNotificationPresenter.showNotification(mUserWantsVisible && !mTemporarilyHidden)
+
+    if (succeeded) {
+      if (mForegroundPending) {
+        MyLog.i("LayerService: startForeground succeeded after $mForegroundRetryCount retries")
+        mForegroundPending = false
+        mForegroundRetryCount = 0
+        mHandler.removeCallbacks(mForegroundRetryRunnable)
+        // 再試行中に強制表示していたオーバーレイを本来の可視状態へ戻す
+        applyOverlayVisibility()
+      }
+      return
+    }
+
+    // バックグラウンドからの開始が拒否された(プロセス kill 後の START_STICKY 再起動など)。
+    // オーバーレイが表示されれば許可されるので、少し待って再試行する。
+    if (!mForegroundPending) {
+      mForegroundPending = true
+      mForegroundRetryCount = 0
+      // 非表示設定中でも許可条件(オーバーレイ表示中)を満たせるよう一時的に表示する
+      applyOverlayVisibility()
+    }
+    scheduleForegroundRetry()
+  }
+
+  private fun scheduleForegroundRetry() {
+    mHandler.removeCallbacks(mForegroundRetryRunnable)
+    if (mForegroundRetryCount >= FOREGROUND_RETRY_DELAYS_MSEC.size) {
+      // これ以上は粘らない。フォアグラウンド化できないサービスはいずれシステムに停止されるが、
+      // スリープ復帰時(onScreenOn)やアプリ起動時に再度 showNotification() が呼ばれて回復を試みる。
+      MyLog.w("LayerService: give up retrying startForeground")
+      return
+    }
+    val delay = FOREGROUND_RETRY_DELAYS_MSEC[mForegroundRetryCount]
+    mForegroundRetryCount++
+    MyLog.d("LayerService: retry startForeground after ${delay}ms [$mForegroundRetryCount]")
+    mHandler.postDelayed(mForegroundRetryRunnable, delay)
+  }
+
+  private fun retryStartForeground() {
+    if (!mForegroundPending) {
+      return
+    }
+    showNotification()
   }
 
   /** hide_and_resume の保留中の復帰処理をキャンセルする */
@@ -659,8 +712,11 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
     val hidingByNonMobile =
       Config.showOnlyOnMobile &&
               mNetworkMonitor?.currentType != NetworkTypeMonitor.NetworkType.MOBILE
+    // フォアグラウンド化の再試行中は、許可条件(オーバーレイ表示中)を満たすため強制的に表示する
     val target =
-      if (mUserWantsVisible && !mTemporarilyHidden && !hidingByFullscreen && !hidingByNonMobile) {
+      if (mForegroundPending ||
+        (mUserWantsVisible && !mTemporarilyHidden && !hidingByFullscreen && !hidingByNonMobile)
+      ) {
         View.VISIBLE
       } else {
         View.GONE
@@ -669,7 +725,8 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
       MyLog.d {
         "applyOverlayVisibility: " +
                 (if (target == View.VISIBLE) "VISIBLE" else "GONE") +
-                " (userWants=$mUserWantsVisible, temporarilyHidden=$mTemporarilyHidden" +
+                " (foregroundPending=$mForegroundPending" +
+                ", userWants=$mUserWantsVisible, temporarilyHidden=$mTemporarilyHidden" +
                 ", hidingByFullscreen=$hidingByFullscreen, hidingByNonMobile=$hidingByNonMobile)"
       }
       view.visibility = target
@@ -1126,5 +1183,39 @@ class LayerService : Service(), View.OnAttachStateChangeListener {
   companion object {
     // hide_and_resume で再表示するまでの時間[ms]
     private const val HIDE_AND_RESUME_DELAY_MSEC = 10_000L
+
+    // startForeground 拒否時の再試行間隔[ms]
+    // - START_STICKY 再起動時: オーバーレイのウィンドウが表示され次第(数百 ms 後)許可される
+    // - startService で新規に開始された場合: システムはサービス生成から 10 秒経過するまで
+    //   許可判定をやり直さないため、累計 10 秒を超える再試行が必要(実機で確認)
+    private val FOREGROUND_RETRY_DELAYS_MSEC = longArrayOf(300, 1_000, 3_000, 7_000, 15_000, 30_000, 60_000)
+
+    /**
+     * Activity 以外(端末起動時 / アプリ更新後 / 通知ボタン / QS タイル)からサービスを開始する。
+     *
+     * バックグラウンドからの startForegroundService は Android 12+ で
+     * ForegroundServiceStartNotAllowedException になり得るため、拒否された場合は
+     * 通常の startService にフォールバックする(サービス側でオーバーレイ表示後に
+     * startForeground を再試行する)。どちらも不可なら諦める(クラッシュさせない)。
+     *
+     * @return 開始要求を出せたら true
+     */
+    fun startFromBackground(context: Context, action: String? = null): Boolean {
+      val serviceIntent = Intent(context, LayerService::class.java)
+      serviceIntent.action = action
+      try {
+        ContextCompat.startForegroundService(context, serviceIntent)
+        return true
+      } catch (e: IllegalStateException) {
+        MyLog.w("LayerService.startFromBackground: startForegroundService not allowed: $e")
+      }
+      return try {
+        context.startService(serviceIntent)
+        true
+      } catch (e: IllegalStateException) {
+        MyLog.w("LayerService.startFromBackground: startService not allowed: $e")
+        false
+      }
+    }
   }
 }

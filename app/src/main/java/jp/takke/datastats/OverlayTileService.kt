@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import jp.takke.util.MyLog
 
@@ -66,10 +65,7 @@ class OverlayTileService : TileService() {
 
     // 状態遷移は LayerService 側で prefs / mUserWantsVisible / 通知を一元管理するため
     // タイルは prefs を書かず、action だけ投げる。
-    val serviceIntent = Intent(this, LayerService::class.java).apply {
-      action = if (newVisible) C.ACTION_SHOW else C.ACTION_HIDE
-    }
-    ContextCompat.startForegroundService(this, serviceIntent)
+    LayerService.startFromBackground(this, if (newVisible) C.ACTION_SHOW else C.ACTION_HIDE)
 
     // 楽観的にタイル表示を更新(直後に LayerService から requestTileUpdate() でも呼ばれる)
     setTileState(newVisible)

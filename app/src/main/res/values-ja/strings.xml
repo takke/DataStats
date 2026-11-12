@@ -69,8 +69,10 @@
     <string name="onboarding_step_overlay_desc">スピードメーターを他アプリの上に重ねて表示するために必要です。</string>
     <string name="onboarding_step_notification_title">2. 通知</string>
     <string name="onboarding_step_notification_desc">オーバーレイの表示/非表示を素早く切り替えるための常駐通知に使用します。</string>
-    <string name="onboarding_step_battery_title">3. 電池の最適化を無効にする(任意)</string>
-    <string name="onboarding_step_battery_desc">メーカー独自の電池最適化によりバックグラウンドでサービスが停止されるのを防ぐため、無効化を推奨します。</string>
+    <string name="onboarding_step_battery_title">3. 電池の最適化を無効にする(推奨)</string>
+    <string name="onboarding_step_battery_desc">無効にしないと、バックグラウンドでアプリが停止されたあとにメーターが復帰できず、勝手に消えてしまうことがあります。「すべてのアプリ」からこのアプリを選び、最適化をオフにしてください。</string>
+    <string name="battery_warning_title">電池の最適化が有効です</string>
+    <string name="battery_warning_desc">バックグラウンドでメーターが勝手に停止することがあります。設定を開き、「すべてのアプリ」からこのアプリを選んで電池の最適化をオフにしてください。</string>
     <string name="onboarding_grant">許可する</string>
     <string name="onboarding_configure">設定を開く</string>
     <string name="onboarding_granted">許可済み</string>

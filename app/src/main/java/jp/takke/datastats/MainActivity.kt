@@ -221,6 +221,10 @@ class MainActivity : ComponentActivity() {
       notificationRequired = notifRequired,
       batteryOptimizationIgnored = batteryIgnored,
     )
+    // メイン画面の警告カードにも反映する
+    if (mUiState.batteryOptimizationEnabled == batteryIgnored) {
+      mUiState = mUiState.copy(batteryOptimizationEnabled = !batteryIgnored)
+    }
   }
 
   private fun isIgnoringBatteryOptimizations(): Boolean {
@@ -306,6 +310,7 @@ class MainActivity : ComponentActivity() {
       overlayBgColor = Config.overlayBgColor,
       displayStyle = Config.displayStyle,
       debugMode = TkConfig.debugMode,
+      batteryOptimizationEnabled = !isIgnoringBatteryOptimizations(),
       previewLabel = "-",
       previewSlider = 0,
     )
@@ -458,6 +463,7 @@ class MainActivity : ComponentActivity() {
       savePref { putBoolean(C.PREF_KEY_DEBUG_MODE, newValue) }
       mUiState = mUiState.copy(debugMode = newValue)
     },
+    onConfigureBattery = { openBatteryOptimizationSettings() },
   )
 
   private inline fun savePref(action: android.content.SharedPreferences.Editor.() -> Unit) {

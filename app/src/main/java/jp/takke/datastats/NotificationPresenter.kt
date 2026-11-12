@@ -21,11 +21,18 @@ internal class NotificationPresenter(service: Service) {
   private val mServiceRef: WeakReference<Service> = WeakReference(service)
 
 
-  fun showNotification(visibleOverlayView: Boolean) {
+  /**
+   * 常駐通知を表示してフォアグラウンドサービス化する。
+   *
+   * @return フォアグラウンド化に成功したら true。
+   *  バックグラウンドからの開始制限(Android 12+)で拒否された場合は false を返す
+   *  (例外は握りつぶすので、呼び出し側で再試行すること)。
+   */
+  fun showNotification(visibleOverlayView: Boolean): Boolean {
 
     MyLog.d("showNotification")
 
-    val service = mServiceRef.get() ?: return
+    val service = mServiceRef.get() ?: return false
 
     // 通知ウインドウをクリックした際に起動するインテント
     val intent = Intent(service, MainActivity::class.java)
@@ -55,7 +62,17 @@ internal class NotificationPresenter(service: Service) {
 //        builder.setContentText("表示・非表示を切り替える");
     builder.setContentIntent(pendingIntent)
 
-    service.startForeground(MY_NOTIFICATION_ID, builder.build())
+    return try {
+      service.startForeground(MY_NOTIFICATION_ID, builder.build())
+      true
+    } catch (e: IllegalStateException) {
+      // ForegroundServiceStartNotAllowedException(API 31+, IllegalStateException の派生)。
+      // プロセス kill 後の START_STICKY 再起動など、バックグラウンドからの startForeground が
+      // 許可されない状況で発生する。ここで落とすと再起動のたびにクラッシュして
+      // サービスが二度と復帰しなくなるため、失敗を返して呼び出し側の再試行に任せる。
+      MyLog.w("showNotification: startForeground not allowed: $e")
+      false
+    }
   }
 
   private fun createCustomLayout(service: Service, visibleOverlayView: Boolean): RemoteViews {

@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+v4.1.0 (2026.11.12)
+-------------------
+
+- Fix: the meter could disappear by itself and never come back on Android 15+ — when the service was (re)started in the background, `startForeground` was rejected with `ForegroundServiceStartNotAllowedException` and the service crashed on every restart; the rejection is now handled and the service retries after the overlay becomes visible
+- Fix: avoid a crash when starting the service at boot / from the notification buttons / from the Quick Settings tile is rejected by the background start restriction (falls back to a normal service start)
+- Feature: restart the service automatically after the app is updated (when "start on boot" is enabled)
+- UI: show a warning card with a shortcut to the settings on the main screen while battery optimization is still enabled
+- UI: onboarding now marks "Ignore battery optimizations" as recommended (was optional) and explains how to turn it off
+
 v4.0.1 (2026.08.03)
 -------------------
 

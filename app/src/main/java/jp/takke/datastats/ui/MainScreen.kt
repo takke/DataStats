@@ -70,6 +70,8 @@ data class ConfigUiState(
   val unitTypeBps: Boolean = false,
   val autoUnitScale: Boolean = false,
   val debugMode: Boolean = false,
+  // 電池の最適化が有効(=未除外)かどうか。true のとき警告カードを表示する
+  val batteryOptimizationEnabled: Boolean = false,
   val previewLabel: String = "-",
   val previewSlider: Int = 0,
   /** プレビュー領域を実トラフィックのライブ表示にするか(false = 従来のスライダー/サンプル注入) */
@@ -109,6 +111,7 @@ data class MainScreenCallbacks(
   val onStop: () -> Unit = {},
   val onRestart: () -> Unit = {},
   val onToggleDebug: () -> Unit = {},
+  val onConfigureBattery: () -> Unit = {},
 )
 
 private val INTERVAL_OPTIONS = intArrayOf(500, 1000, 1500, 2000, 5000, 10000)
@@ -143,6 +146,9 @@ fun MainScreen(
         .padding(horizontal = 16.dp, vertical = 8.dp),
       verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+      if (state.batteryOptimizationEnabled) {
+        BatteryWarningCard(callbacks)
+      }
       DisplaySection(state, callbacks)
       BehaviorSection(state, callbacks)
       StartupSection(state, callbacks)
@@ -554,6 +560,38 @@ private fun formatBytesPerSec(bps: Long): String {
 //-----------------------------------------------------------
 // 共通コンポーネント
 //-----------------------------------------------------------
+
+/**
+ * 電池の最適化が有効なままのときに表示する警告カード。
+ * 最適化が有効だと、プロセス kill 後にフォアグラウンドサービスを再開できず
+ * メーターが勝手に止まることがあるため、設定画面への導線を常時出しておく。
+ */
+@Composable
+private fun BatteryWarningCard(callbacks: MainScreenCallbacks) {
+  Card(
+    modifier = Modifier.fillMaxWidth(),
+    colors = CardDefaults.cardColors(
+      containerColor = MaterialTheme.colorScheme.errorContainer,
+      contentColor = MaterialTheme.colorScheme.onErrorContainer,
+    ),
+  ) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      Text(
+        stringResource(R.string.battery_warning_title),
+        style = MaterialTheme.typography.titleMedium,
+      )
+      Spacer(Modifier.height(4.dp))
+      Text(
+        stringResource(R.string.battery_warning_desc),
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      Spacer(Modifier.height(8.dp))
+      FilledTonalButton(onClick = callbacks.onConfigureBattery) {
+        Text(stringResource(R.string.onboarding_configure))
+      }
+    }
+  }
+}
 
 @Composable
 private fun SectionCard(title: String, content: @Composable () -> Unit) {

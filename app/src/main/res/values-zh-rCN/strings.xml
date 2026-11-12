@@ -69,8 +69,10 @@
     <string name="onboarding_step_overlay_desc">用于在其他应用上层显示速度表。</string>
     <string name="onboarding_step_notification_title">2. 通知</string>
     <string name="onboarding_step_notification_desc">用于常驻通知，可快速显示/隐藏悬浮窗。</string>
-    <string name="onboarding_step_battery_title">3. 忽略电池优化(可选)</string>
-    <string name="onboarding_step_battery_desc">建议开启，避免部分厂商激进的省电策略后台终止服务。</string>
+    <string name="onboarding_step_battery_title">3. 忽略电池优化(推荐)</string>
+    <string name="onboarding_step_battery_desc">如果不关闭，应用在后台被系统停止后可能无法恢复，速度表会自行消失。请选择“所有应用”，找到本应用并关闭优化。</string>
+    <string name="battery_warning_title">电池优化已开启</string>
+    <string name="battery_warning_desc">速度表可能会在后台自行停止。请打开设置，选择“所有应用”，找到本应用并关闭电池优化。</string>
     <string name="onboarding_grant">授予</string>
     <string name="onboarding_configure">打开设置</string>
     <string name="onboarding_granted">已授予</string>

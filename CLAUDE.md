@@ -46,7 +46,7 @@ DataStats は Android 向けのリアルタイム通信速度メーター アプ
 - **MyTrafficUtil** (`MyTrafficUtil.kt`): `TrafficStats` API を使った通信量取得ユーティリティ
 - **NotificationPresenter** (`NotificationPresenter.kt`): 通知チャンネルと通知表示の管理
 - **OverlayUtil** (`OverlayUtil.kt`): オーバーレイ権限の確認・要求
-- **BootReceiver** (`BootReceiver.kt`): 端末起動時の自動起動
+- **BootReceiver** (`BootReceiver.kt`): 端末起動時の自動起動 / アプリ更新後(`MY_PACKAGE_REPLACED`)の自動再開
 - **SwitchButtonReceiver** (`SwitchButtonReceiver.kt`): 通知からのサービス ON/OFF 切り替え
 
 ### 通信量取得の流れ

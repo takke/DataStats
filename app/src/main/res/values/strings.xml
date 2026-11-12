@@ -69,8 +69,10 @@
     <string name="onboarding_step_overlay_desc">Required to show the speed meter on top of other apps.</string>
     <string name="onboarding_step_notification_title">2. Notifications</string>
     <string name="onboarding_step_notification_desc">Required for the resident notification that lets you show/hide the overlay quickly.</string>
-    <string name="onboarding_step_battery_title">3. Ignore battery optimizations (optional)</string>
-    <string name="onboarding_step_battery_desc">Recommended so aggressive OEM battery savers don\'t kill the service in the background.</string>
+    <string name="onboarding_step_battery_title">3. Ignore battery optimizations (recommended)</string>
+    <string name="onboarding_step_battery_desc">Without this, Android may refuse to bring the meter back after the system stops the app in the background, so the meter can disappear by itself. Select \"All apps\", find this app and turn optimization off.</string>
+    <string name="battery_warning_title">Battery optimization is on</string>
+    <string name="battery_warning_desc">The meter may stop by itself in the background. Open the settings, select \"All apps\", find this app and turn battery optimization off.</string>
     <string name="onboarding_grant">Grant</string>
     <string name="onboarding_configure">Configure</string>
     <string name="onboarding_granted">Granted</string>

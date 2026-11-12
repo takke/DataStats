@@ -69,8 +69,10 @@
     <string name="onboarding_step_overlay_desc">Necesario para mostrar el medidor sobre otras apps.</string>
     <string name="onboarding_step_notification_title">2. Notificaciones</string>
     <string name="onboarding_step_notification_desc">Necesario para la notificación residente que permite mostrar u ocultar la superposición rápidamente.</string>
-    <string name="onboarding_step_battery_title">3. Ignorar optimización de batería (opcional)</string>
-    <string name="onboarding_step_battery_desc">Recomendado para que los ahorros de energía agresivos del fabricante no cierren el servicio en segundo plano.</string>
+    <string name="onboarding_step_battery_title">3. Ignorar optimización de batería (recomendado)</string>
+    <string name="onboarding_step_battery_desc">Sin esto, Android puede impedir que el medidor vuelva después de que el sistema detenga la app en segundo plano, y el medidor puede desaparecer solo. Selecciona \"Todas las aplicaciones\", busca esta aplicación y desactiva la optimización.</string>
+    <string name="battery_warning_title">La optimización de batería está activada</string>
+    <string name="battery_warning_desc">El medidor puede detenerse solo en segundo plano. Abre los ajustes, selecciona \"Todas las aplicaciones\", busca esta aplicación y desactiva la optimización de batería.</string>
     <string name="onboarding_grant">Conceder</string>
     <string name="onboarding_configure">Configurar</string>
     <string name="onboarding_granted">Concedido</string>
